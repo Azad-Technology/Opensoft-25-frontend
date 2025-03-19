@@ -8,8 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "prettier": "npx prettier . --write",
-    "prettier-check": "npx prettier . --check"
+    "format": "npx prettier . --write",
+    "format:check": "npx prettier . --check"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.14",
