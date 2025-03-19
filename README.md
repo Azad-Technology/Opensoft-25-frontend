@@ -12,7 +12,7 @@ This is the frontend service for Opensoft'25 application. It is built using Reac
 1. Clone the repository:
 
     ```sh
-    [git clone https://github.com/Chaquen-fantasy-sports/chaquen-backend.git](https://github.com/Azad-Technology/Opensoft-25-frontend.git)
+    git clone https://github.com/Chaquen-fantasy-sports/chaquen-backend.git
     cd opensoft-25-frontend
     ```
 
