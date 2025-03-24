@@ -1,0 +1,168 @@
+:root {
+    --background: #0a0a0a;
+    --foreground: #f8f8f8;
+    --primary: #00884A;
+    --primary-light: #00B05F;
+    --primary-dark: #006035;
+    --muted: #333333;
+    --muted-foreground: #bfbfbf;
+    --card: #262626;
+    --card-foreground: #f8f8f8;
+    --border: #333333;
+    --radius: 0.75rem;
+  }
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border-color: var(--border);
+  }
+  
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+    scroll-behavior: smooth;
+  }
+  
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  .section-header {
+    text-align: center;
+    max-width: 768px;
+    margin: 0 auto 4rem auto;
+  }
+  
+  .section-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  
+  .section-header .underline {
+    height: 0.25rem;
+    width: 5rem;
+    background-color: var(--primary);
+    margin: 0 auto 1.5rem;
+  }
+  
+  .section-header p {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .btn-primary {
+    background-color: var(--primary);
+    color: white;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    border: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--primary-dark);
+    transform: scale(1.05);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .btn-secondary {
+    background-color: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .btn-secondary:hover {
+    background-color: rgba(0, 136, 74, 0.1);
+  }
+  
+  .glass-card {
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+  }
+  
+  .glass-card:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Animation classes */
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fade-down {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fade-left {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes fade-right {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .animate-fade-up {
+    animation: fade-up 0.7s ease-out forwards;
+  }
+  
+  .animate-fade-down {
+    animation: fade-down 0.7s ease-out forwards;
+  }
+  
+  .animate-fade-left {
+    animation: fade-left 0.7s ease-out forwards;
+  }
+  
+  .animate-fade-right {
+    animation: fade-right 0.7s ease-out forwards;
+  }

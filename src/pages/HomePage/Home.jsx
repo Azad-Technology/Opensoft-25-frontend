@@ -1,22 +1,19 @@
-import React from 'react'
-import Shape from '../../components/Hero_section/hero_shape'
-import Box from '../../components/Hero_section/glasspane'
-import Navbar from '../../components/navbar/navbar'
-import './Homepage.css'
+import React from "react";
+import Layout from "../../components/sections/HomeLayout/Layout";
+import AboutSection from "../../components/sections/AboutUs/AboutSection";
+import BenefitsSection from "../../components/sections/Benefits/BenefitsSection";
+import ContactSection from "../../components/sections/ContactUs/ContactSection";
+import HeroSection from "../../components/sections/Hero/HeroSection";
 
 const Home = () => {
   return (
-    <div className='bg-[#242424]'>
-      <Navbar/>
-      <div className="main_container">
-        <Shape/>
-        <div className="box_container">
-          <Box/>
-          <Box/>
-        </div>
-      </div>
-    </div>
-  )
-}
+    <Layout>
+      <HeroSection />
+      <BenefitsSection />
+      <AboutSection />
+      <ContactSection />
+    </Layout>
+  );
+};
 
-export default Home
+export default Home;

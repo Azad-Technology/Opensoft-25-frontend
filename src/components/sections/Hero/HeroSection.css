@@ -1,0 +1,210 @@
+.hero-section {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding-top: 7rem;
+  }
+  
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom right, #000, rgba(0, 0, 0, 0.7));
+    z-index: 0;
+  }
+  
+  .hero-pattern {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.4;
+  }
+  
+  .hero-pattern-inner {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJncmlkIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiPjxwYXRoIGQ9Ik0gNDAgMCBMIDAgMCAwIDQwIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDg4NGEiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==');
+  }
+  
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+  
+  @media (min-width: 768px) {
+    .hero-content {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+  
+  .hero-text {
+    width: 100%;
+  }
+  
+  @media (min-width: 768px) {
+    .hero-text {
+      width: 50%;
+    }
+  }
+  
+  .hero-text-inner {
+    max-width: 32rem;
+  }
+  
+  .hero-heading {
+    font-size: 3.75rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 1.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .hero-heading {
+      font-size: 4.5rem;
+    }
+  }
+  
+  .hero-highlight {
+    color: var(--primary);
+  }
+  
+  .hero-description {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 2rem;
+    max-width: 28rem;
+  }
+  
+  .hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .hero-visual {
+    width: 100%;
+  }
+  
+  @media (min-width: 768px) {
+    .hero-visual {
+      width: 50%;
+    }
+  }
+  
+  .hero-visual-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  @media (min-width: 768px) {
+    .hero-visual-container {
+      aspect-ratio: auto;
+      height: 500px;
+    }
+  }
+  
+  .circle-glow {
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    background: linear-gradient(to right, var(--primary-dark), var(--primary));
+    opacity: 0.9;
+    filter: blur(2rem);
+  }
+  
+  .circle-main {
+    position: relative;
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    background: linear-gradient(to bottom right, var(--primary), var(--primary-light));
+    overflow: hidden;
+    clip-path: circle(40% at 50% 50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .circle-pulse {
+    position: absolute;
+    inset: 0;
+    background-color: var(--primary);
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    opacity: 0.5;
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+  
+  .circle-grid {
+    position: absolute;
+    inset: 0;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJncmlkIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiPjxwYXRoIGQ9Ik0gMjAgMCBMIDAgMCAwIDIwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMC41Ii8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+');
+  }
+  
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: bounce 2s infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0) translateX(-50%);
+    }
+    40% {
+      transform: translateY(-20px) translateX(-50%);
+    }
+    60% {
+      transform: translateY(-10px) translateX(-50%);
+    }
+  }
+  
+  .scroll-box {
+    width: 2rem;
+    height: 3rem;
+    border-radius: 9999px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    justify-content: center;
+  }
+  
+  .scroll-dot {
+    width: 0.25rem;
+    height: 0.75rem;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 9999px;
+    margin-top: 0.5rem;
+  }
+  
+  .scroll-text {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
+  }
+  
