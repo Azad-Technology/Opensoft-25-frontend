@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const asset = () => {
-  return (
-    <div>asset</div>
-  )
-}
+  return <div>asset</div>;
+};
 
-export default asset
+export default asset;
