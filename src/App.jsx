@@ -1,8 +1,11 @@
 import React from 'react'
+import Vibemeter from './components/Vibemeter'
 
 const App = () => {
   return (
-    <div className='bg-red-500'>App</div>
+    <div className=''>
+    <Vibemeter />
+    </div>
   )
 }
 
