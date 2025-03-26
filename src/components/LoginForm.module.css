@@ -1,0 +1,355 @@
+.login {
+    height: 89vh;
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5rem;
+    /* background-color: #330033; */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 800 800'%3E%3Cg fill='none' stroke='%23404' stroke-width='1'%3E%3Cpath d='M769 229L1037 260.9M927 880L731 737 520 660 309 538 40 599 295 764 126.5 879.5 40 599-197 493 102 382-31 229 126.5 79.5-69-63'/%3E%3Cpath d='M-31 229L237 261 390 382 603 493 308.5 537.5 101.5 381.5M370 905L295 764'/%3E%3Cpath d='M520 660L578 842 731 737 840 599 603 493 520 660 295 764 309 538 390 382 539 269 769 229 577.5 41.5 370 105 295 -36 126.5 79.5 237 261 102 382 40 599 -69 737 127 880'/%3E%3Cpath d='M520-140L578.5 42.5 731-63M603 493L539 269 237 261 370 105M902 382L539 269M390 382L102 382'/%3E%3Cpath d='M-222 42L126.5 79.5 370 105 539 269 577.5 41.5 927 80 769 229 902 382 603 493 731 737M295-36L577.5 41.5M578 842L295 764M40-201L127 80M102 382L-261 269'/%3E%3C/g%3E%3Cg fill='%23505'%3E%3Ccircle cx='769' cy='229' r='5'/%3E%3Ccircle cx='539' cy='269' r='5'/%3E%3Ccircle cx='603' cy='493' r='5'/%3E%3Ccircle cx='731' cy='737' r='5'/%3E%3Ccircle cx='520' cy='660' r='5'/%3E%3Ccircle cx='309' cy='538' r='5'/%3E%3Ccircle cx='295' cy='764' r='5'/%3E%3Ccircle cx='40' cy='599' r='5'/%3E%3Ccircle cx='102' cy='382' r='5'/%3E%3Ccircle cx='127' cy='80' r='5'/%3E%3Ccircle cx='370' cy='105' r='5'/%3E%3Ccircle cx='578' cy='42' r='5'/%3E%3Ccircle cx='237' cy='261' r='5'/%3E%3Ccircle cx='390' cy='382' r='5'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  
+  .wrapper {
+    width: 30rem;
+    background: rgba(31, 22, 28, 0.6);
+    color: rgb(255, 255, 255);
+    border-radius: 2rem;
+    padding: 0rem 3rem;
+    box-shadow: -0.1rem 0rem 1rem 0.25rem rgba(16, 15, 15, 1);
+  }
+  
+  .wrapper h1 {
+    font-size: 2.25rem;
+    text-align: center;
+    padding: 1.25rem;
+    margin-top: 2rem;
+  }
+  
+  .wrapper .input-box {
+    position: relative;
+    width: 100%;
+    height: 3.12rem;
+    margin: 2rem 0;
+  }
+  
+  .Oth {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    margin-top: 3%;
+  }
+  .signup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3%;
+    margin-bottom: 4%;
+    border: 0.125rem solid rgb(255, 255, 255);
+    border-radius: 0.3125rem;
+    height: 100%;
+  }
+  
+  .signup input {
+    display: flex;
+    justify-content: left;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    outline: none;
+    border: 0.125rem solid rgb(255, 255, 255, 0.2);
+    border-radius: 0.3125rem;
+    font-size: 1rem;
+    color: rgb(255, 255, 255);
+    padding: 1.25rem 2.8125rem 1.25rem 1.25rem;
+    border-color: transparent;
+  }
+  
+  .icon_box {
+    height: 100%;
+    /* width : 100% */
+  }
+  
+  .eyeIcon {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+  }
+  
+  .input_box {
+    display: flex;
+    margin-top: 3%;
+    margin-bottom: 4%;
+  }
+  
+  .input_box {
+    border: 0.125rem solid rgb(255, 255, 255);
+    border-radius: 0.3125rem;
+    height: 100%;
+  }
+  
+  .input_box input {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    outline: none;
+    /* border: 0.125rem solid rgb(255, 255, 255, 0.2); */
+    border: none;
+    border-radius: 0.3125rem;
+    font-size: 1rem;
+    color: rgb(255, 255, 255);
+    padding: 1.25rem 2.8125rem 1.25rem 1.25rem;
+    border-color: rgb(255, 255, 255);
+    /* margin-bottom: 10%;  */
+  }
+  
+  .input_box input::placeholder {
+    color: rgb(255, 255, 255);
+  }
+  
+  /* .input_box .icon{
+      position: absolute;
+      right: 1.25rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1rem;
+  } */
+  
+  .remember-forgot label {
+    display: flex;
+  }
+  
+  .remember-forgot label input {
+    accent-color: black;
+    text-decoration: none;
+    margin-right: 0.4rem;
+  }
+  
+  .remember-forgot a:hover {
+    text-decoration: underline;
+  }
+  
+  .remember-forgot a {
+    color: black;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  
+  .wrapper button {
+    width: 100%;
+    height: 2.8125rem;
+    background: rgb(255, 255, 255);
+    border: none;
+    outline: none;
+    border-radius: 0.3125rem;
+    box-shadow: 0 0 0.625rem rgb(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 1rem;
+    color: #333;
+    font-weight: 700;
+    border-color: black;
+    margin-bottom: 2rem;
+  }
+  
+  .wrapper .register_link {
+    font-size: 1rem;
+    text-align: center;
+    margin: 1.25rem 0 0.9375rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+  }
+  
+  /* 
+  .register_link p a {
+    color: black;
+    text-decoration: none;
+    font-weight: 600;
+  } */
+  
+  .register-link p a {
+    font-size: 0.90625rem;
+    font-weight: 600;
+  }
+  
+  .register_link p a:hover {
+    text-decoration: underline;
+  }
+  
+  .OAuth {
+    display: flex;
+    accent-color: white;
+    justify-content: center;
+    width: 50%;
+  }
+  
+  .GoogleLogin div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 0.5;
+  }
+  
+  .wrapper hr {
+    margin-bottom: 1.5rem;
+  }
+  
+  .Or {
+    margin-bottom: 0.625rem;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .google {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .google_icon {
+    margin-right: 0.625rem;
+  }
+  
+  @media only screen and (max-width: 900px) {
+    .wrapper {
+      width: 20rem;
+      margin-top: 2rem;
+      padding: 1.73rem 1.73rem;
+    }
+    .wrapper h1 {
+      font-size: 1.4rem;
+      padding: 0.722rem;
+    }
+    .wrapper button {
+      font-size: 0.9rem;
+    }
+    .input-box input {
+      font-size: 0.9rem;
+    }
+    .Or {
+      font-size: 0.8rem;
+    }
+    .wrapper .register-link {
+      font-size: 0.7rem;
+      margin-top: 0.722rem;
+      margin-bottom: 0;
+    }
+    #error {
+      font-size: 0.8rem;
+      margin-bottom: 0.6rem;
+    }
+    /* .wrapper{
+          margin-top: 50%;
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+          width: 20rem;
+          height: 30rem;
+          padding: 1.73rem 1.73rem;
+      }
+      .wrapper h1{
+          font-size: 1.4rem;
+          padding: 0.722rem;
+      }
+      .wrapper button{
+          font-size: 0.rem;
+      }
+      .input-box input{
+          font-size: 0.9rem;
+      }
+      .Or{
+          font-size: 0.8rem;
+      }
+      .wrapper .register-link{
+          font-size: 0.7rem;
+          margin-top: 0.722rem;
+          margin-bottom: 0;
+      }
+      #error {
+          font-size: 0.8rem;
+          margin-bottom: 0.6rem;
+      } */
+  }
+  
+  .signup input::placeholder {
+    color: rgb(255, 255, 255);
+  }
+  
+  @media screen and (max-width: 600px) {
+    .wrapper {
+      width: 90vw;
+      min-width: 300px;
+      margin-top: 2rem;
+      padding: 1rem 2rem;
+      border-radius: 1rem;
+    }
+    .wrapper h1 {
+      font-size: 1.2rem;
+      text-align: center;
+      padding-top: 0rem;
+      padding-bottom: 1.25rem;
+    }
+  
+    .wrapper button {
+      font-size: 0.8rem;
+      margin-bottom: 0rem;
+      height: 2rem;
+    }
+    .input-box input {
+      font-size: 0.9rem;
+    }
+    .Or {
+      font-size: 0.8rem;
+      margin: 1rem 0rem;
+    }
+    .Oth {
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+    }
+    .wrapper .register_link {
+      font-size: 0.8rem;
+      text-align: center;
+      margin: 1.25rem 0 0 0;
+      margin-bottom: 1rem;
+    }
+    #error {
+      font-size: 0.8rem;
+      margin-bottom: 0.6rem;
+    }
+  
+    .signup input {
+      padding: 0.2rem;
+      border: 1px solid black;
+    }
+  
+    .input_box input {
+      padding: 0.2rem;
+    }
+    .input_box {
+      border: 1px solid rgb(255, 255, 255);
+      height: 2rem;
+    }
+    .eyeIcon {
+      padding: 0 0.2rem 0 0;
+    }
+    input::placeholder {
+      font-size: 0.7rem;
+    }
+  }
+  
+  #error {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .googleButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: normal;
+    gap: 1em;
+  }
