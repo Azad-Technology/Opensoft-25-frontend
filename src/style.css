@@ -1,242 +1,166 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: Arial, sans-serif;
-    color: #333;
-  }
-  
-  /* NAVBAR */
-  .top-nav {
-    background-color: #000; 
-    padding: 10px 1rem;
-  }
-  .top-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 1rem;
-  }
-  .top-nav li {
-    color: #fff;
-    cursor: pointer;
-    font-weight: 600;
-  }
-  .top-nav li:hover {
-    font-size: large;
-    color:rgb(200, 203, 212);
-  }
-  /* .top-nav li.active {
-    text-decoration: underline;
-  } */
-  
-  /* SPLIT CONTAINER for each page (Login, Signup) */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  color: #2e4a2d;
+  background-color: #eaf4ea;
+}
+
+/* NAVBAR */
+.top-nav {
+  background-color: #37af00;
+  padding: 10px 1rem;
+}
+.top-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+.top-nav li {
+  color: #b2d8b2;
+  cursor: pointer;
+  font-weight: 600;
+}
+.top-nav li:hover {
+  font-size: large;
+  color: #d4edc9;
+}
+
+/* SPLIT CONTAINER */
+.split-container {
+  display: flex;
+  min-height: calc(100vh - 50px);
+}
+
+.hidden {
+  display: none;
+}
+.active {
+  display: flex;
+}
+
+/* LEFT PANEL */
+.left-panel {
+  flex: 1;
+  background-color: #4a7c4a;
+  color: #f6f8f6;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.left-panel-content {
+  max-width: 400px;
+}
+
+.left-panel-content h1 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.left-panel-content p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* RIGHT PANEL */
+.right-panel {
+  flex: 1;
+  background-color: #f5faf5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.form-container {
+  max-width: 400px;
+  width: 100%;
+}
+
+.form-container h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: #2e4a2d;
+}
+
+.form-container p {
+  font-size: 0.95rem;
+  color: #3e663e;
+  margin-bottom: 1.5rem;
+}
+
+form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+form input[type="email"],
+form input[type="password"],
+form input[type="text"],
+form select {
+  width: 100%;
+  padding: 0.65rem;
+  margin-bottom: 1rem;
+  border: 1px solid #a2cba2;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.btn-primary {
+  display: inline-block;
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  background-color: #4f6d4f;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  transition: background-color 0.3s;
+  text-align: center;
+}
+
+.btn-primary:hover {
+  background-color: #285128;
+}
+
+.forgot-password {
+  font-size: 0.9rem;
+  color: #2e7d32;
+  text-decoration: none;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
   .split-container {
-    display: flex;
-    min-height: calc(100vh - 50px); 
-    /* 50px is an approximate navbar height; adjust if needed */
+    flex-direction: column;
+    min-height: auto;
   }
-  
-  /* Hide or Show sections via classes */
-  .hidden {
-    display: none;
+  .left-panel, .right-panel {
+    width: 100%;
+    min-height: auto;
   }
-  .active {
-    display: flex; /* override hidden */
-  }
-  
-  /* LEFT PANEL (Image + text) */
   .left-panel {
-    flex: 1;
-    /* Make the background fill the space */
-    background-size: cover;   /* or "contain", depending on preference */
-    background-position: center center;
-    background-repeat: no-repeat;
-    
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 2rem; 
-    color: #fff; /* Because the image is dark, we want text in white */
+    padding: 1.5rem;
   }
-  .left-panel-content {
-    max-width: 400px; /* or whatever you prefer */
-  }
-  
-  .left-panel-content h1 {
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-  }
-  .left-panel-content p {
-    font-size: 1rem;
-    line-height: 1.5;
-  }
-  
-  /* RIGHT PANEL (Form) */
   .right-panel {
-    flex: 1;
-    background-color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
+    padding: 1.5rem;
   }
-  
-  /* Form Container (common styling for login & signup) */
-  .form-container {
-    max-width: 400px;
-    width: 100%;
-  }
-  .form-container h2 {
-    font-size: 1.4rem;
-    margin-bottom: 0.5rem;
-    color: #333;
-  }
-  .form-container p {
-    font-size: 0.95rem;
-    color: #666;
-    margin-bottom: 1.5rem;
-  }
-  
-  /* Shared Field Styling */
-  form label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
-    font-size: 0.95rem;
-  }
-  form label span {
-    color: red; /* indicates required */
-  }
-  form input[type="email"],
-  form input[type="password"],
-  form input[type="text"],
-  form select {
-    width: 100%;
-    padding: 0.65rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 0.95rem;
-  }
-  
-  /* Small checkboxes & labels */
-  .checkbox-inline {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-    font-size: 0.95rem;
-  }
-  .checkbox-inline input {
-    margin-right: 5px;
-  }
-  
-  /* Inline fields for sign up form */
-  .inline-fields {
-    display: flex;
-    gap: 10px;
-  }
-  .inline-fields .field {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  .hint-text {
-    font-size: 0.8rem;
-    color: #666;
-    line-height: 1.4;
-    margin-top: -0.5rem;
-    margin-bottom: 1rem;
-  }
-  
-  /* Options row (login form) */
-  .options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-  .keep-me-logged-in {
-    color: red; /* as per your screenshot */
-    font-weight: 600;
-  }
-  .forgot-password {
-    font-size: 0.9rem;
-    color: #007bff;
-    text-decoration: none;
-  }
-  .forgot-password:hover {
-    text-decoration: underline;
-  }
-  
-  /* Primary Buttons (Login & Join) */
-  .btn-primary {
-    display: inline-block;
-    width: 100%;
-    padding: 0.75rem;
-    font-size: 1rem;
-    background-color: #428bca;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-bottom: 1rem;
-    transition: background-color 0.3s;
-    text-align: center;
-  }
-  .btn-primary:hover {
-    background-color: #3071a9;
-  }
-  
-  /* Divider text (OR) */
-  .divider {
-    text-align: center;
-    font-weight: bold;
-    margin: 1rem 0;
-  }
-  
-  /* SSO Buttons */
-  .sso-buttons, .join-sso-buttons {
-    text-align: center;
-    margin-bottom: 1rem;
-  }
-  .sso-buttons button, .join-sso-buttons button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    margin: 0 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #fff;
-    cursor: pointer;
-    font-size: 1.2rem;
-  }
-  .sso-buttons img, .join-sso-buttons img {
-    width: 20px;
-    height: 20px;
-  }
-  
-  /* Responsive: stack on smaller screens */
-  @media (max-width: 768px) {
-    .split-container {
-      flex-direction: column;
-      min-height: auto;
-    }
-    .left-panel, .right-panel {
-      width: 100%;
-      min-height: auto;
-    }
-    .left-panel {
-      padding: 1.5rem;
-    }
-    .right-panel {
-      padding: 1.5rem;
-    }
-  }
-  
+}
+.upper-logo{
+  width: 106px;
+}
