@@ -2,11 +2,18 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { User, Menu, X } from "lucide-react";
+import Modal from "../modal";
+import Login from "../../login-signup/login.jsx";
 import "./Navbar.css";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  console.log("Modal State:", isModalOpen); 
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,9 +63,14 @@ const Navbar = () => {
           <div className="navbar-profile">
             <User size={18} className="navbar-profile-icon" />
           </div>
-          <button className="navbar-login-button">
+          <button onClick={openModal} className="navbar-login-button">
             Login
           </button>
+        
+
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <Login />
+        </Modal>
         </div>
 
         {/* Mobile Menu Button */}
