@@ -1,16 +1,156 @@
-import React from 'react'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from './pages/HomePage/Home'
+import { Toaster as Sonner } from "sonner";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { DataProvider } from "./contexts/DataContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
+
+// Pages
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import EmployeeDashboard from "./pages/EmployeeDashboard";
+import EmployeeChat from "./pages/EmployeeChat";
+import EmployeeReports from "./pages/EmployeeReports";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminReports from "./pages/AdminReports";
+import AdminEmployeeDetail from "./pages/AdminEmployeeDetail";
+import NotFound from "./pages/NotFound";
+import Index from "./pages/Index";
+import EmployeesPage from "./pages/EmployeesPage";
+import AdminEmployeeReportPage from "./pages/admin/EmployeeReportPage";
+import Home from "./pages/HomePage/Home";
 
 
-const App = () => {
-  return (
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
+
+// Protected route component
+const ProtectedRoute = ({ children, allowedRoles = [] }) => {
+  const { isAuthenticated, user, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-pattern">
+        <div className="neo-glass p-8 rounded-xl shadow-lg animate-pulse-slow">
+          <p className="text-gray-600">Loading your experience...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+
+  if (allowedRoles.length > 0 && user && !allowedRoles.includes(user.role)) {
+    return (
+      <Navigate
+        to={user.role === "admin" ? "/admin/dashboard" : "/employee/dashboard"}
+      />
+    );
+  }
+
+  return <>{children}</>;
+};
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
     <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Home />} />
-    </Routes>
-  </BrowserRouter>
-  )
-}
+      <ThemeProvider>
+        <AuthProvider>
+          <DataProvider>
+            <Sonner />
+            <Routes>
+              {/* Public routes */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/Home" element={<Home/>}/>
 
-export default App
+              {/* Protected Employee routes */}
+              <Route
+                path="/employee/dashboard"
+                element={
+                  <ProtectedRoute allowedRoles={["employee"]}>
+                    <EmployeeDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/employee/chat"
+                element={
+                  <ProtectedRoute allowedRoles={["employee"]}>
+                    <EmployeeChat />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/employee/reports"
+                element={
+                  <ProtectedRoute allowedRoles={["employee"]}>
+                    <EmployeeReports />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Protected Admin routes */}
+              <Route
+                path="/admin/dashboard"
+                element={
+                  <ProtectedRoute allowedRoles={["admin"]}>
+                    <AdminDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/reports"
+                element={
+                  <ProtectedRoute allowedRoles={["admin"]}>
+                    <AdminReports />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/reports/:employeeId"
+                element={
+                  <ProtectedRoute allowedRoles={["admin"]}>
+                    <AdminEmployeeDetail />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/employees"
+                element={
+                  <ProtectedRoute allowedRoles={["admin"]}>
+                    <EmployeesPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/employee-report/:month/:year"
+                element={
+                  <ProtectedRoute allowedRoles={["admin"]}>
+                    <AdminEmployeeReportPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Default route */}
+              <Route path="/" element={<Index />} />
+
+              {/* 404 catch-all */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </DataProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </BrowserRouter>
+  </QueryClientProvider>
+);
+
+export default App;
