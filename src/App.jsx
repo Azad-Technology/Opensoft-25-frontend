@@ -1,8 +1,9 @@
 import React from 'react'
+import MainPage from './pages/HRDashboard/MainPage'
 
 const App = () => {
   return (
-    <div className='bg-red-500'>App</div>
+    <MainPage />
   )
 }
 

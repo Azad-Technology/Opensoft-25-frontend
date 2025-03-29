@@ -1,0 +1,93 @@
+import React from "react";
+import HRNavbar from "./HRNavbar";
+import SevereCases from "./SevereCases";
+import Correlations from "./Correlations";
+import { Smile , ArrowDownRight , ChartNoAxesCombined , Brain} from 'lucide-react'
+import { LineChart, Line, XAxis, YAxis, Tooltip,
+ ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
+
+const weeklyData = [
+  { day: "Mon", score: 6.5 },
+  { day: "Tue", score: 7.0 },
+  { day: "Wed", score: 7.2 },
+  { day: "Thu", score: 7.5 },
+  { day: "Fri", score: 7.8 },
+  { day: "Sat", score: 7.4 },
+  { day: "Sun", score: 7.1 },
+];
+
+const moodData = [
+  { name: "Happy", value: 40, color: "#34D399" },
+  { name: "Sad", value: 15, color: "#F87171" },
+  { name: "Frustrated", value: 10, color: "#FBBF24" },
+  { name: "Okay", value: 25, color: "#60A5FA" },
+  { name: "Excited", value: 10, color: "#A78BFA" },
+];
+
+const MainPage = () => {
+  return (
+    <div className="relative bg-gray-50 min-h-screen">
+      <HRNavbar />
+
+      <div className="pt-24 px-6 md:px-10">
+      
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          {[
+            { title: "Overall Wellness Score", value: "7.2/10" , sign:<Smile className="text-green-400"/>},
+            { title: "Critical Cases", value: "5" , sign:<ArrowDownRight className="text-red-600"/>},
+            { title: "Total Employees Surveyed", value: "300" , sign:<ChartNoAxesCombined className="text-green-400"/>},
+            { title: "Overall Mood" , value: "Frustated" , sign:<Brain className="text-green-400"/>},
+          ].map((item, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-xl shadow-md p-6 flex flex-col justify-center 
+              items-center text-center w-full min-h-[150px]"
+            >
+              <div className={`h-10 w-10 rounded-sm ${(item.title === "Critical Cases") ? 'bg-red-100' : 'bg-green-100'} flex justify-center items-center`}>
+              {item.sign}
+              </div>
+              <p className="text-gray-400 font-semibold text-lg">{item.title}</p>
+              <p className="text-3xl font-bold text-black mt-2">{item.value}</p>
+            </div>
+          ))}
+        </div>
+
+      
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-10">
+         
+          <div className="bg-white shadow-md p-6 rounded-xl">
+            <h2 className="text-lg font-semibold text-gray-600 mb-4">Weekly Wellness Trend</h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={weeklyData}>
+                <XAxis dataKey="day" stroke="#90EE90" />
+                <YAxis domain={[6, 8]} stroke="#90EE90" />
+                <Tooltip />
+                <Line type="monotone" dataKey="score" stroke="#03C03C" strokeWidth={3} dot={{ r: 5 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="bg-white shadow-md p-6 rounded-xl">
+            <h2 className="text-lg font-semibold text-gray-600 mb-4">Mood Distribution</h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie data={moodData} cx="50%" cy="50%" innerRadius={50} outerRadius={100} dataKey="value">
+                  {moodData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Legend />
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+      <Correlations />
+      <SevereCases />
+    </div>
+
+  );
+};
+
+export default MainPage;
