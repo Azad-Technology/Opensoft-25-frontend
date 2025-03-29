@@ -22,6 +22,11 @@ const ChatUI = ({ className = "" }) => {
   const messageEndRef = useRef(null);
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
+  const configuration = new Configuration({
+    apiKey: "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",
+  });
+  const openai = new OpenAIApi(configuration);
+  
 
   const userSessions = chatSessions
     .filter((session) => user && session.employeeId === user.employeeId)
@@ -70,18 +75,31 @@ const ChatUI = ({ className = "" }) => {
     const newSession = startNewChatSession(user.employeeId);
     setSelectedSession(newSession);
   };
-
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
+    
     if (!newMessage.trim() || !selectedSession) return;
-
+  
+    // User message
     sendChatMessage(selectedSession.id, newMessage, "user");
     setNewMessage("");
-
     setIsTyping(true);
-    setTimeout(() => {
-      setIsTyping(false);
-    }, 1000);
+  
+    try {
+      const response = await openai.createChatCompletion({
+        model: "gpt-4",
+        messages: [{ role: "user", content: newMessage }],
+      });
+  
+      const botReply = response.data.choices[0].message.content;
+      sendChatMessage(selectedSession.id, botReply, "bot");
+    } catch (error) {
+      console.error("Error fetching AI response:", error);
+    }
+    
+  
+    setIsTyping(false);
   };
+  
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
