@@ -4,6 +4,8 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useData } from "../../contexts/DataContext";
 import VibeChart from "../../components/employeeCompo/VibeChart";
 import VibeStatusBadge from "../../components/employeeCompo/VibeStatusBadge";
+import { AchievementsSection } from '../../components/employeeCompo/AchievementsSection';
+import ProjectCard from "../../components/employeeCompo/ProjectCard";
 import {
   AreaChart,
   Area,
@@ -25,6 +27,39 @@ const EmployeeReports = () => {
   const [userActivities, setUserActivities] = useState([]);
   const [userRecognitions, setUserRecognitions] = useState([]);
   const [userPerformance, setUserPerformance] = useState(null);
+
+  const projectData = [
+    {
+      id: '1',
+      name: 'Website Redesign',
+      priority: 'high',
+      status: 'in-progress',
+      startDate: '2024-03-01',
+      endDate: '2024-04-15',
+      progress: 65,
+      assignees: ['Sarah J.', 'Michael C.'],
+    },
+    {
+      id: '2',
+      name: 'Mobile App Development',
+      priority: 'medium',
+      status: 'not-started',
+      startDate: '2024-04-01',
+      endDate: '2024-06-30',
+      progress: 0,
+      assignees: ['Emily D.', 'John S.'],
+    },
+    {
+      id: '3',
+      name: 'Data Migration',
+      priority: 'low',
+      status: 'completed',
+      startDate: '2024-02-15',
+      endDate: '2024-03-15',
+      progress: 100,
+      assignees: ['Robert K.', 'Lisa M.'],
+    },
+  ];
 
   useEffect(() => {
     if (user) {
@@ -147,6 +182,15 @@ const EmployeeReports = () => {
             )}
           </div>
 
+
+          {/* Achievements and Rewards */}
+          <div className="bg-white/80 backdrop-blur-sm dark:bg-gray-900/80 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 mb-8">
+            <AchievementsSection />
+          </div>
+
+
+
+
           {/* Activity levels */}
           <div
             className="neo-glass rounded-xl p-6 animate-fade-in"
@@ -230,13 +274,12 @@ const EmployeeReports = () => {
                         <td className="py-3 px-4">{leave.reason}</td>
                         <td className="py-3 px-4">
                           <span
-                            className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
-                              leave.status === "approved"
-                                ? "bg-green-100 text-green-800"
-                                : leave.status === "pending"
-                                  ? "bg-yellow-100 text-yellow-800"
-                                  : "bg-red-100 text-red-800"
-                            }`}
+                            className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${leave.status === "approved"
+                              ? "bg-green-100 text-green-800"
+                              : leave.status === "pending"
+                                ? "bg-yellow-100 text-yellow-800"
+                                : "bg-red-100 text-red-800"
+                              }`}
                           >
                             {leave.status.charAt(0).toUpperCase() +
                               leave.status.slice(1)}
@@ -364,6 +407,16 @@ const EmployeeReports = () => {
               )}
             </div>
           </div>
+
+          <div className="neo-glass rounded-xl p-6 animate-fade-in" style={{ animationDelay: "0.6s" }}>
+            <h2 className="text-xl font-medium mb-6">Assigned Projects</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              {projectData.map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))}
+            </div>
+          </div>
+
         </div>
       </div>
     </Layout>

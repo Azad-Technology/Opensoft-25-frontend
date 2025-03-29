@@ -4,6 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useData } from "../../contexts/DataContext";
 import VibeChart from "../../components/employeeCompo/VibeChart";
 import VibeSelector from "../../components/employeeCompo/VibeSelector";
+import { MetricCard } from "../../components/employeeCompo/metricCard";
 import StatCard from "../../components/employeeCompo/StatCard";
 import { Link } from "react-router-dom";
 import {
@@ -12,7 +13,7 @@ import {
   MessageSquare,
   Bell,
   CheckCheck,
-  ArrowRight,
+  ArrowRight, TrendingUp, Clock, Users, BookOpen, Target
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -52,6 +53,47 @@ const EmployeeDashboard = () => {
 
     toast.success("Thank you for sharing your vibe!");
   };
+  const metrics = [
+    {
+      title: 'Performance Index',
+      value: '85%',
+      trend: 12,
+      icon: <TrendingUp size={24} className="text-green-600 dark:text-green-400" />,
+      rating: 4
+    },
+    {
+      title: 'Leave Balance',
+      value: '5 days',
+      trend: -8,
+      icon: <Clock size={24} className="text-green-600 dark:text-green-400" />,
+    },
+    {
+      title: 'Upcoming Meetings',
+      value: '3',
+      trend: 20,
+      icon: <Calendar size={24} className="text-green-600 dark:text-green-400" />,
+    },
+    {
+      title: 'Team Size',
+      value: '12',
+      trend: 5,
+      icon: <Users size={24} className="text-green-600 dark:text-green-400" />,
+    },
+    {
+      title: 'Training Hours',
+      value: '24h',
+      trend: 15,
+      icon: <BookOpen size={24} className="text-green-600 dark:text-green-400" />,
+      rating: 5
+    },
+    {
+      title: 'Goals Achieved',
+      value: '8/10',
+      trend: 10,
+      icon: <Target size={24} className="text-green-600 dark:text-green-400" />,
+      rating: 3
+    },
+  ];
 
   if (!user || !stats) {
     return (
@@ -171,55 +213,13 @@ const EmployeeDashboard = () => {
               )}
             </div>
 
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <StatCard
-                title="Leave Balance"
-                value={stats.currentMonthLeaves}
-                description={getLeaveDescription(stats.currentMonthLeaves)}
-                icon={<Calendar size={24} />}
-                className="animate-fade-in"
-                style={{ animationDelay: "0.2s" }}
-              />
-
-              <StatCard
-                title="Activity Level"
-                value={
-                  stats.activityLevel === "normal"
-                    ? "Normal"
-                    : stats.activityLevel === "high"
-                      ? "High"
-                      : "Low"
-                }
-                description={getActivityDescription(stats.activityLevel)}
-                icon={<CheckCheck size={24} />}
-                className="animate-fade-in"
-                style={{ animationDelay: "0.3s" }}
-              />
-
-              <StatCard
-                title="Recognition"
-                value={stats.recognitionCount}
-                description={`You've received ${stats.recognitionCount} ${
-                  stats.recognitionCount === 1 ? "recognition" : "recognitions"
-                } from your peers`}
-                icon={<Bell size={24} />}
-                className="animate-fade-in"
-                style={{ animationDelay: "0.4s" }}
-              />
-
-              <StatCard
-                title="Monthly Chat"
-                value={stats.completedMonthlyChatbot ? "Completed" : "Pending"}
-                description={
-                  stats.completedMonthlyChatbot
-                    ? "You've completed your monthly feedback session."
-                    : "You still need to complete your monthly chat."
-                }
-                icon={<MessageSquare size={24} />}
-                className="animate-fade-in"
-                style={{ animationDelay: "0.5s" }}
-              />
+              {metrics.map((metric) => (
+                <MetricCard key={metric.title} {...metric} />
+              ))}
             </div>
+
           </div>
 
           <div className="space-y-6">
