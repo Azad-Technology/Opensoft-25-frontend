@@ -6,4 +6,6 @@
   
   .layout-main {
     flex-grow: 1;
+    color:#f8f8f8;
+    background-color: #0a0a0a;
   }

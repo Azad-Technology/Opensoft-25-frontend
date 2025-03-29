@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../components/Layout";
-import { useAuth } from "../contexts/AuthContext";
-import { useData } from "../contexts/DataContext";
-import VibeChart from "../components/VibeChart";
-import VibeStatusBadge from "../components/VibeStatusBadge";
+import Layout from "../../components/employeeCompo/Layout";
+import { useAuth } from "../../contexts/AuthContext";
+import { useData } from "../../contexts/DataContext";
+import VibeChart from "../../components/employeeCompo/VibeChart";
+import VibeStatusBadge from "../../components/employeeCompo/VibeStatusBadge";
 import {
   AreaChart,
   Area,

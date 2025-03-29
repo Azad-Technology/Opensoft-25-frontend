@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../components/Layout";
-import { useData } from "../contexts/DataContext";
-import StatCard from "../components/StatCard";
-import VibeStatusBadge from "../components/VibeStatusBadge";
-import { users } from "../data/mockData";
+import Layout from "../../components/employeeCompo/Layout";
+import { useData } from "../../contexts/DataContext";
+import StatCard from "../../components/employeeCompo/StatCard";
+import VibeStatusBadge from "../../components/employeeCompo/VibeStatusBadge";
+import { users } from "../../data/mockData";
 import { Link } from "react-router-dom";
 import {
   PieChart,

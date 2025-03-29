@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import Layout from "../components/Layout";
-import { useData } from "../contexts/DataContext";
-import VibeChart from "../components/VibeChart";
-import VibeStatusBadge from "../components/VibeStatusBadge";
-import { users } from "../data/mockData";
+import Layout from "../../components/employeeCompo/Layout";
+import { useData } from "../../contexts/DataContext";
+import VibeChart from "../../components/employeeCompo/VibeChart";
+import VibeStatusBadge from "../../components/employeeCompo/VibeStatusBadge";
+import { users } from "../../data/mockData";
 import {
   ArrowLeft,
   Calendar,

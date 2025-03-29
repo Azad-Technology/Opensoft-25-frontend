@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { useTheme } from "../../contexts/ThemeContext";
+
 import { users } from "../../data/mockData";
 import { Search } from "lucide-react";
 
 const EmployeesPage = () => {
-  const { theme } = useTheme();
   const [searchTerm, setSearchTerm] = useState("");
   const [departmentFilter, setDepartmentFilter] = useState("all");
 

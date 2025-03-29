@@ -1,7 +1,7 @@
 
 import React from 'react';
-import Layout from '../components/Layout';
-import ChatUI from '../components/ChatUI';
+import Layout from '../../components/employeeCompo/Layout';
+import ChatUI from '../../components/Chatbot/ChatUI';
 
 const EmployeeChat = () => {
   return (

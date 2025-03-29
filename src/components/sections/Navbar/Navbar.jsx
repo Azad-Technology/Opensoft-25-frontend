@@ -56,9 +56,11 @@ const Navbar = () => {
           <div className="navbar-profile">
             <User size={18} className="navbar-profile-icon" />
           </div>
-          <button className="navbar-login-button">
-            Login
-          </button>
+          <Link to="/login">
+            <button className="navbar-login-button">
+              Login
+            </button>
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}

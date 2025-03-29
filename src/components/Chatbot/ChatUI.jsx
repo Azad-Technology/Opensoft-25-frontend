@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useAuth } from "../contexts/AuthContext";
-import { useData } from "../contexts/DataContext";
+import { useAuth } from "../../contexts/AuthContext";
+import { useData } from "../../contexts/DataContext";
 import { Send, Paperclip, Image } from "lucide-react";
 
 const ChatUI = ({ className = "" }) => {
