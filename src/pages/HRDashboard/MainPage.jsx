@@ -1,5 +1,6 @@
 import React from "react";
-import HRNavbar from "./HRNavbar";
+import Layout from "../../components/Layout.jsx";
+
 import SevereCases from "./SevereCases";
 import Correlations from "./Correlations";
 import { Smile , ArrowDownRight , ChartNoAxesCombined , Brain} from 'lucide-react'
@@ -26,11 +27,17 @@ const moodData = [
 
 const MainPage = () => {
   return (
-    <div className="relative bg-gray-50 min-h-screen">
-      <HRNavbar />
+    <Layout>
+      <div className="relative bg-gray-50 min-h-screen pb-4">
+      {/*<HRNavbar />*/}
 
-      <div className="pt-24 px-6 md:px-10">
-      
+      <div className="py-6 px-6 md:px-10">
+        <div className="mb-8 animate-fade-in">
+          <h1 className="page-header mb-2">Admin Dashboard</h1>
+          <p className="text-muted-foreground">
+            Monitor employee well-being and engagement across the organization
+          </p>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {[
             { title: "Overall Wellness Score", value: "7.2/10" , sign:<Smile className="text-green-400"/>},
@@ -40,7 +47,7 @@ const MainPage = () => {
           ].map((item, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl shadow-md p-6 flex flex-col justify-center 
+              className="bg-white rounded-xl shadow-md p-6 flex flex-col justify-center
               items-center text-center w-full min-h-[150px]"
             >
               <div className={`h-10 w-10 rounded-sm ${(item.title === "Critical Cases") ? 'bg-red-100' : 'bg-green-100'} flex justify-center items-center`}>
@@ -52,9 +59,9 @@ const MainPage = () => {
           ))}
         </div>
 
-      
+
         <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-10">
-         
+
           <div className="bg-white shadow-md p-6 rounded-xl">
             <h2 className="text-lg font-semibold text-gray-600 mb-4">Weekly Wellness Trend</h2>
             <ResponsiveContainer width="100%" height={300}>
@@ -86,7 +93,7 @@ const MainPage = () => {
       <Correlations />
       <SevereCases />
     </div>
-
+    </Layout>
   );
 };
 

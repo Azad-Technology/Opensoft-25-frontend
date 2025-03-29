@@ -11,7 +11,6 @@ import Signup from "./pages/Signup";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import EmployeeChat from "./pages/EmployeeChat";
 import EmployeeReports from "./pages/EmployeeReports";
-import AdminDashboard from "./pages/AdminDashboard";
 import AdminReports from "./pages/AdminReports";
 import AdminEmployeeDetail from "./pages/AdminEmployeeDetail";
 import NotFound from "./pages/NotFound";
@@ -99,11 +98,19 @@ const App = () => (
               />
 
               {/* Protected Admin routes */}
+              {/*<Route*/}
+              {/*  path="/admin/dashboard"*/}
+              {/*  element={*/}
+              {/*    <ProtectedRoute allowedRoles={["admin"]}>*/}
+              {/*      <AdminDashboard />*/}
+              {/*    </ProtectedRoute>*/}
+              {/*  }*/}
+              {/*/>*/}
               <Route
                 path="/admin/dashboard"
                 element={
                   <ProtectedRoute allowedRoles={["admin"]}>
-                    <AdminDashboard />
+                    <MainPage />
                   </ProtectedRoute>
                 }
               />
