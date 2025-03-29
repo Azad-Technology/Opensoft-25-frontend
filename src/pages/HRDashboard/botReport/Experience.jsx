@@ -12,10 +12,10 @@ const EmployeeExperience = () => {
   ];
 
   return (
-    <div className="p-4 bg-white min-h-screen">
-      {/* Main Content */}
+    <div className="p-4 bg-gray-950 text-gray-100">
+      
       <div className="grid grid-cols-2 gap-4">
-        {/* Onboarding Experience */}
+       
         <div className="border rounded p-4">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold">Onboarding Experience</h2>
@@ -61,11 +61,11 @@ const EmployeeExperience = () => {
           </div>
         </div>
 
-        {/* Transition Details */}
+        
         <div className="border rounded p-4">
           <h2 className="text-lg font-semibold mb-4">Transition Details</h2>
 
-          {/* Onboarding Feedback */}
+          
           <div className="mb-4">
             <div className="flex justify-between items-center mb-2">
               <span className="font-medium">Onboarding Feedback</span>
@@ -79,7 +79,7 @@ const EmployeeExperience = () => {
             </p>
           </div>
 
-          {/* Initial Training */}
+          
           <div className="flex justify-between items-center mb-4">
             <div>
               <span className="font-medium">Initial Training</span>
@@ -100,7 +100,7 @@ const EmployeeExperience = () => {
             </svg>
           </div>
 
-          {/* 30-Day Check-in */}
+          
           <div className="flex justify-between items-center mb-4">
             <div>
               <span className="font-medium">30-Day Check-in</span>
@@ -121,7 +121,7 @@ const EmployeeExperience = () => {
             </svg>
           </div>
 
-          {/* Mentor Assigned */}
+         
           <div className="flex justify-between items-center mb-4">
             <div>
               <span className="font-medium">Mentor Assigned</span>

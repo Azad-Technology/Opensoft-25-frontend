@@ -21,10 +21,10 @@ const InteractionReports = () => {
   ];
 
   return (
-    <div className="p-4 bg-white min-h-screen">
-      {/* Main Content */}
+    <div className="p-4 min-h-screen bg-gray-950 text-gray-100">
+      
       <div className="grid grid-cols-2 gap-4">
-        {/* Communication Activity Chart */}
+        
         <div className="border rounded p-4">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold">Communication Activity</h2>

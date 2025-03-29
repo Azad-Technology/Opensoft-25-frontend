@@ -18,7 +18,7 @@ const PerformanceReports = () => {
   ];
 
   return (
-    <div className="p-4 bg-white min-h-screen">
+    <div className="p-4 min-h-screen bg-gray-950 text-gray-100">
       {/* Main Content */}
       <div className="grid grid-cols-2 gap-4">
         {/* Performance Metrics Chart */}
