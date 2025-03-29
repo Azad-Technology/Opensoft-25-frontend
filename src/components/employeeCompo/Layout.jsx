@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Bell, Settings, User, ChevronDown, X } from "lucide-react";
-import Sidebar from "./Sidebar";
+import Sidebar from "../Sidebar";
 import ThemeSwitch from "./ThemeSwitch";
+import { useTheme } from "../../contexts/ThemeContext";
 
 const Layout = ({ children }) => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -13,6 +14,7 @@ const Layout = ({ children }) => {
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleResize = () => {
@@ -69,7 +71,7 @@ const Layout = ({ children }) => {
   }, [showUserDropdown, showNotifications]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-pattern dark:bg-gray-900">
+    <div className={`min-h-screen flex flex-col bg-pattern dark:bg-gray-900 ${theme=="dark" && "text-white"}`}>
       {isAuthenticated && (
         <>
           <Sidebar expanded={sidebarExpanded} onToggle={toggleSidebar} />

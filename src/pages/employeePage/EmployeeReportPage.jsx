@@ -1,5 +1,5 @@
 import React from "react";
-import EmployeeReport from "../components/EmployeeReport";
+import EmployeeReport from "../../components/EmployeeReport";
 
 const EmployeeReportPage = () => {
   // Sample data - in a real application, this would come from your API

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import EmployeeReport from '../../components/EmployeeReport';
-import Layout from '../../components/Layout';
+import EmployeeReport from '../../components/employeeCompo/EmployeeReport';
+import Layout from '../../components/employeeCompo/Layout';
 
 const AdminEmployeeReportPage = () => {
     const { month, year } = useParams();

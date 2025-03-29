@@ -1,3 +1,4 @@
+import React from "react";
 import { Toaster as Sonner } from "sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
@@ -6,18 +7,20 @@ import { DataProvider } from "./contexts/DataContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
 // Pages
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import EmployeeDashboard from "./pages/EmployeeDashboard";
-import EmployeeChat from "./pages/EmployeeChat";
-import EmployeeReports from "./pages/EmployeeReports";
-import AdminDashboard from "./pages/AdminDashboard";
-import AdminReports from "./pages/AdminReports";
-import AdminEmployeeDetail from "./pages/AdminEmployeeDetail";
-import NotFound from "./pages/NotFound";
-import Index from "./pages/Index";
-import EmployeesPage from "./pages/EmployeesPage";
-import AdminEmployeeReportPage from "./pages/admin/EmployeeReportPage";
+import Login from "./pages/Auth/Login";
+import Signup from "./pages/Auth/Signup";
+import EmployeeDashboard from "./pages/employeePage/EmployeeDashboard";
+import EmployeeChat from "./pages/employeePage/EmployeeChat";
+import EmployeeReports from "./pages/employeePage/EmployeeReports";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminReports from "./pages/admin/AdminReports";
+import AdminEmployeeDetail from "./pages/admin/AdminEmployeeDetail";
+import NotFound from "./pages/NotFound/NotFound";
+import Index from "./pages/Auth/Index";
+import EmployeesPage from "./pages/employeePage/EmployeesPage";
+import AdminEmployeeReportPage from "./pages/admin/AdminEmployeeReportPage";
+import Home from "./pages/HomePage/Home";
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,9 +45,9 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
     );
   }
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
-  }
+  // if (!isAuthenticated) {
+  //   return <Navigate to="/login" />;
+  // }
 
   if (allowedRoles.length > 0 && user && !allowedRoles.includes(user.role)) {
     return (
@@ -68,6 +71,7 @@ const App = () => (
               {/* Public routes */}
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/" element={<Home/>}/>
 
               {/* Protected Employee routes */}
               <Route
@@ -138,7 +142,7 @@ const App = () => (
               />
 
               {/* Default route */}
-              <Route path="/" element={<Index />} />
+              {/* <Route path="/" element={<Index />} /> */}
 
               {/* 404 catch-all */}
               <Route path="*" element={<NotFound />} />

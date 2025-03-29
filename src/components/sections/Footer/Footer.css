@@ -1,0 +1,128 @@
+.footer {
+    background-color: black;
+    padding-top: 64px;
+    padding-bottom: 32px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .footer-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+  
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    margin-bottom: 64px;
+  }
+  
+  @media (min-width: 768px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+  }
+  
+  .footer-brand {
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .footer-brand-text {
+    font-size: 32px;
+    color: #00884A;
+  }
+  
+  .footer-brand-dot {
+    color: #00884A;
+    margin-left: 4px;
+  }
+  
+  .footer-description {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+  
+  .footer-social {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .footer-social-link {
+    color: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+  }
+  
+  .footer-social-link:hover {
+    color: #00884A;
+  }
+  
+  .footer-section-title {
+    font-weight: 600;
+    color: white;
+    margin-bottom: 16px;
+  }
+  
+  .footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .footer-link {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+  
+  .footer-link:hover {
+    color: #00884A;
+  }
+  
+  .footer-contact-text {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+  
+  .footer-chat-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: rgba(0, 136, 74, 0.2);
+    border-radius: 9999px;
+    color: #00884A;
+    border: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+  
+  .footer-chat-button:hover {
+    background-color: rgba(0, 136, 74, 0.3);
+  }
+  
+  .footer-copyright {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 32px;
+    text-align: center;
+  }
+  
+  .footer-copyright-text {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+  }
+  

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../components/Layout";
-import { useAuth } from "../contexts/AuthContext";
-import { useData } from "../contexts/DataContext";
-import VibeChart from "../components/VibeChart";
-import VibeSelector from "../components/VibeSelector";
-import StatCard from "../components/StatCard";
+import Layout from "../../components/employeeCompo/Layout";
+import { useAuth } from "../../contexts/AuthContext";
+import { useData } from "../../contexts/DataContext";
+import VibeChart from "../../components/employeeCompo/VibeChart";
+import VibeSelector from "../../components/employeeCompo/VibeSelector";
+import StatCard from "../../components/employeeCompo/StatCard";
 import { Link } from "react-router-dom";
 import {
   Calendar,
