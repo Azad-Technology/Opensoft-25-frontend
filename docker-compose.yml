@@ -1,0 +1,9 @@
+services:
+  frontend:
+    build: .
+    ports:
+      - "8565:8565"
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+    command: ["serve", "-s", "dist", "-l", "8565"]
