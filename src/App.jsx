@@ -19,6 +19,9 @@ import Index from "./pages/Index";
 import EmployeesPage from "./pages/EmployeesPage";
 import AdminEmployeeReportPage from "./pages/admin/EmployeeReportPage";
 
+import React from 'react'
+import MainPage from './pages/HRDashboard/MainPage'
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
