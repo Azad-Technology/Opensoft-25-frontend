@@ -1,4 +1,6 @@
-import React from "react";
+
+import React from 'react'
+import MainPage from './pages/HRDashboard/MainPage'
 import EmployeePage from "./pages/HRDashboard/EmployeePage";
 import EmployeeList from "./pages/HRDashboard/EmployeeList";
 import { BrowserRouter, Routes, Route } from "react-router";
