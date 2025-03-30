@@ -287,7 +287,7 @@ export const DataProvider = ({ children }) => {
     });
 
     return users.filter(
-      (user) => atRiskIds.has(user.employeeId) && user.role === "employee",
+      (user) => atRiskIds.has(user.employeeId) && user.role_type === "employee",
     );
   };
 

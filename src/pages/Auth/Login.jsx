@@ -60,10 +60,10 @@ const Login = () => {
         const tokenData = {
           access_token: res.access_token,
           expiration: expirationTime,
-          user: res.user,
         };
 
         localStorage.setItem("token", JSON.stringify(tokenData));
+        localStorage.setItem("user", JSON.stringify(res.user));
         await login(res.user, res.access_token); // Set user in context
         toast.success("Login successful!");
       } else {
