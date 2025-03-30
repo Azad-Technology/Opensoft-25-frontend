@@ -222,19 +222,16 @@ const EmployeeReports = () => {
                     <Bar
                       dataKey="teamsMessages"
                       name="Teams Messages"
-                      stackId="a"
                       fill="#8884d8"
                     />
                     <Bar
                       dataKey="emails"
-                      name="Emails"
-                      stackId="a"
+                      name="Emails"                     
                       fill="#82ca9d"
                     />
                     <Bar
                       dataKey="meetings"
-                      name="Meetings"
-                      stackId="a"
+                      name="Meetings"                     
                       fill="#ffc658"
                     />
                   </BarChart>

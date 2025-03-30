@@ -132,11 +132,11 @@ const ChatUI = ({ className = "" }) => {
   return (
     <div className={`flex h-full ${className}`}>
       {/* Sidebar */}
-      <div className="hidden md:block w-64 border-r border-border bg-background overflow-y-auto">
+      <div className="hidden md:block w-64 border-r  border-border bg-background overflow-y-auto">
         <div className="p-4">
           <button
             onClick={handleNewChat}
-            className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors button-hover"
+            className="w-full px-4 text-black dark:text-white py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors button-hover"
           >
             New Conversation
           </button>
@@ -199,7 +199,7 @@ const ChatUI = ({ className = "" }) => {
               </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <div className="flex-1 dark:bg-slate-800 bg-gray-100 overflow-y-auto p-4 space-y-4">
               {currentMessages.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center text-muted-foreground">
                   <div className="text-6xl mb-4">💬</div>
@@ -220,7 +220,7 @@ const ChatUI = ({ className = "" }) => {
                     <div
                       className={`max-w-[80%] rounded-xl p-3 ${
                         message.sender === "user"
-                          ? "bg-primary text-primary-foreground rounded-tr-none"
+                          ? "bg-primary text-primary-foreground shadow-md shadow-black/30 dark:bg-green-600 bg-green-700 rounded-tr-none"
                           : "neo-glass rounded-tl-none"
                       }`}
                     >
@@ -288,7 +288,7 @@ const ChatUI = ({ className = "" }) => {
                 >
                   <Image size={20} />
                 </button>
-                <div className="flex-1 relative">
+                <div className="flex-1 relative text-black">
                   <textarea
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
