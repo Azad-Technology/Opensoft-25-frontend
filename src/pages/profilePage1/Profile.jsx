@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Sidebar from "../../components/Sidebar";
 import Layout from "../../components/employeeCompo/Layout";
+import ChangePasswordModal from "../../components/employeeCompo/ChangePAsswordModal";
+
 import {
   User,
   Mail,
@@ -32,7 +34,9 @@ import {
 
 function Profile() {
   const [activeTab, setActiveTab] = useState("basic");
-  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+
 
   // Toggle dark mode
 
@@ -427,11 +431,10 @@ function Profile() {
                       </div>
                     </div>
                     <span
-                      className={`px-2 py-1 rounded-full text-sm ${
-                        doc.status === "Completed"
+                      className={`px-2 py-1 rounded-full text-sm ${doc.status === "Completed"
                           ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
                           : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-                      }`}
+                        }`}
                     >
                       {doc.status}
                     </span>
@@ -524,14 +527,16 @@ function Profile() {
                   </motion.p>
                 </div>
                 <div className="flex gap-2">
-                  <button className="flex items-center gap-2 px-4 py-2 bg-deloitte-green text-white rounded-lg hover:bg-deloitte-green/90 transition-colors">
-                    <Edit className="w-4 h-4" />
-                    Edit Profile
-                  </button>
-                  <button className="flex items-center gap-2 px-4 py-2 border border-deloitte-green text-deloitte-green dark:text-green-300 rounded-lg hover:bg-deloitte-green/10 dark:hover:bg-deloitte-green/20 transition-colors">
+
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="flex items-center gap-2 px-4 py-2 border border-green-600 text-green-600 dark:text-green-300 rounded-lg hover:bg-green-600/10 transition-colors"
+                  >
                     <Key className="w-4 h-4" />
                     Change Password
                   </button>
+
+                  <ChangePasswordModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
                 </div>
               </div>
             </div>
@@ -539,16 +544,15 @@ function Profile() {
             {/* Navigation Tabs */}
             <div className="border-b dark:border-gray-700 transition-colors ">
               <nav className="flex gap-4 px-6">
-                {["basic", "background","documents"].map(
+                {["basic", "background", "documents"].map(
                   (tab) => (
                     <button
                       key={tab}
                       onClick={() => setActiveTab(tab)}
-                      className={`py-4 px-2 border-b-2 transition-colors  ${
-                        activeTab === tab
+                      className={`py-4 px-2 border-b-2 transition-colors  ${activeTab === tab
                           ? "border-deloitte-green text-deloitte-green dark:text-green-300"
                           : "border-transparent text-gray-500 dark:text-gray-400 hover:text-deloitte-green dark:hover:text-green-300"
-                      }`}
+                        }`}
                     >
                       {tab.charAt(0).toUpperCase() + tab.slice(1)}
                     </button>
