@@ -81,11 +81,11 @@ const Sidebar = ({ expanded, onToggle }) => {
       label: "My Reports",
       icon: <FileText size={20} />,
     },
-    {
-      path: "/employee/activity",
-      label: "Activity",
-      icon: <Activity size={20} />,
-    },
+    // {
+    //   path: "/employee/activity",
+    //   label: "Activity",
+    //   icon: <Activity size={20} />,
+    // },
     {
       path: "/employee/schedule",
       label: "My Schedule",
@@ -157,11 +157,10 @@ const Sidebar = ({ expanded, onToggle }) => {
                 <li key={item.path}>
                   <Link
                     to={item.path}
-                    className={`flex items-center ${expanded ? "justify-start px-4" : "justify-center"} py-3 rounded-lg transition-colors ${
-                      isActive(item.path)
+                    className={`flex items-center ${expanded ? "justify-start px-4" : "justify-center"} py-3 rounded-lg transition-colors ${isActive(item.path)
                         ? "bg-green-100 dark:bg-green-800/40 text-green-700 dark:text-green-300"
                         : "text-gray-600 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-green-900/30 hover:text-green-600 dark:hover:text-green-300"
-                    }`}
+                      }`}
                     title={!expanded ? item.label : undefined}
                   >
                     <span className="flex-shrink-0">{item.icon}</span>
@@ -176,51 +175,6 @@ const Sidebar = ({ expanded, onToggle }) => {
             </ul>
           </nav>
 
-          {/* Footer User Info */}
-          <div
-            className={`p-4 mt-auto border-t border-green-100/50 dark:border-green-800/30 ${!expanded ? "flex justify-center" : ""}`}
-          >
-            {expanded ? (
-              <div className="flex items-center">
-                {user?.avatar ? (
-                  <img
-                    src={user.avatar}
-                    alt={user.name}
-                    className="h-8 w-8 rounded-full object-cover border border-green-100 dark:border-green-800/50"
-                  />
-                ) : (
-                  <div className="h-8 w-8 rounded-full bg-green-100 dark:bg-green-800/60 flex items-center justify-center text-green-600 dark:text-green-300 font-medium">
-                    {user?.name?.charAt(0) || "U"}
-                  </div>
-                )}
-                <div className="ml-3">
-                  <p className="text-sm font-medium text-gray-700 dark:text-gray-100 truncate max-w-[120px]">
-                    {user?.name}
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 capitalize">
-                    {user?.role}
-                  </p>
-                </div>
-                <button
-                  onClick={handleLogout}
-                  className="ml-auto p-2 text-gray-500 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-300 transition-colors"
-                  aria-label="Log out"
-                  title="Log out"
-                >
-                  <LogOut size={18} />
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={handleLogout}
-                className="p-2 text-gray-500 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-300 transition-colors"
-                aria-label="Log out"
-                title="Log out"
-              >
-                <LogOut size={18} />
-              </button>
-            )}
-          </div>
         </div>
       </aside>
     </>
