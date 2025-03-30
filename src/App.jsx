@@ -20,6 +20,7 @@ import Index from "./pages/Auth/Index";
 import EmployeesPage from "./pages/employeePage/EmployeesPage";
 import AdminEmployeeReportPage from "./pages/admin/AdminEmployeeReportPage";
 import Home from "./pages/HomePage/Home";
+import Profile from "./pages/profilePage1/Profile";
 
 
 const queryClient = new QueryClient({
@@ -74,6 +75,15 @@ const App = () => (
               <Route path="/" element={<Home/>}/>
 
               {/* Protected Employee routes */}
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute allowedRoles={["employee"]}>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+
               <Route
                 path="/employee/dashboard"
                 element={
