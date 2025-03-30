@@ -12,7 +12,6 @@ import Signup from "./pages/Auth/Signup";
 import EmployeeDashboard from "./pages/employeePage/EmployeeDashboard";
 import EmployeeChat from "./pages/employeePage/EmployeeChat";
 import EmployeeReports from "./pages/employeePage/EmployeeReports";
-import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminReports from "./pages/admin/AdminReports";
 import AdminEmployeeDetail from "./pages/admin/AdminEmployeeDetail";
 import NotFound from "./pages/NotFound/NotFound";
@@ -21,6 +20,7 @@ import EmployeesPage from "./pages/employeePage/EmployeesPage";
 import AdminEmployeeReportPage from "./pages/admin/AdminEmployeeReportPage";
 import Home from "./pages/HomePage/Home";
 import Profile from "./pages/profilePage1/Profile";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 
 const queryClient = new QueryClient({
