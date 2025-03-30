@@ -31,9 +31,9 @@ const BotReportsEmotionalState = () => {
   return (
     <div className="p-4 mt-10">
       {/* Main Content */}
-      <div className="grid grid-cols-2 gap-4 bg-white shadow-xl">
+      <div className="grid grid-cols-2 gap-4">
         {/* Emotional State Chart */}
-        <div className="border rounded p-4">
+        <div className="bg-white shadow-xl rounded-xl p-5">
           <h2 className="text-lg font-semibold mb-4">Emotional State</h2>
           <p className="text-xs text-gray-500 mb-2">
             Based on bot interactions
@@ -61,7 +61,7 @@ const BotReportsEmotionalState = () => {
         </div>
 
         {/* Emotional Inferences */}
-        <div className="border rounded p-4">
+        <div className="bg-white shadow-xl rounded-xl p-5">
           <h2 className="text-lg font-semibold mb-4">Emotional Inferences</h2>
           <p className="text-sm text-gray-600 mb-4">
             Based on natural language processing of bot conversations, the

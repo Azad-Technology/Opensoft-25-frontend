@@ -23,9 +23,9 @@ const BotReports = () => {
   ];
 
   return (
-    <div className="p-4 bg-white mt-10">
+    <div className="p-4 mt-10">
       {/* Header */}
-      <div className="flex justify-between items-center mb-4">
+      {/* <div className="flex justify-between items-center mb-4">
         <div className="flex items-center space-x-2">
           <div className="w-10 h-10 rounded-full bg-green-500"></div>
           <select
@@ -40,9 +40,9 @@ const BotReports = () => {
           <div className="text-sm text-gray-600">John Doe</div>
           <div className="text-xs text-gray-500">Engineering</div>
         </div>
-      </div>
+      </div> */}
       {/* Navigation Tabs */}
-      <div className="flex border-b mb-4">
+      {/* <div className="flex border-b mb-4">
         {[
           "Leave",
           "Interaction",
@@ -57,11 +57,11 @@ const BotReports = () => {
             {tab}
           </div>
         ))}
-      </div>
+      </div> */}
       {/* Main Content */}
       <div className="grid grid-cols-2 gap-4">
         {/* Leave Density Chart */}
-        <div className="border rounded p-4">
+        <div className="bg-white shadow-xl rounded-xl p-5">
           <h2 className="text-lg font-semibold mb-4">Leave Density</h2>
           <div className="text-xs text-gray-500 mb-2">3 days this month</div>
           <div className="h-64 w-full">
@@ -87,7 +87,7 @@ const BotReports = () => {
           </div>
         </div>
         {/* Leave Analysis */}
-        <div className="border rounded p-4">
+        <div className="bg-white shadow-xl rounded-xl p-5">
           <h2 className="text-lg font-semibold mb-4">Leave Analysis</h2>
 
           {/* Leave Comment */}

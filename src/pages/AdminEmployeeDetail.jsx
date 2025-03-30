@@ -384,7 +384,7 @@ const AdminEmployeeDetail = () => {
                 )}
               </div>
 
-              {/* <div className="space-y-2">
+               <div className="space-y-2">
                 <div className="text-sm text-muted-foreground">
                   Activity Level
                 </div>
@@ -715,14 +715,11 @@ const AdminEmployeeDetail = () => {
               )}
             </div> */}
           </div>
-        </div>
-      </div>
       <Emotion />
       <Experience />
       <InteractionReports />
       <LeaveAnalysis />
       <Performance />
-      </div>
     </Layout>
   );
 };

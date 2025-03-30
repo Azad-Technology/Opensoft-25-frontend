@@ -18,11 +18,11 @@ const PerformanceReports = () => {
   ];
 
   return (
-    <div className="p-4 bg-white mt-10">
+    <div className="p-4 mt-10">
       {/* Main Content */}
       <div className="grid grid-cols-2 gap-4">
         {/* Performance Metrics Chart */}
-        <div className="border rounded p-4">
+        <div className="bg-white shadow-xl rounded-xl p-5">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold">Performance Metrics</h2>
             <div className="text-xs text-gray-500 bg-green-100 px-2 py-1 rounded">
@@ -84,7 +84,7 @@ const PerformanceReports = () => {
         </div>
 
         {/* Recognition & Feedback */}
-        <div className="border rounded p-4">
+        <div className="bg-white shadow-xl rounded-xl p-5">
           <h2 className="text-lg font-semibold mb-4">Recognition & Feedback</h2>
 
           {/* Performance Rating */}
