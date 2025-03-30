@@ -16,10 +16,10 @@ const EmployeeExperience = () => {
       {/* Main Content */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Onboarding Experience */}
-        <div className="rounded-xl p-4 bg-white shadow-xl">
+        <div className="rounded-xl p-4 bg-white dark:bg-gray-800 shadow-xl border border-gray-100 dark:border-gray-700">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold">Onboarding Experience</h2>
-            <div className="text-xs text-gray-500 bg-green-100 px-2 py-1 rounded">
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Onboarding Experience</h2>
+            <div className="text-xs text-gray-500 dark:text-gray-400 bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded">
               Joined 3 months ago
             </div>
           </div>
@@ -43,8 +43,8 @@ const EmployeeExperience = () => {
             </ResponsiveContainer>
 
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-              <div className="text-2xl font-bold text-blue-600">30%</div>
-              <div className="text-sm text-gray-600">Good</div>
+              <div className="text-2xl font-bold text-blue-600 dark:text-blue-600">30%</div>
+              <div className="text-sm text-gray-600 dark:text-gray-600">Good</div>
             </div>
           </div>
 
@@ -55,25 +55,25 @@ const EmployeeExperience = () => {
                   className="w-3 h-3 rounded-full"
                   style={{ backgroundColor: entry.color }}
                 ></div>
-                <span className="text-xs">{entry.name}</span>
+                <span className="text-xs text-gray-600 dark:text-gray-300">{entry.name}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Transition Details */}
-        <div className="bg-white shadow-xl rounded p-4">
-          <h2 className="text-lg font-semibold mb-4">Transition Details</h2>
+        <div className="bg-white dark:bg-gray-800 shadow-xl rounded p-4 border border-gray-100 dark:border-gray-700">
+          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Transition Details</h2>
 
           {/* Onboarding Feedback */}
           <div className="mb-4">
             <div className="flex justify-between items-center mb-2">
-              <span className="font-medium">Onboarding Feedback</span>
-              <span className="text-sm text-blue-600 bg-blue-50 px-2 py-1 rounded">
+              <span className="font-medium text-gray-700 dark:text-gray-200">Onboarding Feedback</span>
+              <span className="text-sm text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded">
                 Good
               </span>
             </div>
-            <p className="text-xs text-gray-600">
+            <p className="text-xs text-gray-600 dark:text-gray-400">
               Employee rated their onboarding experience as "Good" with some
               suggestions for improvement.
             </p>
@@ -82,13 +82,13 @@ const EmployeeExperience = () => {
           {/* Initial Training */}
           <div className="flex justify-between items-center mb-4">
             <div>
-              <span className="font-medium">Initial Training</span>
-              <p className="text-xs text-gray-600">
+              <span className="font-medium text-gray-700 dark:text-gray-200">Initial Training</span>
+              <p className="text-xs text-gray-600 dark:text-gray-400">
                 Completed all required training modules within first month.
               </p>
             </div>
             <svg
-              className="w-5 h-5 text-green-500"
+              className="w-5 h-5 text-green-500 dark:text-green-400"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -103,13 +103,13 @@ const EmployeeExperience = () => {
           {/* 30-Day Check-in */}
           <div className="flex justify-between items-center mb-4">
             <div>
-              <span className="font-medium">30-Day Check-in</span>
-              <p className="text-xs text-gray-600">
+              <span className="font-medium text-gray-700 dark:text-gray-200">30-Day Check-in</span>
+              <p className="text-xs text-gray-600 dark:text-gray-400">
                 Successfully completed 30-day check-in with manager and HR.
               </p>
             </div>
             <svg
-              className="w-5 h-5 text-green-500"
+              className="w-5 h-5 text-green-500 dark:text-green-400"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -124,13 +124,13 @@ const EmployeeExperience = () => {
           {/* Mentor Assigned */}
           <div className="flex justify-between items-center mb-4">
             <div>
-              <span className="font-medium">Mentor Assigned</span>
-              <p className="text-xs text-gray-600">
+              <span className="font-medium text-gray-700 dark:text-gray-200">Mentor Assigned</span>
+              <p className="text-xs text-gray-600 dark:text-gray-400">
                 Sarah Johnson was assigned as mentor for the first 3 months.
               </p>
             </div>
             <svg
-              className="w-5 h-5 text-green-500"
+              className="w-5 h-5 text-green-500 dark:text-green-400"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -143,8 +143,8 @@ const EmployeeExperience = () => {
           </div>
 
           {/* Transition Summary */}
-          <div className="bg-blue-50 border-l-4 border-blue-500 p-3 mt-4">
-            <p className="text-sm text-gray-700">
+          <div className="bg-blue-50 dark:bg-blue-900/30 border-l-4 border-blue-500 p-3 mt-4">
+            <p className="text-sm text-gray-700 dark:text-gray-300">
               Employee has successfully transitioned into their role with good
               feedback on the onboarding process. All required training has been
               completed.

@@ -25,10 +25,10 @@ const InteractionReports = () => {
       {/* Main Content */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Communication Activity Chart */}
-        <div className="bg-white shadow-xl rounded-xl p-5">
+        <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-5 border border-gray-100 dark:border-gray-700">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold">Communication Activity</h2>
-            <div className="text-xs text-gray-500 bg-green-100 px-2 py-1 rounded">
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Communication Activity</h2>
+            <div className="text-xs text-gray-500 dark:text-gray-400 bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded">
               Last 7 days
             </div>
           </div>
@@ -39,9 +39,9 @@ const InteractionReports = () => {
                 vertical={false}
                 stroke="#f0f0f0"
               />
-              <XAxis dataKey="name" axisLine={false} tickLine={false} />
-              <YAxis axisLine={false} tickLine={false} />
-              <Tooltip />
+              <XAxis dataKey="name" axisLine={false} tickLine={false} stroke="#90EE90" />
+              <YAxis axisLine={false} tickLine={false} stroke="#90EE90" />
+              <Tooltip contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: '#fff', border: 'none' }} />
               <Line
                 type="monotone"
                 dataKey="teamMessages"
@@ -68,39 +68,39 @@ const InteractionReports = () => {
           <div className="flex justify-center space-x-4 mt-2">
             <div className="flex items-center space-x-1">
               <div className="w-3 h-3 bg-lime-500 rounded-full"></div>
-              <span className="text-xs">Team Messages</span>
+              <span className="text-xs text-gray-600 dark:text-gray-300">Team Messages</span>
             </div>
             <div className="flex items-center space-x-1">
               <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-              <span className="text-xs">Emails</span>
+              <span className="text-xs text-gray-600 dark:text-gray-300">Emails</span>
             </div>
             <div className="flex items-center space-x-1">
               <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
-              <span className="text-xs">Meetings</span>
+              <span className="text-xs text-gray-600 dark:text-gray-300">Meetings</span>
             </div>
           </div>
         </div>
 
         {/* Inactivity Analysis */}
-        <div className="bg-white shadow-xl rounded-xl p-5">
-          <h2 className="text-lg font-semibold mb-4">Inactivity Analysis</h2>
+        <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-5 border border-gray-100 dark:border-gray-700">
+          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Inactivity Analysis</h2>
 
           {/* Team Messages */}
           <div className="mb-4">
             <div className="flex justify-between text-sm mb-2">
               <div className="flex items-center space-x-2">
                 <div className="w-5 h-5 bg-green-500 rounded-full"></div>
-                <span>Team Messages</span>
+                <span className="text-gray-700 dark:text-gray-300">Team Messages</span>
               </div>
-              <span>50 / week</span>
+              <span className="text-gray-700 dark:text-gray-300">50 / week</span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2.5">
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
               <div
                 className="bg-green-500 h-2.5 rounded-full"
                 style={{ width: "60%" }}
               ></div>
             </div>
-            <div className="text-xs text-gray-500 mt-1">
+            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               60% of team average (83 messages)
             </div>
           </div>
@@ -110,17 +110,17 @@ const InteractionReports = () => {
             <div className="flex justify-between text-sm mb-2">
               <div className="flex items-center space-x-2">
                 <div className="w-5 h-5 bg-blue-500 rounded-full"></div>
-                <span>Emails Sent</span>
+                <span className="text-gray-700 dark:text-gray-300">Emails Sent</span>
               </div>
-              <span>35 / week</span>
+              <span className="text-gray-700 dark:text-gray-300">35 / week</span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2.5">
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
               <div
                 className="bg-blue-500 h-2.5 rounded-full"
                 style={{ width: "70%" }}
               ></div>
             </div>
-            <div className="text-xs text-gray-500 mt-1">
+            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               70% of team average (50 emails)
             </div>
           </div>
@@ -130,26 +130,26 @@ const InteractionReports = () => {
             <div className="flex justify-between text-sm mb-2">
               <div className="flex items-center space-x-2">
                 <div className="w-5 h-5 bg-gray-500 rounded-full"></div>
-                <span>Meetings Attended</span>
+                <span className="text-gray-700 dark:text-gray-300">Meetings Attended</span>
               </div>
-              <span>9 / week</span>
+              <span className="text-gray-700 dark:text-gray-300">9 / week</span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2.5">
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
               <div
                 className="bg-gray-500 h-2.5 rounded-full"
                 style={{ width: "90%" }}
               ></div>
             </div>
-            <div className="text-xs text-gray-500 mt-1">
+            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               90% of team average (10 meetings)
             </div>
           </div>
 
           {/* Inactivity Alert */}
-          <div className="bg-yellow-50 border-l-4 border-yellow-500 p-3 mt-4">
+          <div className="bg-yellow-50 dark:bg-yellow-900/30 border-l-4 border-yellow-500 p-3 mt-4">
             <div className="flex items-center space-x-2 mb-2">
               <svg
-                className="w-5 h-5 text-yellow-500"
+                className="w-5 h-5 text-yellow-500 dark:text-yellow-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -159,11 +159,11 @@ const InteractionReports = () => {
                   clipRule="evenodd"
                 />
               </svg>
-              <span className="text-yellow-600 font-semibold">
+              <span className="text-yellow-600 dark:text-yellow-400 font-semibold">
                 Inactivity Alert
               </span>
             </div>
-            <p className="text-sm text-gray-700">
+            <p className="text-sm text-gray-700 dark:text-gray-300">
               Team message activity is below expected levels. Consider checking
               if there are any communication barriers or workload issues.
             </p>

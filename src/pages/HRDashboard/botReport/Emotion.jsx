@@ -33,9 +33,9 @@ const BotReportsEmotionalState = () => {
       {/* Main Content */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Emotional State Chart */}
-        <div className="bg-white shadow-xl rounded-xl p-5">
-          <h2 className="text-lg font-semibold mb-4">Emotional State</h2>
-          <p className="text-xs text-gray-500 mb-2">
+        <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-5 border border-gray-100 dark:border-gray-700">
+          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Emotional State</h2>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
             Based on bot interactions
           </p>
 
@@ -45,37 +45,37 @@ const BotReportsEmotionalState = () => {
                 data={emotionalStateData}
                 margin={{ top: 5, right: 0, left: 0, bottom: 5 }}
               >
-                <PolarGrid />
-                <PolarAngleAxis dataKey="dimension" />
-                <PolarRadiusAxis angle={30} domain={[0, 100]} />
+                <PolarGrid stroke="#90EE90" />
+                <PolarAngleAxis dataKey="dimension" stroke="#90EE90" />
+                <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="#90EE90" />
                 <Radar
                   dataKey="value"
                   stroke="#8884d8"
                   fill="#8884d8"
                   fillOpacity={0.6}
                 />
-                <Tooltip />
+                <Tooltip contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: '#fff', border: 'none' }} />
               </RadarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Emotional Inferences */}
-        <div className="bg-white shadow-xl rounded-xl p-5">
-          <h2 className="text-lg font-semibold mb-4">Emotional Inferences</h2>
-          <p className="text-sm text-gray-600 mb-4">
+        <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-5 border border-gray-100 dark:border-gray-700">
+          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Emotional Inferences</h2>
+          <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
             Based on natural language processing of bot conversations, the
             following emotional patterns were detected.
           </p>
 
           <div className="space-y-2">
-            <h3 className="text-md font-semibold mb-2">Key Insights</h3>
+            <h3 className="text-md font-semibold mb-2 text-gray-700 dark:text-gray-200">Key Insights</h3>
             {keyInsights.map((insight, index) => (
               <div key={index} className="flex items-start text-sm">
-                <span className="mr-2 text-green-500 font-bold">
+                <span className="mr-2 text-green-500 dark:text-green-400 font-bold">
                   {index + 1}
                 </span>
-                <p>{insight}</p>
+                <p className="text-gray-700 dark:text-gray-300">{insight}</p>
               </div>
             ))}
           </div>
