@@ -10,7 +10,7 @@ const Index = () => {
     if (!isLoading) {
       if (isAuthenticated && user) {
         // Redirect based on user role
-        if (user.role === "admin") {
+        if (user.role_type === "admin") {
           navigate("/admin/dashboard");
         } else {
           navigate("/employee/dashboard");

@@ -41,10 +41,10 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
   //   return <Navigate to="/login" />;
   // }
 
-  if (allowedRoles.length > 0 && user && !allowedRoles.includes(user.role)) {
+  if (allowedRoles.length > 0 && user && !allowedRoles.includes(user.role_type)) {
     return (
       <Navigate
-        to={user.role === "admin" ? "/admin/dashboard" : "/employee/dashboard"}
+        to={user.role_type === "admin" ? "/admin/dashboard" : "/employee/dashboard"}
       />
     );
   }

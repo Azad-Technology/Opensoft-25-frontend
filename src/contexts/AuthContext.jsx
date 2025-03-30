@@ -13,9 +13,10 @@ export const AuthProvider = ({ children }) => {
   // Load user from localStorage token on mount
   useEffect(() => {
     const stored = localStorage.getItem("token");
+    const parsedUser=localStorage.getItem("user")
     if (stored) {
       const parsed = JSON.parse(stored);
-      setUser(parsed.user);
+      setUser(parsedUser);
       setToken(parsed.access_token);
     }
     setIsLoading(false);
@@ -29,7 +30,7 @@ export const AuthProvider = ({ children }) => {
       if (user) {
         if (["/", "/login", "/signup"].includes(path)) {
           const redirectPath =
-            user.role === "admin" ? "/admin/dashboard" : "/employee/dashboard";
+            user.role_type === "admin" ? "/admin/dashboard" : "/employee/dashboard";
           navigate(redirectPath);
         }
       } else {
