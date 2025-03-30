@@ -18,11 +18,11 @@ const Login = () => {
   }, []);
 
   const checkTokenExpiration = () => {
-    const tokenData = JSON.parse(localStorage.getItem("token"));
+    const tokenData = JSON.parse(localStorage.getItem("auth"));
     if (tokenData) {
       const currentTime = new Date().getTime();
       if (currentTime > tokenData.expiration) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("auth");
         setUser(null);
         navigate("/login");
       }
@@ -60,10 +60,10 @@ const Login = () => {
         const tokenData = {
           access_token: res.access_token,
           expiration: expirationTime,
+          user: res.user,
         };
 
-        localStorage.setItem("token", JSON.stringify(tokenData));
-        localStorage.setItem("user", JSON.stringify(res.user));
+        localStorage.setItem("auth", JSON.stringify(tokenData));
         await login(res.user, res.access_token); // Set user in context
         toast.success("Login successful!");
       } else {

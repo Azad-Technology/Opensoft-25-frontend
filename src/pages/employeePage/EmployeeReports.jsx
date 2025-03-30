@@ -22,12 +22,20 @@ const EmployeeReports = () => {
   const { user } = useAuth();
   const { vibes, leaves, activities, recognitions, performances } = useData();
 
-  const [userVibes, setUserVibes] = useState([]);
-  const [userLeaves, setUserLeaves] = useState([]);
-  const [userActivities, setUserActivities] = useState([]);
-  const [userRecognitions, setUserRecognitions] = useState([]);
-  const [userPerformance, setUserPerformance] = useState(null);
+  // const [userVibes, setUserVibes] = useState([]);
+  // const [userLeaves, setUserLeaves] = useState([]);
+  // const [userActivities, setUserActivities] = useState([]);
+  // const [userRecognitions, setUserRecognitions] = useState([]);
+  // const [userPerformance, setUserPerformance] = useState(null);
 
+  const userPerformance = {
+    rating: 4.3,
+    managerFeedback: "Great work on project execution and team collaboration.",
+    strengths: ["Leadership", "Problem-Solving", "Time Management"],
+    improvements: ["Communication", "Technical Documentation"],
+  };
+
+  //Hard coded data
   const projectData = [
     {
       id: '1',
@@ -61,52 +69,155 @@ const EmployeeReports = () => {
     },
   ];
 
-  useEffect(() => {
-    if (user) {
-      const filteredVibes = vibes.filter(
-        (v) => v.employeeId === user.employeeId,
-      );
-      const filteredLeaves = leaves.filter(
-        (l) => l.employeeId === user.employeeId,
-      );
-      const filteredActivities = activities.filter(
-        (a) => a.employeeId === user.employeeId,
-      );
-      const filteredRecognitions = recognitions.filter(
-        (r) => r.employeeId === user.employeeId,
-      );
-      const filteredPerformance = performances.find(
-        (p) => p.employeeId === user.employeeId,
-      );
+  const userVibes = [
+    { id: 1, date: "2024-03-25", vibe: "happy" },
+    { id: 2, date: "2024-03-26", vibe: "sad" },
+    { id: 3, date: "2024-03-26", vibe: "frustrated" },
+    { id: 4, date: "2024-03-27", vibe: "excited" },
+    { id: 5, date: "2024-03-27", vibe: "okay" },
+    { id: 6, date: "2024-03-28", vibe: "happy" },
+    { id: 7, date: "2024-03-28", vibe: "happy" },
+    { id: 8, date: "2024-03-28", vibe: "frustrated" },
+    { id: 9, date: "2024-03-29", vibe: "excited" },
+    { id: 10, date: "2024-03-29", vibe: "sad" },
+    { id: 11, date: "2024-03-29", vibe: "okay" },
+  ];
 
-      const formattedVibes = filteredVibes
-        .sort((a, b) => new Date(a.date) - new Date(b.date))
-        .map((v) => ({
-          ...v,
-          date: new Date(v.date).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-          }),
-        }));
+  const userRecognitions = [
+    {
+      id: 1,
+      type: "Employee of the Month",
+      date: "2024-03-15",
+      description: "Recognized for outstanding performance and dedication.",
+      givenBy: "HR Department",
+    },
+    {
+      id: 2,
+      type: "Best Team Player",
+      date: "2024-02-10",
+      description: "Acknowledged for exceptional teamwork and collaboration.",
+      givenBy: "Project Manager",
+    },
+  ];
 
-      const formattedActivities = filteredActivities
-        .sort((a, b) => new Date(a.date) - new Date(b.date))
-        .map((a) => ({
-          ...a,
-          date: new Date(a.date).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-          }),
-          total: a.teamsMessages + a.emails + a.meetings,
-        }));
+  const userActivities = [
+    {
+      date: "2024-03-25",
+      teamsMessages: 15,
+      emails: 8,
+      meetings: 2,
+    },
+    {
+      date: "2024-03-26",
+      teamsMessages: 20,
+      emails: 5,
+      meetings: 3,
+    },
+    {
+      date: "2024-03-27",
+      teamsMessages: 12,
+      emails: 10,
+      meetings: 1,
+    },
+    {
+      date: "2024-03-28",
+      teamsMessages: 18,
+      emails: 6,
+      meetings: 4,
+    },
+    {
+      date: "2024-03-29",
+      teamsMessages: 25,
+      emails: 12,
+      meetings: 5,
+    },
+  ];
 
-      setUserVibes(formattedVibes);
-      setUserLeaves(filteredLeaves);
-      setUserActivities(formattedActivities);
-      setUserRecognitions(filteredRecognitions);
-      setUserPerformance(filteredPerformance);
-    }
-  }, [user, vibes, leaves, activities, recognitions, performances]);
+  const userLeaves = [
+    {
+      id: 1,
+      startDate: "2024-03-10",
+      endDate: "2024-03-12",
+      reason: "Medical leave due to illness",
+      status: "approved",
+    },
+    {
+      id: 2,
+      startDate: "2024-03-20",
+      endDate: "2024-03-22",
+      reason: "Family function",
+      status: "pending",
+    },
+    {
+      id: 3,
+      startDate: "2024-04-05",
+      endDate: "2024-04-06",
+      reason: "Personal work",
+      status: "rejected",
+    },
+    {
+      id: 4,
+      startDate: "2024-04-15",
+      endDate: "2024-04-18",
+      reason: "Vacation",
+      status: "approved",
+    },
+    {
+      id: 5,
+      startDate: "2024-05-01",
+      endDate: "2024-05-02",
+      reason: "Emergency leave",
+      status: "pending",
+    },
+  ];
+  
+
+  // useEffect(() => {
+  //   if (user) {
+  //     const filteredVibes = vibes.filter(
+  //       (v) => v.employeeId === user.employeeId,
+  //     );
+  //     const filteredLeaves = leaves.filter(
+  //       (l) => l.employeeId === user.employeeId,
+  //     );
+  //     const filteredActivities = activities.filter(
+  //       (a) => a.employeeId === user.employeeId,
+  //     );
+  //     const filteredRecognitions = recognitions.filter(
+  //       (r) => r.employeeId === user.employeeId,
+  //     );
+  //     const filteredPerformance = performances.find(
+  //       (p) => p.employeeId === user.employeeId,
+  //     );
+
+  //     const formattedVibes = filteredVibes
+  //       .sort((a, b) => new Date(a.date) - new Date(b.date))
+  //       .map((v) => ({
+  //         ...v,
+  //         date: new Date(v.date).toLocaleDateString("en-US", {
+  //           month: "short",
+  //           day: "numeric",
+  //         }),
+  //       }));
+
+  //     const formattedActivities = filteredActivities
+  //       .sort((a, b) => new Date(a.date) - new Date(b.date))
+  //       .map((a) => ({
+  //         ...a,
+  //         date: new Date(a.date).toLocaleDateString("en-US", {
+  //           month: "short",
+  //           day: "numeric",
+  //         }),
+  //         total: a.teamsMessages + a.emails + a.meetings,
+  //       }));
+
+  //     setUserVibes(formattedVibes);
+  //     setUserLeaves(filteredLeaves);
+  //     setUserActivities(formattedActivities);
+  //     setUserRecognitions(filteredRecognitions);
+  //     setUserPerformance(filteredPerformance);
+  //   }
+  // }, [user, vibes, leaves, activities, recognitions, performances]);
 
   if (!user) {
     return (
@@ -222,17 +333,20 @@ const EmployeeReports = () => {
                     <Bar
                       dataKey="teamsMessages"
                       name="Teams Messages"
-                      fill="#8884d8"
+                      fill="#8E44AD"
+                      radius={[10, 10, 0, 0]} 
                     />
                     <Bar
                       dataKey="emails"
                       name="Emails"                     
-                      fill="#82ca9d"
+                      fill="#1ABC9C"
+                      radius={[10, 10, 0, 0]} 
                     />
                     <Bar
                       dataKey="meetings"
                       name="Meetings"                     
-                      fill="#ffc658"
+                      fill="#E67E22"
+                      radius={[10, 10, 0, 0]} 
                     />
                   </BarChart>
                 </ResponsiveContainer>

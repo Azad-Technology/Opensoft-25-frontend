@@ -37,9 +37,9 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
     );
   }
 
-  // if (!isAuthenticated) {
-  //   return <Navigate to="/login" />;
-  // }
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
 
   if (allowedRoles.length > 0 && user && !allowedRoles.includes(user.role_type)) {
     return (
