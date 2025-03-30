@@ -21,7 +21,7 @@ const InteractionReports = () => {
   ];
 
   return (
-    <div className="p-4 bg-white min-h-screen">
+    <div className="p-4 bg-white mt-10">
       {/* Main Content */}
       <div className="grid grid-cols-2 gap-4">
         {/* Communication Activity Chart */}

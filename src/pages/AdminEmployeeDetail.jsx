@@ -4,6 +4,11 @@ import Layout from "../components/Layout";
 import { useData } from "../contexts/DataContext";
 import VibeChart from "../components/VibeChart";
 import VibeStatusBadge from "../components/VibeStatusBadge";
+import Emotion from '../pages/HRDashboard/botReport/Emotion';
+import Experience from '../pages/HRDashboard/botReport/Experience';
+import InteractionReports from "./HRDashboard/botReport/InteractionReport";
+import LeaveAnalysis from '../pages/HRDashboard/botReport/LeaveAnalysis';
+import Performance from '../pages/HRDashboard/botReport/Performance';
 import { users } from "../data/mockData";
 import {
   ArrowLeft,
@@ -143,6 +148,7 @@ const AdminEmployeeDetail = () => {
               Back to Reports
             </Link>
           </div>
+          <Emotion />
         </div>
       </Layout>
     );
@@ -378,7 +384,7 @@ const AdminEmployeeDetail = () => {
                 )}
               </div>
 
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <div className="text-sm text-muted-foreground">
                   Activity Level
                 </div>
@@ -438,7 +444,7 @@ const AdminEmployeeDetail = () => {
         </div>
 
         {/* Vibe trend */}
-        <div
+        {/* <div
           className="neo-glass rounded-xl p-6 mb-8 animate-fade-in"
           style={{ animationDelay: "0.3s" }}
         >
@@ -455,7 +461,7 @@ const AdminEmployeeDetail = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           {/* Activity levels */}
-          <div
+          {/* <div
             className="neo-glass rounded-xl p-6 animate-fade-in"
             style={{ animationDelay: "0.4s" }}
           >
@@ -508,10 +514,10 @@ const AdminEmployeeDetail = () => {
                 No activity data available yet
               </div>
             )}
-          </div>
+          </div> */}
 
           {/* Leave history */}
-          <div
+          {/* <div
             className="neo-glass rounded-xl p-6 animate-fade-in"
             style={{ animationDelay: "0.5s" }}
           >
@@ -560,11 +566,11 @@ const AdminEmployeeDetail = () => {
               </div>
             )}
           </div>
-        </div>
+        </div> */}
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-8"> */}
           {/* Chat history */}
-          <div
+          {/* <div
             className="lg:col-span-2 neo-glass rounded-xl p-6 animate-fade-in"
             style={{ animationDelay: "0.6s" }}
           >
@@ -601,9 +607,9 @@ const AdminEmployeeDetail = () => {
                       </p>
                     </div>
                   </div>
-                ))}
+                ))} */}
 
-                {employeeChatSessions.length > 3 && (
+                {/* {employeeChatSessions.length > 3 && (
                   <div className="text-center">
                     <button className="text-primary hover:underline text-sm">
                       View all {employeeChatSessions.length} conversations
@@ -616,12 +622,12 @@ const AdminEmployeeDetail = () => {
                 No conversation history available yet
               </div>
             )}
-          </div>
+          </div> */}
 
           {/* Performance and recognition */}
-          <div className="space-y-8">
+          {/* <div className="space-y-8"> */}
             {/* Performance */}
-            <div
+            {/* <div
               className="neo-glass rounded-xl p-6 animate-fade-in"
               style={{ animationDelay: "0.7s" }}
             >
@@ -671,10 +677,10 @@ const AdminEmployeeDetail = () => {
                   No performance data available yet
                 </div>
               )}
-            </div>
+            </div> */}
 
             {/* Recognitions */}
-            <div
+            {/* <div
               className="neo-glass rounded-xl p-6 animate-fade-in"
               style={{ animationDelay: "0.8s" }}
             >
@@ -707,9 +713,15 @@ const AdminEmployeeDetail = () => {
                   No recognition data available yet
                 </div>
               )}
-            </div>
+            </div> */}
           </div>
         </div>
+      </div>
+      <Emotion />
+      <Experience />
+      <InteractionReports />
+      <LeaveAnalysis />
+      <Performance />
       </div>
     </Layout>
   );

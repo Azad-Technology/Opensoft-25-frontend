@@ -23,7 +23,7 @@ const BotReports = () => {
   ];
 
   return (
-    <div className="p-4 bg-white min-h-screen">
+    <div className="p-4 bg-white mt-10">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center space-x-2">
