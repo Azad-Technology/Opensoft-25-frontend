@@ -70,7 +70,7 @@ const App = () => (
               <Route
                 path="/profile"
                 element={
-                  <ProtectedRoute allowedRoles={["employee"]}>
+                  <ProtectedRoute allowedRoles={["employee", "admin"]}>
                     <Profile />
                   </ProtectedRoute>
                 }
