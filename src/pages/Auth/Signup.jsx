@@ -4,7 +4,7 @@ import { Navigate, Link,useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const Signup = () => {
-  const { isAuthenticated, signup, isLoading } = useAuth();
+  const { isAuthenticated, signup, isLoading,user } = useAuth();
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     employeeId: "",
@@ -100,8 +100,15 @@ const Signup = () => {
   };
 
   if (isAuthenticated) {
+    console.log("isauthencated: "+ user)
+    if(user.role_type==="admin")
+      return <Navigate to="/admin/dashboard" />;
+    else
     return <Navigate to="/employee/dashboard" />;
   }
+  else
+    return <Navigate to="/login" />;
+
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-pattern p-4">

@@ -12,11 +12,10 @@ export const AuthProvider = ({ children }) => {
 
   // Load user from localStorage token on mount
   useEffect(() => {
-    const stored = localStorage.getItem("token");
-    const parsedUser=localStorage.getItem("user")
+    const stored = localStorage.getItem("auth");
     if (stored) {
       const parsed = JSON.parse(stored);
-      setUser(parsedUser);
+      setUser(parsed.user);
       setToken(parsed.access_token);
     }
     setIsLoading(false);
