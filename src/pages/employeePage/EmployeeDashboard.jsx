@@ -16,6 +16,7 @@ import {
   ArrowRight, TrendingUp, Clock, Users, BookOpen, Target
 } from "lucide-react";
 import { toast } from "sonner";
+import { useTheme } from "../../contexts/ThemeContext";
 
 const EmployeeDashboard = () => {
   const { user } = useAuth();
@@ -25,6 +26,7 @@ const EmployeeDashboard = () => {
   const [vibeComment, setVibeComment] = useState("");
   const [stats, setStats] = useState(null);
   const [showVibeSubmitted, setShowVibeSubmitted] = useState(false);
+  const {theme} =useTheme();
 
   useEffect(() => {
     if (user) {
@@ -196,7 +198,7 @@ const EmployeeDashboard = () => {
                       <div className="flex justify-end">
                         <button
                           onClick={handleVibeSubmit}
-                          className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors button-hover"
+                          className={`px-4 py-2 bg-green-600 text-primary-foreground rounded-lg hover:bg-green-600/90 transition-colors button-hover`}
                         >
                           Submit
                         </button>
