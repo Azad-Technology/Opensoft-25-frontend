@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { Navigate, Link } from "react-router-dom";
+import { Navigate, Link,useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const Signup = () => {
   const { isAuthenticated, signup, isLoading } = useAuth();
-
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     employeeId: "",
     name: "",
@@ -65,17 +65,25 @@ const Signup = () => {
     }
 
     try {
-      const success = await signup({
-        employeeId: formData.employeeId,
-        name: formData.name,
-        email: formData.email,
-        role: formData.role,
-        department: formData.department || undefined,
-        password: formData.password,
-      });
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_URL}/auth/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          employee_id: formData.employeeId,
+          name: formData.name,
+          email: formData.email,
+          role: formData.role,
+          password: formData.password,
+        }),
+      })
+      const res=await response.json();
+      const success=(res.email?true:false);
 
       if (success) {
         toast.success("Account created successfully!");
+        navigate('/login')
       } else {
         setFormErrors({
           form: "An account with this employee ID or email already exists.",
@@ -83,6 +91,7 @@ const Signup = () => {
         toast.error("Registration failed. Please check your information.");
       }
     } catch (error) {
+      console.error(error);
       setFormErrors({
         form: "An error occurred during registration.",
       });
@@ -120,9 +129,8 @@ const Signup = () => {
                   type="text"
                   value={formData.employeeId}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-green-500 transition-all ${
-                    formErrors.employeeId ? "border-red-500" : ""
-                  }`}
+                  className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-green-500 transition-all ${formErrors.employeeId ? "border-red-500" : ""
+                    }`}
                   placeholder="EMP001"
                 />
                 {formErrors.employeeId && (
@@ -162,9 +170,8 @@ const Signup = () => {
                 type="text"
                 value={formData.name}
                 onChange={handleChange}
-                className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-green-500 transition-all ${
-                  formErrors.name ? "border-red-500" : ""
-                }`}
+                className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-green-500 transition-all ${formErrors.name ? "border-red-500" : ""
+                  }`}
                 placeholder="John Doe"
               />
               {formErrors.name && (
@@ -182,9 +189,8 @@ const Signup = () => {
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
-                className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-green-500 transition-all ${
-                  formErrors.email ? "border-red-500" : ""
-                }`}
+                className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-green-500 transition-all ${formErrors.email ? "border-red-500" : ""
+                  }`}
                 placeholder="john.doe@company.com"
               />
               {formErrors.email && (
@@ -224,9 +230,8 @@ const Signup = () => {
                   type="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-green-500 transition-all ${
-                    formErrors.password ? "border-red-500" : ""
-                  }`}
+                  className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-green-500 transition-all ${formErrors.password ? "border-red-500" : ""
+                    }`}
                   placeholder="••••••••"
                 />
                 {formErrors.password && (
@@ -249,9 +254,8 @@ const Signup = () => {
                   type="password"
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-green-500 transition-all ${
-                    formErrors.confirmPassword ? "border-red-500" : ""
-                  }`}
+                  className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-green-500 transition-all ${formErrors.confirmPassword ? "border-red-500" : ""
+                    }`}
                   placeholder="••••••••"
                 />
                 {formErrors.confirmPassword && (
@@ -272,6 +276,7 @@ const Signup = () => {
               type="submit"
               disabled={isLoading}
               className="w-full py-2 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 button-hover"
+              onClick={(e) => handleSubmit(e)}
             >
               {isLoading ? "Creating Account..." : "Create Account"}
             </button>

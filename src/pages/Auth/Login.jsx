@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { toast } from "sonner";
@@ -8,8 +8,32 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, setUser } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    checkTokenExpiration();
+
+    const interval = setInterval(checkTokenExpiration, 3600 * 1000); // Every 60 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
+
+
+  const checkTokenExpiration = () => {
+    const tokenData = JSON.parse(localStorage.getItem("token"));
+
+    if (tokenData) {
+      const currentTime = new Date().getTime();
+
+      if (currentTime > tokenData.expiration) {
+        localStorage.removeItem("token");
+        setUser(null) // Remove expired token
+        navigate('/employee/dashboard')
+      }
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,8 +46,35 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const success = await login(email, password);
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      })
+      const res = await response.json();
+
+      const success = (res.access_token ? true : false);
+
       if (success) {
+        const expiresIn = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+        const expirationTime = new Date().getTime() + expiresIn;
+
+        const tokenData = {
+          access_token: res.access_token,
+          expiration: expirationTime,
+          user: res.user,
+        };
+
+        console.log(tokenData)
+
+        localStorage.setItem("token", JSON.stringify(tokenData));
+        setUser(tokenData.user)
+        console.log("Token stored in localStorage:", tokenData);
         toast.success("Login successful!");
         // Navigation is now handled by the AuthContext
       } else {
@@ -137,6 +188,7 @@ const Login = () => {
               type="submit"
               disabled={isLoading}
               className="w-full flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 button-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              onClick={(e) => handleSubmit(e)}
             >
               {isLoading ? (
                 <svg
@@ -201,17 +253,6 @@ const Login = () => {
           </div>
         </div>
 
-        <div className="mt-6 text-center text-sm">
-          <p className="text-gray-600">
-            Don't have an account?{" "}
-            <Link
-              to="/signup"
-              className="font-medium text-green-600 hover:text-green-700"
-            >
-              Sign up
-            </Link>
-          </p>
-        </div>
 
         <div className="mt-8 pt-6 border-t border-gray-200 text-center text-xs text-gray-500">
           <p>
