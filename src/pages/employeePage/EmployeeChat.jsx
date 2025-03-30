@@ -6,7 +6,7 @@ import ChatUI from '../../components/Chatbot/ChatUI';
 const EmployeeChat = () => {
   return (
     <Layout>
-      <div className="h-[calc(100vh-12rem)]">
+      <div className="h-[calc(100vh-7.5rem)]">
         <ChatUI />
       </div>
     </Layout>

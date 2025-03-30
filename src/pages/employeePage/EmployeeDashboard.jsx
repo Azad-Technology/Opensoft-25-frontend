@@ -215,7 +215,7 @@ const EmployeeDashboard = () => {
               )}
             </div>
 
-
+            {/* Metrics Component */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {metrics.map((metric) => (
                 <MetricCard key={metric.title} {...metric} />
@@ -229,34 +229,10 @@ const EmployeeDashboard = () => {
               className="neo-glass rounded-xl p-6 animate-fade-in"
               style={{ animationDelay: "0.2s" }}
             >
-              <div className="flex items-center space-x-4">
-                {user.avatar ? (
-                  <img
-                    src={user.avatar}
-                    alt={user.name}
-                    className="h-16 w-16 rounded-full object-cover border border-border"
-                  />
-                ) : (
-                  <div className="h-16 w-16 bg-secondary rounded-full flex items-center justify-center">
-                    <span className="text-2xl font-medium text-secondary-foreground">
-                      {user.name.charAt(0)}
-                    </span>
-                  </div>
-                )}
-
-                <div>
-                  <h3 className="font-medium">{user.name}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {user.department || "No department"}
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    ID: {user.employeeId}
-                  </p>
-                </div>
-              </div>
+              
 
               {stats.performanceRating && (
-                <div className="mt-4 pt-4 border-t border-border">
+                <div className=" pt-4 border-border">
                   <div className="text-sm text-muted-foreground mb-1">
                     Performance Rating
                   </div>
