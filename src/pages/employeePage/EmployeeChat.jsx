@@ -1,12 +1,11 @@
-
-import React from 'react';
-import Layout from '../../components/employeeCompo/Layout';
-import ChatUI from '../../components/Chatbot/ChatUI';
+import React from "react";
+import Layout from "../../components/employeeCompo/Layout";
+import ChatUI from "../../components/Chatbot/ChatUI";
 
 const EmployeeChat = () => {
   return (
     <Layout>
-      <div className="h-[calc(100vh-7.5rem)]">
+      <div className="h-[calc(100vh-9rem)]">
         <ChatUI />
       </div>
     </Layout>

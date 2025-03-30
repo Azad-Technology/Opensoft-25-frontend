@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { users } from "../data/mockData";
 
 const AuthContext = createContext(undefined);
 
@@ -9,65 +8,48 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
+  const [token, setToken] = useState(null);
 
+  // Load user from localStorage token on mount
   useEffect(() => {
-    const storedUser = localStorage.getItem("vibe_user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    const stored = localStorage.getItem("token");
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      setUser(parsed.user);
+      setToken(parsed.access_token);
     }
     setIsLoading(false);
   }, []);
 
+  // Handle redirects based on auth status and role
   useEffect(() => {
     if (!isLoading) {
+      const path = location.pathname;
+
       if (user) {
-        const currentPath = location.pathname;
-        if (user.role === "admin") {
-          if (
-            currentPath === "/" ||
-            currentPath === "/login" ||
-            currentPath === "/signup"
-          ) {
-            navigate("/admin/dashboard");
-          }
-        } else {
-          if (
-            currentPath === "/" ||
-            currentPath === "/login" ||
-            currentPath === "/signup"
-          ) {
-            navigate("/employee/dashboard");
-          }
+        if (["/", "/login", "/signup"].includes(path)) {
+          const redirectPath =
+            user.role === "admin" ? "/admin/dashboard" : "/employee/dashboard";
+          navigate(redirectPath);
         }
       } else {
-        const isProtectedRoute =
-          location.pathname.startsWith("/admin") ||
-          location.pathname.startsWith("/employee");
+        const isProtected =
+          path.startsWith("/admin") || path.startsWith("/employee");
 
-        if (
-          isProtectedRoute &&
-          location.pathname !== "/login" &&
-          location.pathname !== "/signup"
-        ) {
+        if (isProtected && !["/login", "/signup"].includes(path)) {
           navigate("/login");
         }
       }
     }
-  }, [user, isLoading, navigate, location.pathname]);
+  }, [user, isLoading, location.pathname, navigate]);
 
-  const login = async (email, password) => {
+  // Login: user is already fetched in login page, just save to context
+  const login = async (userData, access_token) => {
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 800));
-
-      const foundUser = users.find((u) => u.email === email);
-
-      if (foundUser) {
-        setUser(foundUser);
-        localStorage.setItem("vibe_user", JSON.stringify(foundUser));
-        return true;
-      }
-      return false;
+      setUser(userData);
+      setToken(access_token);
+      return true;
     } catch (error) {
       console.error("Login error:", error);
       return false;
@@ -76,43 +58,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signup = async (userData) => {
-    setIsLoading(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 800));
-
-      const exists = users.some(
-        (u) =>
-          u.email === userData.email || u.employeeId === userData.employeeId,
-      );
-
-      if (exists) {
-        return false;
-      }
-
-      const newUser = {
-        id: `user_${Date.now()}`,
-        employeeId: userData.employeeId,
-        name: userData.name,
-        email: userData.email,
-        role: userData.role,
-        department: userData.department,
-      };
-
-      setUser(newUser);
-      localStorage.setItem("vibe_user", JSON.stringify(newUser));
-      return true;
-    } catch (error) {
-      console.error("Signup error:", error);
-      return false;
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  // Logout
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("vibe_user");
+    localStorage.removeItem("token");
     navigate("/login");
   };
 
@@ -120,12 +69,12 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
+        token,
         isAuthenticated: !!user,
         isLoading,
         login,
-        signup,
         logout,
-        setUser
+        setUser,
       }}
     >
       {children}

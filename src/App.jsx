@@ -1,10 +1,11 @@
 import React from "react";
 import { Toaster as Sonner } from "sonner";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { DataProvider } from "./contexts/DataContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { queryClient } from "./services/react-query-client";
 
 // Pages
 import Login from "./pages/Auth/Login";
@@ -21,16 +22,6 @@ import AdminEmployeeReportPage from "./pages/admin/AdminEmployeeReportPage";
 import Home from "./pages/HomePage/Home";
 import Profile from "./pages/profilePage1/Profile";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: 1,
-    },
-  },
-});
 
 // Protected route component
 const ProtectedRoute = ({ children, allowedRoles = [] }) => {
@@ -72,7 +63,7 @@ const App = () => (
               {/* Public routes */}
               <Route path="/login" element={<Login />} />
               {/* <Route path="/signup" element={<Signup />} /> */}
-              <Route path="/" element={<Home/>}/>
+              <Route path="/" element={<Home />} />
 
               {/* Protected Employee routes */}
               <Route

@@ -1,5 +1,5 @@
-import React, { useState,useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { toast } from "sonner";
 import { Lock, Mail, ArrowRight } from "lucide-react";
@@ -13,24 +13,18 @@ const Login = () => {
 
   useEffect(() => {
     checkTokenExpiration();
-
-    const interval = setInterval(checkTokenExpiration, 3600 * 1000); // Every 60 seconds
-
+    const interval = setInterval(checkTokenExpiration, 60 * 1000); // Every 60 seconds
     return () => clearInterval(interval);
   }, []);
 
-
-
   const checkTokenExpiration = () => {
     const tokenData = JSON.parse(localStorage.getItem("token"));
-
     if (tokenData) {
       const currentTime = new Date().getTime();
-
       if (currentTime > tokenData.expiration) {
         localStorage.removeItem("token");
-        setUser(null) // Remove expired token
-        navigate('/employee/dashboard')
+        setUser(null);
+        navigate("/login");
       }
     }
   };
@@ -46,22 +40,21 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_URL}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_APP_URL}/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
         },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      })
+      );
+
       const res = await response.json();
 
-      const success = (res.access_token ? true : false);
-
-      if (success) {
-        const expiresIn = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+      if (res.access_token) {
+        const expiresIn = 24 * 60 * 60 * 1000; // 24 hours
         const expirationTime = new Date().getTime() + expiresIn;
 
         const tokenData = {
@@ -70,49 +63,15 @@ const Login = () => {
           user: res.user,
         };
 
-        console.log(tokenData)
-
         localStorage.setItem("token", JSON.stringify(tokenData));
-        setUser(tokenData.user)
-        console.log("Token stored in localStorage:", tokenData);
+        await login(res.user, res.access_token); // Set user in context
         toast.success("Login successful!");
-        // Navigation is now handled by the AuthContext
       } else {
         toast.error("Invalid email or password. Please try again.");
       }
     } catch (error) {
       console.error("Login error:", error);
       toast.error("Invalid email or password. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleDemoLogin = async (type) => {
-    setIsLoading(true);
-
-    try {
-      const demoCredentials = {
-        employee: { email: "john.doe@company.com", password: "password123" },
-        admin: { email: "sarah.williams@company.com", password: "password123" },
-      };
-
-      const { email, password } = demoCredentials[type];
-      const success = await login(email, password);
-
-      if (success) {
-        toast.success(`Logged in as ${type}!`);
-        // Navigation is now handled by the AuthContext
-      } else {
-        toast.error(
-          `Error logging in with demo ${type} account. Please try again.`,
-        );
-      }
-    } catch (error) {
-      console.error("Demo login error:", error);
-      toast.error(
-        `Error logging in with demo ${type} account. Please try again.`,
-      );
     } finally {
       setIsLoading(false);
     }
@@ -188,7 +147,6 @@ const Login = () => {
               type="submit"
               disabled={isLoading}
               className="w-full flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 button-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              onClick={(e) => handleSubmit(e)}
             >
               {isLoading ? (
                 <svg
@@ -220,39 +178,6 @@ const Login = () => {
             </button>
           </div>
         </form>
-
-        <div className="mt-6 space-y-4">
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">
-                Or continue with
-              </span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              type="button"
-              onClick={() => handleDemoLogin("employee")}
-              disabled={isLoading}
-              className="w-full flex items-center justify-center px-4 py-2 border border-green-300 rounded-lg shadow-sm text-sm font-medium text-green-700 bg-white hover:bg-green-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              Demo Employee
-            </button>
-            <button
-              type="button"
-              onClick={() => handleDemoLogin("admin")}
-              disabled={isLoading}
-              className="w-full flex items-center justify-center px-4 py-2 border border-green-300 rounded-lg shadow-sm text-sm font-medium text-green-700 bg-white hover:bg-green-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              Demo Admin
-            </button>
-          </div>
-        </div>
-
 
         <div className="mt-8 pt-6 border-t border-gray-200 text-center text-xs text-gray-500">
           <p>
