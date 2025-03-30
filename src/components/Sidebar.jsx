@@ -46,6 +46,11 @@ const Sidebar = ({ expanded, onToggle }) => {
       label: "Reports & Analytics",
       icon: <BarChart4 size={20} />,
     },
+    {
+      path: "/admin/onboarding",
+      label: "Onboarding",
+      icon: <BarChart4 size={20} />,
+    },
   ];
 
   const employeeNavItems = [
