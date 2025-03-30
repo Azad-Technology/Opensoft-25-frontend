@@ -1,403 +1,96 @@
-import React, { useState, useEffect } from "react";
-import Layout from "../../components/employeeCompo/Layout";
-import { useData } from "../../contexts/DataContext";
-import StatCard from "../../components/employeeCompo/StatCard";
-import VibeStatusBadge from "../../components/employeeCompo/VibeStatusBadge";
-import { users } from "../../data/mockData";
-import { Link } from "react-router-dom";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-} from "recharts";
-import {
-  AlertTriangle,
-  Users,
-  ArrowRight,
-  UserCheck,
-  Award,
-} from "lucide-react";
+import React from "react";
+import Layout from "../../components/employeeCompo/Layout.jsx";
+import SevereCases from "../../components/HRDashboard/SevereCases.jsx";
+import Correlations from "../../components/HRDashboard/Correlations.jsx";
+import { Smile, ArrowDownRight, ChartNoAxesCombined, Brain } from 'lucide-react'
+import { LineChart, Line, XAxis, YAxis, Tooltip,
+  ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
+
+const weeklyData = [
+  { day: "Mon", score: 6.5 },
+  { day: "Tue", score: 7.0 },
+  { day: "Wed", score: 7.2 },
+  { day: "Thu", score: 7.5 },
+  { day: "Fri", score: 7.8 },
+  { day: "Sat", score: 7.4 },
+  { day: "Sun", score: 7.1 },
+];
+
+const moodData = [
+  { name: "Happy", value: 40, color: "#34D399" },
+  { name: "Sad", value: 15, color: "#F87171" },
+  { name: "Frustrated", value: 10, color: "#FBBF24" },
+  { name: "Okay", value: 25, color: "#60A5FA" },
+  { name: "Excited", value: 10, color: "#A78BFA" },
+];
 
 const AdminDashboard = () => {
-  const { vibes, getAtRiskEmployees, getMonthlyComplianceRate } = useData();
-
-  const [vibeSummary, setVibeSummary] = useState([]);
-  const [atRiskEmployees, setAtRiskEmployees] = useState([]);
-  const [complianceRate, setComplianceRate] = useState(0);
-
-  useEffect(() => {
-    const counts = {
-      frustrated: 0,
-      sad: 0,
-      okay: 0,
-      happy: 0,
-      excited: 0,
-    };
-
-    const employeeLatestVibes = new Map();
-
-    vibes.forEach((v) => {
-      const existingVibe = employeeLatestVibes.get(v.employeeId);
-      if (!existingVibe || new Date(v.date) > new Date(existingVibe.date)) {
-        employeeLatestVibes.set(v.employeeId, { vibe: v.vibe, date: v.date });
-      }
-    });
-
-    employeeLatestVibes.forEach(({ vibe }) => {
-      counts[vibe]++;
-    });
-
-    const data = Object.keys(counts).map((vibe) => ({
-      name: vibe,
-      value: counts[vibe],
-    }));
-
-    setVibeSummary(data);
-    setAtRiskEmployees(getAtRiskEmployees());
-    setComplianceRate(getMonthlyComplianceRate());
-  }, [vibes, getAtRiskEmployees, getMonthlyComplianceRate]);
-
-  const COLORS = ["#F87171", "#93C5FD", "#FCD34D", "#A3E635", "#8B5CF6"];
-
-  const nonCompliantEmployees = users.filter(
-    (user) => user.role === "employee" && Math.random() < 0.3,
-  );
-
-  const performanceData = [
-    { rating: "1-2", count: 2 },
-    { rating: "2-3", count: 5 },
-    { rating: "3-4", count: 15 },
-    { rating: "4-5", count: 8 },
-  ];
-
   return (
     <Layout>
-      <div className="page-container py-8">
-        <div className="mb-8 animate-fade-in">
-          <h1 className="page-header mb-2">Admin Dashboard</h1>
-          <p className="text-muted-foreground">
-            Monitor employee well-being and engagement across the organization
-          </p>
-        </div>
+      <div className="relative bg-gray-50 dark:bg-gray-900 min-h-screen pb-4">
+        {/*<HRNavbar />*/}
 
-        {/* Stats overview */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <StatCard
-            title="Total Employees"
-            value={users.filter((u) => u.role === "employee").length}
-            description="Active employees in the system"
-            icon={<Users size={24} />}
-            className="animate-fade-in"
-            style={{ animationDelay: "0.1s" }}
-          />
-
-          <StatCard
-            title="Compliance Rate"
-            value={`${Math.round(complianceRate)}%`}
-            description="Employees who completed monthly chat"
-            icon={<UserCheck size={24} />}
-            trend={complianceRate > 75 ? "up" : "down"}
-            trendValue={complianceRate > 75 ? "+5%" : "-3%"}
-            className="animate-fade-in"
-            style={{ animationDelay: "0.2s" }}
-          />
-
-          <StatCard
-            title="At-Risk Employees"
-            value={atRiskEmployees.length}
-            description="Employees showing signs of distress"
-            icon={<AlertTriangle size={24} />}
-            className="animate-fade-in"
-            style={{ animationDelay: "0.3s" }}
-          />
-
-          <StatCard
-            title="Recognition Count"
-            value="24"
-            description="Recognitions given this month"
-            icon={<Award size={24} />}
-            trend="up"
-            trendValue="+8"
-            className="animate-fade-in"
-            style={{ animationDelay: "0.4s" }}
-          />
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main content */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Vibe distribution */}
-            <div
-              className="neo-glass rounded-xl p-6 animate-fade-in"
-              style={{ animationDelay: "0.2s" }}
-            >
-              <h2 className="text-xl font-medium mb-6">
-                Emotional Status Distribution
-              </h2>
-
-              <div className="flex flex-col md:flex-row items-center justify-center h-72">
-                <div className="w-full md:w-1/2 h-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={vibeSummary}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={60}
-                        outerRadius={80}
-                        paddingAngle={5}
-                        dataKey="value"
-                        label={({ name, percent }) =>
-                          `${name}: ${(percent * 100).toFixed(0)}%`
-                        }
-                        labelLine={false}
-                      >
-                        {vibeSummary.map((entry, index) => (
-                          <Cell
-                            key={`cell-${index}`}
-                            fill={COLORS[index % COLORS.length]}
-                          />
-                        ))}
-                      </Pie>
-                      <Tooltip
-                        formatter={(value) => [`${value} employees`, "Count"]}
-                        contentStyle={{
-                          borderRadius: "8px",
-                          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                          backgroundColor: "rgba(255, 255, 255, 0.9)",
-                        }}
-                      />
-                    </PieChart>
-                  </ResponsiveContainer>
+        <div className="py-6 px-6 md:px-10">
+          <div className="mb-8 animate-fade-in">
+            <h1 className="page-header mb-2 text-gray-800 dark:text-gray-100">Admin Dashboard</h1>
+            <p className="text-muted-foreground dark:text-gray-400">
+              Monitor employee well-being and engagement across the organization
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            {[
+              { title: "Overall Wellness Score", value: "7.2/10", sign:<Smile className="text-green-400"/> },
+              { title: "Critical Cases", value: "5", sign:<ArrowDownRight className="text-red-600"/> },
+              { title: "Total Employees Surveyed", value: "300", sign:<ChartNoAxesCombined className="text-green-400"/> },
+              { title: "Overall Mood", value: "Frustated", sign:<Brain className="text-green-400"/> },
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex flex-col justify-center
+              items-center text-center w-full min-h-[150px] border border-gray-100 dark:border-gray-700"
+              >
+                <div className={`h-10 w-10 rounded-sm ${(item.title === "Critical Cases") ? 'bg-red-100 dark:bg-red-900/30' : 'bg-green-100 dark:bg-green-900/30'} flex justify-center items-center`}>
+                  {item.sign}
                 </div>
-
-                <div className="w-full md:w-1/2 grid grid-cols-1 gap-3 mt-4 md:mt-0">
-                  {COLORS.map((color, index) => {
-                    const vibe = Object.keys(vibeSummary)[index];
-                    if (!vibe || !vibeSummary[index]) return null;
-
-                    return (
-                      <div key={index} className="flex items-center space-x-2">
-                        <VibeStatusBadge vibe={vibe} />
-                        <span className="text-sm">
-                          {vibeSummary[index]?.value || 0} employees
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
+                <p className="text-gray-400 dark:text-gray-300 font-semibold text-lg">{item.title}</p>
+                <p className="text-3xl font-bold text-black dark:text-white mt-2">{item.value}</p>
               </div>
-            </div>
-
-            {/* Performance distribution */}
-            <div
-              className="neo-glass rounded-xl p-6 animate-fade-in"
-              style={{ animationDelay: "0.3s" }}
-            >
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-medium">
-                  Performance Distribution
-                </h2>
-                <Link
-                  to="/admin/reports"
-                  className="text-sm text-primary hover:underline flex items-center"
-                >
-                  View detailed reports
-                  <ArrowRight size={16} className="ml-1" />
-                </Link>
-              </div>
-
-              <div className="h-72">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={performanceData}
-                    margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="rating" tick={{ fontSize: 12 }} />
-                    <YAxis tick={{ fontSize: 12 }} width={40} />
-                    <Tooltip
-                      formatter={(value) => [`${value} employees`, "Count"]}
-                      contentStyle={{
-                        borderRadius: "8px",
-                        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                        backgroundColor: "rgba(255, 255, 255, 0.9)",
-                      }}
-                    />
-                    <Bar dataKey="count" name="Employees" fill="#8884d8" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
+            ))}
           </div>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* At-risk employees */}
-            <div
-              className="neo-glass rounded-xl p-6 animate-fade-in"
-              style={{ animationDelay: "0.2s" }}
-            >
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-medium">At-Risk Employees</h2>
-                {atRiskEmployees.length > 0 && (
-                  <Link
-                    to="/admin/reports"
-                    className="text-sm text-primary hover:underline flex items-center"
-                  >
-                    View all
-                    <ArrowRight size={16} className="ml-1" />
-                  </Link>
-                )}
-              </div>
 
-              {atRiskEmployees.length > 0 ? (
-                <div className="space-y-4">
-                  {atRiskEmployees.slice(0, 3).map((employee) => (
-                    <div
-                      key={employee.id}
-                      className="flex items-center space-x-3 p-3 rounded-lg border border-border"
-                    >
-                      {employee.avatar ? (
-                        <img
-                          src={employee.avatar}
-                          alt={employee.name}
-                          className="h-10 w-10 rounded-full object-cover border border-border"
-                        />
-                      ) : (
-                        <div className="h-10 w-10 bg-secondary rounded-full flex items-center justify-center">
-                          <span className="text-sm font-medium text-secondary-foreground">
-                            {employee.name.charAt(0)}
-                          </span>
-                        </div>
-                      )}
+          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-10">
 
-                      <div className="flex-1">
-                        <div className="font-medium text-sm">
-                          {employee.name}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          {employee.department}
-                        </div>
-                      </div>
-
-                      <div className="flex items-center space-x-2">
-                        <VibeStatusBadge vibe="frustrated" size="sm" />
-                        <Link
-                          to={`/admin/reports/${employee.employeeId}`}
-                          className="text-primary hover:underline text-sm"
-                        >
-                          <ArrowRight size={16} />
-                        </Link>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8 text-muted-foreground">
-                  No at-risk employees detected
-                </div>
-              )}
+            <div className="bg-white dark:bg-gray-800 shadow-md p-6 rounded-xl border border-gray-100 dark:border-gray-700">
+              <h2 className="text-lg font-semibold text-gray-600 dark:text-gray-300 mb-4">Weekly Wellness Trend</h2>
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={weeklyData}>
+                  <XAxis dataKey="day" stroke="#90EE90" />
+                  <YAxis domain={[6, 8]} stroke="#90EE90" />
+                  <Tooltip contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: '#fff', border: 'none' }} />
+                  <Line type="monotone" dataKey="score" stroke="#03C03C" strokeWidth={3} dot={{ r: 5 }} />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
 
-            {/* Non-compliant employees */}
-            <div
-              className="neo-glass rounded-xl p-6 animate-fade-in"
-              style={{ animationDelay: "0.3s" }}
-            >
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-medium">Compliance Alerts</h2>
-                {nonCompliantEmployees.length > 0 && (
-                  <Link
-                    to="/admin/reports"
-                    className="text-sm text-primary hover:underline flex items-center"
-                  >
-                    View all
-                    <ArrowRight size={16} className="ml-1" />
-                  </Link>
-                )}
-              </div>
-
-              {nonCompliantEmployees.length > 0 ? (
-                <div className="space-y-4">
-                  {nonCompliantEmployees.slice(0, 4).map((employee) => (
-                    <div
-                      key={employee.id}
-                      className="flex items-center space-x-3 p-3 rounded-lg border border-border"
-                    >
-                      {employee.avatar ? (
-                        <img
-                          src={employee.avatar}
-                          alt={employee.name}
-                          className="h-10 w-10 rounded-full object-cover border border-border"
-                        />
-                      ) : (
-                        <div className="h-10 w-10 bg-secondary rounded-full flex items-center justify-center">
-                          <span className="text-sm font-medium text-secondary-foreground">
-                            {employee.name.charAt(0)}
-                          </span>
-                        </div>
-                      )}
-
-                      <div className="flex-1">
-                        <div className="font-medium text-sm">
-                          {employee.name}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Missing monthly check-in
-                        </div>
-                      </div>
-
-                      <Link
-                        to={`/admin/reports/${employee.employeeId}`}
-                        className="text-primary hover:underline text-sm"
-                      >
-                        <ArrowRight size={16} />
-                      </Link>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8 text-muted-foreground">
-                  All employees are compliant
-                </div>
-              )}
-            </div>
-
-            {/* Quick actions */}
-            <div
-              className="neo-glass rounded-xl p-6 animate-fade-in"
-              style={{ animationDelay: "0.4s" }}
-            >
-              <h2 className="text-xl font-medium mb-6">Quick Actions</h2>
-
-              <div className="space-y-3">
-                <button className="w-full text-left flex items-center justify-between px-4 py-3 rounded-lg hover:bg-secondary transition-colors">
-                  <span className="text-sm">Generate Monthly Report</span>
-                  <ArrowRight size={16} />
-                </button>
-
-                <button className="w-full text-left flex items-center justify-between px-4 py-3 rounded-lg hover:bg-secondary transition-colors">
-                  <span className="text-sm">Schedule Team Check-in</span>
-                  <ArrowRight size={16} />
-                </button>
-
-                <button className="w-full text-left flex items-center justify-between px-4 py-3 rounded-lg hover:bg-secondary transition-colors">
-                  <span className="text-sm">Review Pending Leaves</span>
-                  <ArrowRight size={16} />
-                </button>
-              </div>
+            <div className="bg-white dark:bg-gray-800 shadow-md p-6 rounded-xl border border-gray-100 dark:border-gray-700">
+              <h2 className="text-lg font-semibold text-gray-600 dark:text-gray-300 mb-4">Mood Distribution</h2>
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie data={moodData} cx="50%" cy="50%" innerRadius={50} outerRadius={100} dataKey="value">
+                    {moodData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Legend formatter={(value) => <span className="text-gray-800 dark:text-gray-200">{value}</span>} />
+                  <Tooltip contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: '#fff', border: 'none' }} />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
           </div>
         </div>
+        <Correlations />
+        <SevereCases />
       </div>
     </Layout>
   );

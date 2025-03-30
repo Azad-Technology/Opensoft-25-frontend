@@ -46,23 +46,6 @@ const Sidebar = ({ expanded, onToggle }) => {
       label: "Reports & Analytics",
       icon: <BarChart4 size={20} />,
     },
-    {
-      path: "/admin/employee-report/march/2024",
-      label: "Employee Reports",
-      icon: <FileText size={20} />,
-    },
-    { path: "/admin/employees", label: "Employees", icon: <Users size={20} /> },
-    { path: "/admin/alerts", label: "Alerts", icon: <AlertCircle size={20} /> },
-    {
-      path: "/admin/schedule",
-      label: "Schedule",
-      icon: <Calendar size={20} />,
-    },
-    {
-      path: "/admin/settings",
-      label: "Settings",
-      icon: <Settings size={20} />,
-    },
   ];
 
   const employeeNavItems = [

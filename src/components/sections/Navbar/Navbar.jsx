@@ -23,7 +23,9 @@ const Navbar = () => {
   }, [scrolled]);
 
   return (
-    <header className={`navbar ${scrolled ? "navbar-scrolled" : "navbar-transparent"}`}>
+    <header
+      className={`navbar ${scrolled ? "navbar-scrolled" : "navbar-transparent"}`}
+    >
       <div className="navbar-container">
         <div className="navbar-logo">
           <Link to="/" className="navbar-brand">
@@ -32,34 +34,13 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* Desktop Navigation */}
-        <nav className="navbar-menu">
-          <Link to="/" className="navbar-link">
-            Smart Contracts
-          </Link>
-          <Link to="/" className="navbar-link">
-            Services
-          </Link>
-          <Link to="/" className="navbar-link">
-            Solutions
-          </Link>
-          <Link to="/" className="navbar-link">
-            Roadmap
-          </Link>
-          <Link to="/" className="navbar-link">
-            Whitepaper
-          </Link>
-        </nav>
-
         {/* Profile/Login Button */}
         <div className="navbar-actions">
           <div className="navbar-profile">
             <User size={18} className="navbar-profile-icon" />
           </div>
           <Link to="/login">
-            <button className="navbar-login-button">
-              Login
-            </button>
+            <button className="navbar-login-button">Login</button>
           </Link>
         </div>
 
@@ -75,30 +56,13 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="mobile-menu">
-          <nav className="mobile-nav">
-            <Link to="/" className="mobile-nav-link">
-              Smart Contracts
-            </Link>
-            <Link to="/" className="mobile-nav-link">
-              Services
-            </Link>
-            <Link to="/" className="mobile-nav-link">
-              Solutions
-            </Link>
-            <Link to="/" className="mobile-nav-link">
-              Roadmap
-            </Link>
-            <Link to="/" className="mobile-nav-link">
-              Whitepaper
-            </Link>
-          </nav>
           <div className="mobile-menu-actions">
             <div className="navbar-profile">
               <User size={18} className="navbar-profile-icon" />
             </div>
-            <button className="navbar-login-button">
-              Login
-            </button>
+            <Link to="/login">
+              <button className="navbar-login-button">Login</button>
+            </Link>
           </div>
         </div>
       )}
