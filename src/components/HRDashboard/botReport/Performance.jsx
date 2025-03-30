@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ViewPerformanceModal from '../ViewPerformanceModal'
 import {
   AreaChart,
   Area,
@@ -10,7 +11,7 @@ import {
 
 const PerformanceReports = () => {
   const [selectedEmployee, setSelectedEmployee] = useState("John Doe");
-
+  const [viewPerformanceModal , setViewPerformanceModal] = useState(false);
   const performanceData = [
     { name: "Jan", productivity: 100, tasks: 2 },
     { name: "Feb", productivity: 150, tasks: 3 },
@@ -18,6 +19,7 @@ const PerformanceReports = () => {
   ];
 
   return (
+    <>
     <div className="p-4 mt-10">
       {/* Main Content */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -85,7 +87,11 @@ const PerformanceReports = () => {
 
         {/* Recognition & Feedback */}
         <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-5 border border-gray-100 dark:border-gray-700">
-          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Recognition & Feedback</h2>
+        <div className="flex justify-between">
+            <h3 className="text-md font-semibold mb-2 text-gray-700 dark:text-gray-200">Awards & Recognition</h3>
+            <p className="text-sm hover:cursor-pointer hover:underline hover:text-green-400"
+            onClick={() => setViewPerformanceModal(true)}>view more</p>
+            </div>
 
           {/* Performance Rating */}
           <div className="mb-4">
@@ -165,6 +171,8 @@ const PerformanceReports = () => {
         </div>
       </div>
     </div>
+    {viewPerformanceModal && <ViewPerformanceModal setViewPerformanceModal={setViewPerformanceModal} />}
+    </>
   );
 };
 
