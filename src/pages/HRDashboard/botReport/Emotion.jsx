@@ -31,7 +31,7 @@ const BotReportsEmotionalState = () => {
   return (
     <div className="p-4 mt-10">
       {/* Main Content */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Emotional State Chart */}
         <div className="bg-white shadow-xl rounded-xl p-5">
           <h2 className="text-lg font-semibold mb-4">Emotional State</h2>

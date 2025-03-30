@@ -14,7 +14,7 @@ const EmployeeExperience = () => {
   return (
     <div className="p-4 mt-10">
       {/* Main Content */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Onboarding Experience */}
         <div className="rounded-xl p-4 bg-white shadow-xl">
           <div className="flex justify-between items-center mb-4">
