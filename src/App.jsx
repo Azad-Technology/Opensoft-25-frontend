@@ -22,6 +22,7 @@ import AdminEmployeeReportPage from "./pages/admin/AdminEmployeeReportPage";
 import Home from "./pages/HomePage/Home";
 import Profile from "./pages/profilePage1/Profile";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import Onboarding from "./components/HRDashboard/Onboarding"
 
 // Protected route component
 const ProtectedRoute = ({ children, allowedRoles = [] }) => {
@@ -114,6 +115,14 @@ const App = () => (
                 element={
                   <ProtectedRoute allowedRoles={["admin"]}>
                     <AdminReports />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/onboarding"
+                element={
+                  <ProtectedRoute allowedRoles={["admin"]}>
+                    <Onboarding />
                   </ProtectedRoute>
                 }
               />
