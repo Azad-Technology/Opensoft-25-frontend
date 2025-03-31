@@ -13,27 +13,48 @@ import {
   MessageSquare,
   Bell,
   CheckCheck,
-  ArrowRight, TrendingUp, Clock, Users, BookOpen, Target
+  ArrowRight, TrendingUp, Clock, Smile, Hourglass, BookOpen, Trophy
 } from "lucide-react";
 import { toast } from "sonner";
 import { useTheme } from "../../contexts/ThemeContext";
 
 const EmployeeDashboard = () => {
-  const { user } = useAuth();
+  const { user ,  token} = useAuth();
   const { getEmployeeStats, submitNewVibe } = useData();
 
   const [selectedVibe, setSelectedVibe] = useState(null);
   const [vibeComment, setVibeComment] = useState("");
-  const [stats, setStats] = useState(null);
+  // const [stats, setStats] = useState(null);
+  const [metrics, setMetrics] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [showVibeSubmitted, setShowVibeSubmitted] = useState(false);
   const {theme} =useTheme();
 
-  useEffect(() => {
-    if (user) {
-      const employeeStats = getEmployeeStats(user.employeeId);
-      setStats(employeeStats);
-    }
-  }, [user, getEmployeeStats]);
+  // https://opensoft-25-backend.onrender.com/data/employee/:id/summary
+
+  // useEffect(() => {
+  //   if (user) {
+  //     const employeeStats = getEmployeeStats(user.employeeId);
+  //     setStats(employeeStats);
+  //     console.log(employeeStats)
+  //   }
+  // }, [user, getEmployeeStats]);
+
+  const [stats,setStats] = useState({
+    totalLeaves: 5,
+    currentMonthLeaves: 1,
+    averageVibe: "happy",
+    recentVibes: [
+      { date: "2024-03-30", vibe: "excited" },
+      { date: "2024-03-29", vibe: "frustrated" },
+      { date: "2024-03-28", vibe: "okay" },
+    ],
+    activityLevel: "high",
+    totalMeetings: 12,
+    totalEmails: 45,
+    totalMessages: 120,
+  })
 
   const handleVibeChange = (vibe) => {
     setSelectedVibe(vibe);
@@ -55,47 +76,62 @@ const EmployeeDashboard = () => {
 
     toast.success("Thank you for sharing your vibe!");
   };
-  const metrics = [
-    {
-      title: 'Performance Index',
-      value: '85%',
-      trend: 12,
-      icon: <TrendingUp size={24} className="text-green-600 dark:text-green-400" />,
-      rating: 4
-    },
-    {
-      title: 'Leave Balance',
-      value: '5 days',
-      trend: -8,
-      icon: <Clock size={24} className="text-green-600 dark:text-green-400" />,
-    },
-    {
-      title: 'Upcoming Meetings',
-      value: '3',
-      trend: 20,
-      icon: <Calendar size={24} className="text-green-600 dark:text-green-400" />,
-    },
-    {
-      title: 'Team Size',
-      value: '12',
-      trend: 5,
-      icon: <Users size={24} className="text-green-600 dark:text-green-400" />,
-    },
-    {
-      title: 'Training Hours',
-      value: '24h',
-      trend: 15,
-      icon: <BookOpen size={24} className="text-green-600 dark:text-green-400" />,
-      rating: 5
-    },
-    {
-      title: 'Goals Achieved',
-      value: '8/10',
-      trend: 10,
-      icon: <Target size={24} className="text-green-600 dark:text-green-400" />,
-      rating: 3
-    },
-  ];
+
+  useEffect(() => {
+    const fetchDashboardData = async ({token}) => {
+      try {
+        const response = await axios.get("https://opensoft-25-backend.onrender.com/employee/dashboard/EMP0125/summary", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
+
+        setMetrics(response.data);
+        console.log(response.data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  // const metrics = [
+  //   {
+  //     title: 'Performance Rating',
+  //     value: '85%',
+  //     icon: <TrendingUp size={24} className="text-green-600 dark:text-green-400" />,
+  //     rating: 4
+  //   },
+  //   {
+  //     title: 'Leave Balance',
+  //     value: '5 days',
+  //     icon: <Clock size={24} className="text-green-600 dark:text-green-400" />,
+  //   },
+  //   {
+  //     title: 'Total Meetings',
+  //     value: '3',
+  //     icon: <Calendar size={24} className="text-green-600 dark:text-green-400" />,
+  //   },
+  //   {
+  //     title: 'Current Vibe',
+  //     value: '12',
+  //     icon: <Smile size={24} className="text-green-600 dark:text-green-400" />,
+  //   },
+  //   {
+  //     title: 'Average Work hours',
+  //     value: '24h',
+  //     icon: <Hourglass size={24} className="text-green-600 dark:text-green-400" />,
+  //   },
+  //   {
+  //     title: 'Awards',
+  //     value: '8/10',
+  //     icon: <Trophy size={24} className="text-green-600 dark:text-green-400" />,
+  //     rating: 3
+  //   },
+  // ];
 
   if (!user || !stats) {
     return (
@@ -135,21 +171,10 @@ const EmployeeDashboard = () => {
             </p>
           </div>
 
-          {!stats.completedMonthlyChatbot && (
-            <div className="mt-4 md:mt-0">
-              <Link
-                to="/employee/chat"
-                className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors button-hover"
-              >
-                <MessageSquare size={18} className="mr-2" />
-                Complete Monthly Chat
-                <ArrowRight size={16} className="ml-2" />
-              </Link>
-            </div>
-          )}
+          
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="md:col-span-2 space-y-8">
             <div
               className="neo-glass rounded-xl p-6 animate-fade-in"
@@ -216,104 +241,17 @@ const EmployeeDashboard = () => {
             </div>
 
             {/* Metrics Component */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {metrics.map((metric) => (
-                <MetricCard key={metric.title} {...metric} />
-              ))}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <MetricCard title="Performance Rating" icon= <TrendingUp size={24} className="text-green-600 dark:text-green-400" />  />
+              <MetricCard title= 'Leave Balance' icon=<Clock size={24} className="text-green-600 dark:text-green-400" /> />
+              <MetricCard title= 'Total Meetings' icon= <Calendar size={24} className="text-green-600 dark:text-green-400" />/>
+              <MetricCard title= 'Current Vibe' icon= <Smile size={24} className="text-green-600 dark:text-green-400"/>/>
+              <MetricCard title= 'Average Work hours' icon= <Hourglass size={24} className="text-green-600 dark:text-green-400" />/>
+              <MetricCard title= 'Awards' icon= <Trophy size={24} className="text-green-600 dark:text-green-400" /> />
             </div>
 
           </div>
 
-          <div className="space-y-6">
-            <div
-              className="neo-glass rounded-xl p-6 animate-fade-in"
-              style={{ animationDelay: "0.2s" }}
-            >
-              
-
-              {stats.performanceRating && (
-                <div className=" pt-4 border-border">
-                  <div className="text-sm text-muted-foreground mb-1">
-                    Performance Rating
-                  </div>
-                  <div className="flex items-center">
-                    <div className="font-medium text-lg">
-                      {stats.performanceRating.toFixed(1)}
-                    </div>
-                    <div className="text-xs text-muted-foreground ml-2">
-                      / 5.0
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div
-              className="neo-glass rounded-xl p-6 animate-fade-in"
-              style={{ animationDelay: "0.3s" }}
-            >
-              <h3 className="font-medium mb-4">Upcoming</h3>
-
-              <div className="space-y-4">
-                {!stats.completedMonthlyChatbot && (
-                  <div className="flex items-start space-x-3">
-                    <div className="bg-blue-100 text-blue-600 p-2 rounded-lg">
-                      <MessageSquare size={18} />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium">Monthly Check-in</p>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        Complete your monthly well-being check-in
-                      </p>
-                      <Link
-                        to="/employee/chat"
-                        className="text-xs text-primary hover:underline mt-1 inline-block"
-                      >
-                        Start now
-                      </Link>
-                    </div>
-                  </div>
-                )}
-
-                <div className="flex items-start space-x-3">
-                  <div className="bg-purple-100 text-purple-600 p-2 rounded-lg">
-                    <CalendarCheck size={18} />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Performance Review</p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Scheduled for next month
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div
-              className="neo-glass rounded-xl p-6 animate-fade-in"
-              style={{ animationDelay: "0.4s" }}
-            >
-              <h3 className="font-medium mb-4">Quick Links</h3>
-
-              <div className="space-y-2">
-                <Link
-                  to="/employee/chat"
-                  className="flex items-center justify-between px-4 py-3 rounded-lg hover:bg-secondary transition-colors"
-                >
-                  <span className="text-sm">Chat with VibeCatcher</span>
-                  <ArrowRight size={16} />
-                </Link>
-
-                <Link
-                  to="/employee/reports"
-                  className="flex items-center justify-between px-4 py-3 rounded-lg hover:bg-secondary transition-colors"
-                >
-                  <span className="text-sm">View My Reports</span>
-                  <ArrowRight size={16} />
-                </Link>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </Layout>

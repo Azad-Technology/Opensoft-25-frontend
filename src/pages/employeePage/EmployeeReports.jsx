@@ -72,15 +72,15 @@ const EmployeeReports = () => {
   const userVibes = [
     { id: 1, date: "2024-03-25", vibe: "happy" },
     { id: 2, date: "2024-03-26", vibe: "sad" },
-    { id: 3, date: "2024-03-26", vibe: "frustrated" },
-    { id: 4, date: "2024-03-27", vibe: "excited" },
-    { id: 5, date: "2024-03-27", vibe: "okay" },
-    { id: 6, date: "2024-03-28", vibe: "happy" },
-    { id: 7, date: "2024-03-28", vibe: "happy" },
-    { id: 8, date: "2024-03-28", vibe: "frustrated" },
-    { id: 9, date: "2024-03-29", vibe: "excited" },
-    { id: 10, date: "2024-03-29", vibe: "sad" },
-    { id: 11, date: "2024-03-29", vibe: "okay" },
+    { id: 3, date: "2024-03-27", vibe: "frustrated" },
+    { id: 4, date: "2024-03-28", vibe: "excited" },
+    { id: 5, date: "2024-03-29", vibe: "okay" },
+    { id: 6, date: "2024-03-30", vibe: "happy" },
+    { id: 7, date: "2024-03-31", vibe: "happy" },
+    { id: 8, date: "2024-04-1", vibe: "frustrated" },
+    { id: 9, date: "2024-04-2", vibe: "excited" },
+    { id: 10, date: "2024-04-3", vibe: "sad" },
+    { id: 11, date: "2024-04-4", vibe: "okay" },
   ];
 
   const userRecognitions = [
