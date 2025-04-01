@@ -15,10 +15,34 @@ export const AuthProvider = ({ children }) => {
     const stored = localStorage.getItem("auth");
     if (stored) {
       const parsed = JSON.parse(stored);
-      setUser(parsed.user);
-      setToken(parsed.access_token);
+      const currentTime = Date.now();
+      if (parsed.expiration && currentTime > parsed.expiration) {
+        localStorage.removeItem("auth"); // Expired, clean up
+      } else {
+        setUser(parsed.user);
+        setToken(parsed.access_token);
+      }
     }
     setIsLoading(false);
+  }, []);
+
+  // Auto-logout on token expiration
+  useEffect(() => {
+    const checkTokenExpiration = () => {
+      const stored = localStorage.getItem("auth");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        const currentTime = Date.now();
+        if (parsed.expiration && currentTime > parsed.expiration) {
+          console.warn("Token expired, logging out.");
+          logout();
+        }
+      }
+    };
+
+    checkTokenExpiration(); // Run immediately
+    const interval = setInterval(checkTokenExpiration, 60 * 60 * 1000); // Every 1 minute
+    return () => clearInterval(interval);
   }, []);
 
   // Handle redirects based on auth status and role
