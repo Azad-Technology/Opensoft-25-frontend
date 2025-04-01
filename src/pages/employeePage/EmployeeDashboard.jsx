@@ -25,7 +25,7 @@ import { toast } from "sonner";
 import { useTheme } from "../../contexts/ThemeContext";
 
 const EmployeeDashboard = () => {
-  const { user,refreshToken, token } = useAuth();
+  const { user, refreshToken, token } = useAuth();
   const { getEmployeeStats, submitNewVibe } = useData();
   const { theme } = useTheme();
 
@@ -35,17 +35,15 @@ const EmployeeDashboard = () => {
   const [error, setError] = useState(null);
   const [showVibeSubmitted, setShowVibeSubmitted] = useState(false);
 
-  const BASE_URL = import.meta.env.VITE_BASE_URL ;;
-
+  const BASE_URL = import.meta.env.VITE_REACT_APP_URL;
 
   useEffect(() => {
     refreshToken();
-  }, [])
-  
+  }, []);
 
   // https://opensoft-25-backend.onrender.com/data/employee/:id/summary
 
-  const [stats,setStats] = useState({
+  const [stats, setStats] = useState({
     totalLeaves: 5,
     currentMonthLeaves: 1,
     averageVibe: "happy",
@@ -58,7 +56,7 @@ const EmployeeDashboard = () => {
     totalMeetings: 12,
     totalEmails: 45,
     totalMessages: 120,
-  })
+  });
 
   const handleVibeChange = (vibe) => {
     setSelectedVibe(vibe);
@@ -172,7 +170,10 @@ const EmployeeDashboard = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="md:col-span-2 space-y-8">
-            <div className="neo-glass rounded-xl p-6 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+            <div
+              className="neo-glass rounded-xl p-6 animate-fade-in"
+              style={{ animationDelay: "0.1s" }}
+            >
               <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                 <h2 className="text-xl font-medium">Your Vibe Trend</h2>
                 <div className="mt-2 md:mt-0 text-sm text-muted-foreground">
@@ -180,7 +181,11 @@ const EmployeeDashboard = () => {
                 </div>
               </div>
 
-              <VibeChart vibes={stats.vibe_trend} height={180} className="mb-6" />
+              <VibeChart
+                vibes={stats.vibe_trend}
+                height={180}
+                className="mb-6"
+              />
 
               {!showVibeSubmitted ? (
                 <div>
@@ -193,7 +198,10 @@ const EmployeeDashboard = () => {
                   {selectedVibe && (
                     <div className="space-y-4 animate-fade-in">
                       <div>
-                        <label htmlFor="vibeComment" className="block text-sm font-medium mb-1">
+                        <label
+                          htmlFor="vibeComment"
+                          className="block text-sm font-medium mb-1"
+                        >
                           Would you like to share more about how you're feeling?
                         </label>
                         <textarea
@@ -220,18 +228,73 @@ const EmployeeDashboard = () => {
               ) : (
                 <div className="p-4 bg-green-50 text-green-800 rounded-lg flex items-center animate-fade-in">
                   <CheckCheck size={20} className="mr-2" />
-                  Thank you for sharing your vibe! Your input helps us better understand how you're doing.
+                  Thank you for sharing your vibe! Your input helps us better
+                  understand how you're doing.
                 </div>
               )}
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <MetricCard title="Performance Rating" value={stats.performance_rating} icon={<TrendingUp size={24} className="text-green-600 dark:text-green-400" />} />
-              <MetricCard title="Leave Balance" value={stats.leave_balance} icon={<Clock size={24} className="text-green-600 dark:text-green-400" />} />
-              <MetricCard title="Total Meetings" value={stats.meetings_attended} icon={<Calendar size={24} className="text-green-600 dark:text-green-400" />} />
-              <MetricCard title="Current Vibe" value={stats.latest_vibe.vibe_score} icon={<Smile size={24} className="text-green-600 dark:text-green-400" />} />
-              <MetricCard title="Average Work hours"  value={stats.average_work_hours} icon={<Hourglass size={24} className="text-green-600 dark:text-green-400" />} />
-              <MetricCard title="Awards" value={awardsCount} icon={<Trophy size={24} className="text-green-600 dark:text-green-400" />} />
+              <MetricCard
+                title="Performance Rating"
+                value={stats.performance_rating}
+                icon={
+                  <TrendingUp
+                    size={24}
+                    className="text-green-600 dark:text-green-400"
+                  />
+                }
+              />
+              <MetricCard
+                title="Leave Balance"
+                value={stats.leave_balance}
+                icon={
+                  <Clock
+                    size={24}
+                    className="text-green-600 dark:text-green-400"
+                  />
+                }
+              />
+              <MetricCard
+                title="Total Meetings"
+                value={stats.meetings_attended}
+                icon={
+                  <Calendar
+                    size={24}
+                    className="text-green-600 dark:text-green-400"
+                  />
+                }
+              />
+              <MetricCard
+                title="Current Vibe"
+                value={stats.latest_vibe.vibe_score}
+                icon={
+                  <Smile
+                    size={24}
+                    className="text-green-600 dark:text-green-400"
+                  />
+                }
+              />
+              <MetricCard
+                title="Average Work hours"
+                value={stats.average_work_hours}
+                icon={
+                  <Hourglass
+                    size={24}
+                    className="text-green-600 dark:text-green-400"
+                  />
+                }
+              />
+              <MetricCard
+                title="Awards"
+                value={awardsCount}
+                icon={
+                  <Trophy
+                    size={24}
+                    className="text-green-600 dark:text-green-400"
+                  />
+                }
+              />
             </div>
           </div>
         </div>
