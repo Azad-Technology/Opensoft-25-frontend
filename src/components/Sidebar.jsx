@@ -84,11 +84,7 @@ const Sidebar = ({ expanded, onToggle }) => {
       label: "Help & Support",
       icon: <HelpCircle size={20} />,
     },
-    {
-      path: "/employee/settings",
-      label: "Settings",
-      icon: <Settings size={20} />,
-    },
+    
   ];
 
   const navItems = user?.role_type === "admin" ? adminNavItems : employeeNavItems;

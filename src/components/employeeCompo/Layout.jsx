@@ -202,14 +202,6 @@ const Layout = ({ children }) => {
 
                 <ThemeSwitch />
 
-                {/* Settings */}
-                <button
-                  className="rounded-full p-2 text-gray-500 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-500 hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors"
-                  aria-label="Settings"
-                >
-                  <Settings size={20} />
-                </button>
-
                 {/* User dropdown */}
                 <div className="relative user-dropdown-container">
                   <button
