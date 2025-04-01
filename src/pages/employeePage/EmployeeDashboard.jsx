@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import { useTheme } from "../../contexts/ThemeContext";
 
 const EmployeeDashboard = () => {
-  const { user ,  token} = useAuth();
+  const { user,refreshToken, token } = useAuth();
   const { getEmployeeStats, submitNewVibe } = useData();
 
   const [selectedVibe, setSelectedVibe] = useState(null);
@@ -30,6 +30,11 @@ const EmployeeDashboard = () => {
   const [error, setError] = useState(null);
   const [showVibeSubmitted, setShowVibeSubmitted] = useState(false);
   const {theme} =useTheme();
+
+  useEffect(() => {
+    refreshToken();
+  }, [])
+  
 
   // https://opensoft-25-backend.onrender.com/data/employee/:id/summary
 
