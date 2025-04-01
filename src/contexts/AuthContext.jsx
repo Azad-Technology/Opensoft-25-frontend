@@ -29,7 +29,9 @@ export const AuthProvider = ({ children }) => {
       if (user) {
         if (["/", "/login", "/signup"].includes(path)) {
           const redirectPath =
-            user.role_type === "admin" ? "/admin/dashboard" : "/employee/dashboard";
+            user.role_type === "admin"
+              ? "/admin/dashboard"
+              : "/employee/dashboard";
           navigate(redirectPath);
         }
       } else {
@@ -61,7 +63,7 @@ export const AuthProvider = ({ children }) => {
   // Logout
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("token");
+    localStorage.removeItem("auth");
     navigate("/login");
   };
 
