@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "../../components/employeeCompo/Layout.jsx";
 import SevereCases from "../../components/HRDashboard/SevereCases.jsx";
 import Correlations from "../../components/HRDashboard/Correlations.jsx";
 import { Smile, ArrowDownRight, ChartNoAxesCombined, Brain } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, Tooltip,
   ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
+import { useAuth } from "../../contexts/AuthContext.jsx";
 
 const weeklyData = [
   { day: "Mon", score: 6.5 },
@@ -25,6 +26,12 @@ const moodData = [
 ];
 
 const AdminDashboard = () => {
+  const {refreshToken}=useAuth();
+  
+  useEffect(() => {
+    refreshToken();
+  }, [])
+  
   return (
     <Layout>
       <div className="relative bg-gray-50 dark:bg-gray-900 min-h-screen pb-4">

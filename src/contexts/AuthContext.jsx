@@ -91,6 +91,36 @@ export const AuthProvider = ({ children }) => {
     navigate("/login");
   };
 
+
+  const refreshToken = async () => {
+    const tokenData = JSON.parse(localStorage.getItem("auth"));
+    try {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_URL}/auth/token`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tokenData.access_token}`,
+        }
+      })
+
+      const res= await response.json();
+      const expTime=Date.now()+res.expires_in;
+
+      const newTokenData={
+        access_token:res.access_token,
+        expiration:expTime,
+        user:tokenData.user
+      }
+
+      localStorage.removeItem("auth");
+      localStorage.setItem("auth",JSON.stringify(newTokenData));
+    } catch (error) {
+      console.error("refresh token error:", error);
+      toast.error("Error refreshing token");
+    }
+
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -101,6 +131,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         setUser,
+        refreshToken
       }}
     >
       {children}
