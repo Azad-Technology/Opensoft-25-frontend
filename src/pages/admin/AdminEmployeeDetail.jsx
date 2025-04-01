@@ -274,7 +274,7 @@ const AdminEmployeeDetail = () => {
           </div>
 
           <div className="mt-4 md:mt-0 flex items-center">
-            <button className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors button-hover">
+            <button className="px-4 py-2 bg-primary dark:text-white text-black rounded-lg hover:bg-primary/90 transition-colors button-hover">
               Schedule Check-in
             </button>
           </div>

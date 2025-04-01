@@ -191,7 +191,7 @@ const AdminReports = () => {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="relative flex-1">
               <Search
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500"
                 size={18}
               />
               <input
@@ -199,17 +199,18 @@ const AdminReports = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search by name, ID, or department..."
-                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 transition-all bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-400"
               />
             </div>
 
+
             <div className="flex flex-wrap gap-3">
               <div className="flex items-center">
-                <Filter size={18} className="mr-2 text-muted-foreground" />
+                <Filter size={18} className="mr-2 text-muted-foreground dark:text-gray-500" />
                 <select
                   value={departmentFilter}
                   onChange={(e) => setDepartmentFilter(e.target.value)}
-                  className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all appearance-none bg-white"
+                  className="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 transition-all appearance-none bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200"
                 >
                   <option value="all">All Departments</option>
                   {departments.map((dept) => (
@@ -223,7 +224,7 @@ const AdminReports = () => {
               <select
                 value={vibeFilter}
                 onChange={(e) => setVibeFilter(e.target.value)}
-                className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all appearance-none bg-white"
+                className="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 transition-all appearance-none bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200"
               >
                 <option value="all">All Vibes</option>
                 <option value="frustrated">Frustrated</option>
@@ -236,13 +237,14 @@ const AdminReports = () => {
               <select
                 value={complianceFilter}
                 onChange={(e) => setComplianceFilter(e.target.value)}
-                className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all appearance-none bg-white"
+                className="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 transition-all appearance-none bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200"
               >
                 <option value="all">All Compliance</option>
                 <option value="compliant">Compliant</option>
                 <option value="non-compliant">Non-Compliant</option>
               </select>
             </div>
+
           </div>
         </div>
 
