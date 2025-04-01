@@ -48,10 +48,11 @@ const VibeChart = ({
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
-      const vibe = valueToVibe(payload[0].value);
+      const { date, value } = payload[0].payload;
+      const vibe = valueToVibe(value);
       return (
         <div className="neo-glass p-2 text-xs">
-          <p className="font-medium">{label}</p>
+          <p className="font-medium">{date}</p> {/* Show full date */}
           <p
             className="capitalize"
             style={{ color: `var(--color-vibe-${vibe})` }}
@@ -63,6 +64,7 @@ const VibeChart = ({
     }
     return null;
   };
+
 
   const vibeColors = {
     frustrated: "var(--color-vibe-frustrated, #F87171)",
