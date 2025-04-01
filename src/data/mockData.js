@@ -755,3 +755,69 @@ export const chatMessages = [
     ).toISOString(),
   },
 ];
+
+//notifications
+
+export const notifications=[
+  {
+    "id": 1,
+    "title": "Monthly check-in reminder",
+    "message": "Don't forget to complete your monthly feedback session",
+    "time": "10 minutes ago",
+    "route": "../../employee/chat"
+  },
+  {
+    "id": 2,
+    "title": "New Message from Admin",
+    "message": "Please review the updated guidelines.",
+    "time": "30 minutes ago"
+  },
+  {
+    "id": 3,
+    "title": "Upcoming Meeting Reminder",
+    "message": "Your team meeting is scheduled for tomorrow at 3 PM.",
+    "time": "1 hour ago"
+  },
+  {
+    "id": 4,
+    "title": "Security Alert",
+    "message": "A new login was detected from an unrecognized device.",
+    "time": "2 hours ago"
+  },
+  {
+    "id": 5,
+    "title": "Task Deadline Approaching",
+    "message": "Your project submission deadline is in 2 days.",
+    "time": "4 hours ago"
+  },
+  {
+    "id": 6,
+    "title": "HR Announcement",
+    "message": "A new holiday policy has been introduced. Check the details.",
+    "time": "5 hours ago"
+  },
+  {
+    "id": 7,
+    "title": "Performance Review Reminder",
+    "message": "Your quarterly performance review is scheduled next week.",
+    "time": "6 hours ago"
+  },
+  {
+    "id": 8,
+    "title": "System Maintenance",
+    "message": "Scheduled maintenance will take place on Sunday from 1 AM - 3 AM.",
+    "time": "1 day ago"
+  },
+  {
+    "id": 9,
+    "title": "New Policy Update",
+    "message": "A new work-from-home policy has been added.",
+    "time": "2 days ago"
+  },
+  {
+    "id": 10,
+    "title": "Training Session Reminder",
+    "message": "Join the cybersecurity awareness training at 10 AM.",
+    "time": "3 days ago"
+  },
+];
