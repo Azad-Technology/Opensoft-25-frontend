@@ -15,10 +15,34 @@ export const AuthProvider = ({ children }) => {
     const stored = localStorage.getItem("auth");
     if (stored) {
       const parsed = JSON.parse(stored);
-      setUser(parsed.user);
-      setToken(parsed.access_token);
+      const currentTime = Date.now();
+      if (parsed.expiration && currentTime > parsed.expiration) {
+        localStorage.removeItem("auth"); // Expired, clean up
+      } else {
+        setUser(parsed.user);
+        setToken(parsed.access_token);
+      }
     }
     setIsLoading(false);
+  }, []);
+
+  // Auto-logout on token expiration
+  useEffect(() => {
+    const checkTokenExpiration = () => {
+      const stored = localStorage.getItem("auth");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        const currentTime = Date.now();
+        if (parsed.expiration && currentTime > parsed.expiration) {
+          console.warn("Token expired, logging out.");
+          logout();
+        }
+      }
+    };
+
+    checkTokenExpiration(); // Run immediately
+    const interval = setInterval(checkTokenExpiration, 60 * 60 * 1000); // Every 1 minute
+    return () => clearInterval(interval);
   }, []);
 
   // Handle redirects based on auth status and role
@@ -29,7 +53,9 @@ export const AuthProvider = ({ children }) => {
       if (user) {
         if (["/", "/login", "/signup"].includes(path)) {
           const redirectPath =
-            user.role_type === "admin" ? "/admin/dashboard" : "/employee/dashboard";
+            user.role_type === "admin"
+              ? "/admin/dashboard"
+              : "/employee/dashboard";
           navigate(redirectPath);
         }
       } else {
@@ -61,7 +87,7 @@ export const AuthProvider = ({ children }) => {
   // Logout
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("token");
+    localStorage.removeItem("auth");
     navigate("/login");
   };
 

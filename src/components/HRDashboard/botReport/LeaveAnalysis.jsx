@@ -44,17 +44,17 @@ const BotReports = () => {
                 <XAxis dataKey="month" stroke="#90EE90" />
                 <YAxis stroke="#90EE90" />
                 <Tooltip contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: '#fff', border: 'none' }} />
-                <Bar dataKey="sickLeave" stackId="a" fill="#86d3ff" />
-                <Bar dataKey="personalLeave" stackId="a" fill="#82ca9d" />
-                <Bar dataKey="vacation" stackId="a" fill="#8884d8" />
+                <Bar dataKey="sickLeave"  fill="#86d3ff" />
+                <Bar dataKey="personalLeave"  fill="#82ca9d" />
+                <Bar dataKey="vacation"  fill="#8884d8" />
               </BarChart>
             </ResponsiveContainer>
           </div>
-          <div className="flex justify-between text-xs text-gray-600 dark:text-gray-300 mt-2">
+          {/* <div className="flex justify-between text-xs text-gray-600 dark:text-gray-300 mt-2">
             <span>Sick Leave</span>
             <span>Personal Leave</span>
             <span>Vacation</span>
-          </div>
+          </div> */}
         </div>
         {/* Leave Analysis */}
         <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-5 border border-gray-100 dark:border-gray-700">
@@ -92,7 +92,7 @@ const BotReports = () => {
         </div>
       </div>
     </div>
-    {viewLeaveModal && <ViewLeaveModal />}
+    {viewLeaveModal && <ViewLeaveModal setViewLeaveModal={setViewLeaveModal}/>}
     </>
   );
 };

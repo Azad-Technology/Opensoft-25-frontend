@@ -1,23 +1,34 @@
 import { X, Trash2 } from 'lucide-react';
 import React, { useState } from 'react';
 
-const ViewLeaveModal = ({ setViewLeaveModal }) => {
-  const [leaveData, setLeaveData] = useState([
-    { Employee_ID: "EMP001", Leave_Type: "Casual Leave", Leave_Days: "3", Leave_Start_Date: "25-03-2023", Leave_End_Date: "27-03-2023" },
-    { Employee_ID: "EMP001", Leave_Type: "Sick Leave", Leave_Days: "2", Leave_Start_Date: "10-04-2023", Leave_End_Date: "11-04-2023" },
-    { Employee_ID: "EMP001", Leave_Type: "Sick Leave", Leave_Days: "4", Leave_Start_Date: "10-05-2024", Leave_End_Date: "11-05-2024" },
+const ViewPerformanceModal = ({ setViewPerformanceModal }) => {
+  const [performanceData, setPerformanceData] = useState([
+    {
+      Employee_ID: "EMP1001",
+      Review_Period: "Annual 2023",
+      Performance_Rating: 5,
+      Manager_Feedback: "Exceeds Expectations",
+      Promotion_Consideration: true,
+    },
+    {
+      Employee_ID: "EMP1002",
+      Review_Period: "Annual 2023",
+      Performance_Rating: 3,
+      Manager_Feedback: "Needs Improvement",
+      Promotion_Consideration: false,
+    },
   ]);
 
   const [editIndex, setEditIndex] = useState(null);
 
   const handleDelete = (index) => {
-    setLeaveData(leaveData.filter((_, i) => i !== index));
+    setPerformanceData(performanceData.filter((_, i) => i !== index));
   };
 
   const handleSave = (index, field, value) => {
-    const updatedData = [...leaveData];
+    const updatedData = [...performanceData];
     updatedData[index] = { ...updatedData[index], [field]: value };
-    setLeaveData(updatedData);
+    setPerformanceData(updatedData);
     setEditIndex(null);
   };
 
@@ -26,38 +37,42 @@ const ViewLeaveModal = ({ setViewLeaveModal }) => {
       <div className="bg-white md:rounded-xl min-h-screen md:min-h-0 md:max-h-96 md:mt-32 shadow-xl p-6 w-full md:max-w-2xl relative">
         <button
           className="absolute top-3 right-3 bg-green-400 text-white p-2 rounded-xl"
-          onClick={() => setViewLeaveModal(false)}
+          onClick={() => setViewPerformanceModal(false)}
         >
           <X />
         </button>
-        <h2 className="text-xl font-semibold text-center mb-4 text-green-400">Leave Details</h2>
+        <h2 className="text-xl font-semibold text-center mb-4 text-green-400">Performance Details</h2>
         <div className="overflow-auto max-h-80">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr>
-                <th className="p-2 border-b">Leave Type</th>
-                <th className="p-2 border-b">Days</th>
-                <th className="p-2 border-b">Start Date</th>
-                <th className="p-2 border-b">End Date</th>
+                <th className="p-2 border-b">Review Period</th>
+                <th className="p-2 border-b">Rating</th>
+                <th className="p-2 border-b">Feedback</th>
+                <th className="p-2 border-b">Promotion</th>
                 <th className="p-2 border-b">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {leaveData.map((data, index) => (
+              {performanceData.map((data, index) => (
                 <tr key={index} className="h-12 odd:bg-gray-200 even:bg-white hover:bg-green-200">
                   {Object.keys(data).slice(1).map((key) => (
                     <td key={key} className="p-2">
                       {editIndex === index ? (
                         <input
-                          type={key.includes("Date") ? "date" : key === "Leave_Days" ? "number" : "text"}
-                          value={data[key]}
-                          onChange={(e) => handleSave(index, key, e.target.value)}
+                          type={
+                            key === "Performance_Rating" ? "number" :
+                            key === "Promotion_Consideration" ? "checkbox" : "text"
+                          }
+                          value={key === "Promotion_Consideration" ? undefined : data[key]}
+                          checked={key === "Promotion_Consideration" ? data[key] : undefined}
+                          onChange={(e) => handleSave(index, key, key === "Promotion_Consideration" ? e.target.checked : e.target.value)}
                           onBlur={() => setEditIndex(null)}
                           className="border p-1 rounded w-full"
                         />
                       ) : (
                         <div className="group relative cursor-pointer">
-                          <span onDoubleClick={() => setEditIndex(index)}>{data[key]}</span>
+                          <span onDoubleClick={() => setEditIndex(index)}>{key === "Promotion_Consideration" ? (data[key] ? "Yes" : "No") : data[key]}</span>
                           <div className="invisible group-hover:visible absolute left-0 -top-8 bg-gray-800 text-white text-xs rounded px-2 py-1 whitespace-nowrap z-10">
                             Double click to edit
                             <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
@@ -85,4 +100,4 @@ const ViewLeaveModal = ({ setViewLeaveModal }) => {
   );
 };
 
-export default ViewLeaveModal;
+export default ViewPerformanceModal;
