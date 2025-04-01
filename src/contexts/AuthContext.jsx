@@ -114,6 +114,7 @@ export const AuthProvider = ({ children }) => {
 
       localStorage.removeItem("auth");
       localStorage.setItem("auth",JSON.stringify(newTokenData));
+      setToken(newTokenData);
     } catch (error) {
       console.error("refresh token error:", error);
       toast.error("Error refreshing token");
