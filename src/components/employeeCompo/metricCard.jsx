@@ -20,7 +20,7 @@ export const MetricCard = ({ title, value, icon, rating }) => {
       </h3>
       <div className="flex items-center justify-between mt-1">
         <p className="text-2xl font-bold text-gray-900 dark:text-white">
-          {value}
+          {(value == null) ? '--' : value}
         </p>
         {rating && <StarBadge rating={rating} />}
       </div>

@@ -42,7 +42,7 @@ const VibeChart = ({
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .map((vibe) => ({
       date: formatDate(vibe.date),
-      value: vibeToValue(vibe.vibe),
+      value: vibe.vibe_score,
       vibe: vibe.vibe,
     }));
 
