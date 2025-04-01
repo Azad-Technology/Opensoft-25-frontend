@@ -331,30 +331,30 @@ const AdminEmployeeDetail = () => {
                 </div>
               </div>
 
-              <div className="flex items-start space-x-3">
-                <div className="p-2 bg-secondary rounded-lg">
+              {/* <div className="flex items-start space-x-3"> */}
+                {/* <div className="p-2 bg-secondary rounded-lg">
                   <Briefcase size={18} className="text-muted-foreground" />
-                </div>
-                <div>
+                </div> */}
+                {/* <div>
                   <p className="text-sm text-muted-foreground">Status</p>
                   <p className="text-sm">Active</p>
-                </div>
+                </div> */}
               </div>
 
-              <div className="flex items-start space-x-3">
+              {/* <div className="flex items-start space-x-3">
                 <div className="p-2 bg-secondary rounded-lg">
                   <UserCheck size={18} className="text-muted-foreground" />
-                </div>
-                <div>
+                </div> */}
+                {/* <div>
                   <p className="text-sm text-muted-foreground">
                     Monthly Check-in
                   </p>
                   <p className="text-sm">
                     {currentMonthCheckIn ? "Completed" : "Pending"}
                   </p>
-                </div>
-              </div>
-            </div>
+                </div> */}
+              {/* </div>
+            </div> */}
           </div>
 
           <div
