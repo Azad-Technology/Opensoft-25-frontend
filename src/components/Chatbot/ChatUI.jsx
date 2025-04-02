@@ -31,7 +31,6 @@ const ChatUI = ({ className = "" }) => {
     useFetchSessions(token);
 
   // 2) Load session history from React Query
-  // (No more localMessages array)
   const { data: sessionHistory = [], isLoading: isLoadingHistory } =
     useFetchSessionHistory(sessionId, token);
 
@@ -279,7 +278,7 @@ const ChatUI = ({ className = "" }) => {
           // Main chat + input
           <>
             {/* Messages */}
-            <div className="flex-1 bg-gray-100 dark:bg-gray-900 overflow-y-auto p-4 space-y-4">
+            <div className="flex-1 bg-gray-100 dark:bg-gray-900 overflow-y-auto p-4 space-y-3">
               {isLoadingHistory && sessionHistory.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center text-gray-700 dark:text-gray-300">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#22C55E] mb-4"></div>
@@ -296,35 +295,38 @@ const ChatUI = ({ className = "" }) => {
                   </p>
                 </div>
               ) : (
-                // Render messages from sessionHistory
+                // Render messages from sessionHistory with improved styling
                 sessionHistory.map((m, idx) => (
                   <div
                     key={m.id || idx}
-                    className={`flex items-end ${m.role === "user" ? "justify-end" : "justify-start"} gap-2`}
+                    className={`flex items-start ${m.role === "user" ? "justify-end" : "justify-start"} gap-2`}
                   >
                     {/* Bot icon for assistant messages */}
                     {m.role !== "user" && (
-                      <div className="w-8 h-8 rounded-full bg-[#DCFCE7] dark:bg-[#0F4021] flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-[#DCFCE7] dark:bg-[#0F4021] flex items-center justify-center mt-1">
                         <Bot size={18} className="text-[#22C55E]" />
                       </div>
                     )}
 
                     <div
-                      className={`max-w-[70%] rounded-2xl p-4 ${
+                      className={`max-w-[80%] rounded-lg p-3 ${
                         m.role === "user"
-                          ? "bg-[#22C55E] text-white shadow-lg rounded-tr-none"
-                          : "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 shadow-md rounded-tl-none border border-gray-100 dark:border-gray-700"
+                          ? "bg-[#22C55E] text-white shadow-md rounded-tr-none"
+                          : "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 shadow-sm rounded-tl-none border border-gray-100 dark:border-gray-700"
                       }`}
                     >
+                      {/* Message content */}
                       <div className="text-sm whitespace-pre-wrap">
                         {m.message}
                       </div>
+
+                      {/* Timestamp - more subtle positioning */}
                       <div
-                        className={`text-right mt-2 ${
+                        className={`text-right mt-1 ${
                           m.role === "user" ? "text-green-100" : "text-gray-400"
                         }`}
                       >
-                        <span className="text-xs">
+                        <span className="text-xs font-light">
                           {formatTime(m.timestamp)}
                         </span>
                       </div>
@@ -332,7 +334,7 @@ const ChatUI = ({ className = "" }) => {
 
                     {/* User icon */}
                     {m.role === "user" && (
-                      <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center mt-1">
                         <UserCircle
                           size={18}
                           className="text-gray-600 dark:text-gray-300"
@@ -343,23 +345,15 @@ const ChatUI = ({ className = "" }) => {
                 ))
               )}
 
-              {/* Typing indicator */}
+              {/* Replaced animated typing indicator with a simple loading state */}
               {isTyping && (
-                <div className="flex items-end justify-start gap-2">
-                  <div className="w-8 h-8 rounded-full bg-[#DCFCE7] dark:bg-[#0F4021] flex items-center justify-center">
+                <div className="flex items-start justify-start gap-2">
+                  <div className="w-8 h-8 rounded-full bg-[#DCFCE7] dark:bg-[#0F4021] flex items-center justify-center mt-1">
                     <Bot size={18} className="text-[#22C55E]" />
                   </div>
-                  <div className="max-w-[70%] rounded-2xl p-4 bg-white dark:bg-gray-800 shadow-md rounded-tl-none border border-gray-100 dark:border-gray-700">
-                    <div className="flex space-x-2">
-                      <div className="h-3 w-3 bg-[#22C55E] rounded-full animate-pulse" />
-                      <div
-                        className="h-3 w-3 bg-[#22C55E] rounded-full animate-pulse"
-                        style={{ animationDelay: "0.2s" }}
-                      />
-                      <div
-                        className="h-3 w-3 bg-[#22C55E] rounded-full animate-pulse"
-                        style={{ animationDelay: "0.4s" }}
-                      />
+                  <div className="max-w-[80%] rounded-lg p-3 bg-white dark:bg-gray-800 shadow-sm rounded-tl-none border border-gray-100 dark:border-gray-700">
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      Assistant is typing...
                     </div>
                   </div>
                 </div>
@@ -370,14 +364,14 @@ const ChatUI = ({ className = "" }) => {
             </div>
 
             {/* Message Input */}
-            <div className="p-4 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800">
-              <div className="flex space-x-3 items-center">
+            <div className="p-3 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800">
+              <div className="flex space-x-2 items-center">
                 <div className="flex-1 relative">
                   <textarea
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    className="w-full py-3 px-4 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-2xl resize-none focus:outline-none focus:ring-2 focus:ring-[#22C55E] focus:border-transparent transition-all"
+                    className="w-full py-2 px-3 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#22C55E] focus:border-transparent transition-all"
                     placeholder="Type your message..."
                     rows={1}
                   />
