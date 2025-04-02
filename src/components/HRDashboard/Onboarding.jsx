@@ -223,7 +223,7 @@ function EmployeeOnboarding() {
       console.log("success")
     } catch (error) {
       console.error("Error fetching profile data:", error);
-      toast.error("Error fetching profile data");
+      // toast.error("Error fetching profile data");
     }
   };
 
