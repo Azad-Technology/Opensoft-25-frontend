@@ -15,53 +15,39 @@ import {
 import { useAuth } from "../../contexts/AuthContext";
 
 const ChatUI = ({ className = "" }) => {
-  const { user, token } = useAuth();
+  const { token } = useAuth();
 
-  // sessionId changes when the user picks a different session
+  // Which session are we in?
   const [sessionId, setSessionId] = useState(null);
-  // isTyping is local-only
-  const [isTyping, setIsTyping] = useState(false);
-  const [isNewChat, setisNewChat] = useState(false);
 
-  // text input
+  // Simple local states
+  const [isTyping, setIsTyping] = useState(false);
+  const [isNewChat, setIsNewChat] = useState(false);
   const [newMessage, setNewMessage] = useState("");
-  // Mobile sidebar toggle
   const [showSidebar, setShowSidebar] = useState(false);
 
   // 1) Load all sessions for the sidebar
   const { data: conversations = [], isLoading: isLoadingSessions } =
     useFetchSessions(token);
 
-  // 2) Load the session history for the selected session
+  // 2) Load session history from React Query
   const { data: sessionHistory = [], isLoading: isLoadingHistory } =
     useFetchSessionHistory(sessionId, token);
 
-  // Local state to keep track of messages, including pending ones
-  const [localMessages, setLocalMessages] = useState([]);
-
-  // Update local messages whenever session history changes
-  useEffect(() => {
-    if (sessionHistory.length > 0) {
-      setLocalMessages(sessionHistory);
-    } else {
-      setLocalMessages([]);
-    }
-  }, [sessionHistory]);
-
-  // 3) Send message mutation
+  // 3) Mutation for sending chat messages (optimistic)
   const { mutate: sendChat } = useSendChatMessage({
     token,
     onSessionCreated: (newId) => {
+      // If the server created a brand-new session
       setSessionId(newId);
     },
   });
 
+  // For scrolling to the bottom
   const messageEndRef = useRef(null);
-
-  // Always scroll to bottom when messages change
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [localMessages, isTyping]);
+  }, [sessionHistory, isTyping]);
 
   // Start a brand-new chat
   const handleNewChat = () => {
@@ -69,19 +55,17 @@ const ChatUI = ({ className = "" }) => {
       toast.error("No token found; please log in again.");
       return;
     }
-
-    // Show loading spinner immediately
-    setisNewChat(true);
-    setSessionId(null); // just to be sure
-    setLocalMessages([]);
+    setIsNewChat(true);
+    setSessionId(null);
     setShowSidebar(false);
 
+    // Fire off the "new conversation" call
     sendChat(
       { sessionId: null, message: "", token },
       {
         onSuccess: (data) => {
-          // This triggers the full Chat UI render
-          setSessionId(data.session_id); // sets sessionId, shows full chat UI
+          setIsNewChat(false);
+          // onSessionCreated also sets the sessionId
         },
         onError: () => {
           setIsTyping(false);
@@ -95,48 +79,29 @@ const ChatUI = ({ className = "" }) => {
   const handleSendMessage = () => {
     if (!newMessage.trim() || !token) return;
 
-    // Create a new user message object
-    const userMessage = {
-      role: "user",
-      message: newMessage,
-      timestamp: new Date().toISOString(),
-      // Add a temporary ID to identify this message
-      tempId: Date.now().toString(),
-    };
-
-    // Add the user message to local messages immediately
-    setLocalMessages((prevMessages) => [...prevMessages, userMessage]);
-
-    // Set typing indicator
+    // Show typing indicator
     setIsTyping(true);
 
-    // Send to API
+    // We'll rely on the optimistic update in useSendChatMessage
     sendChat(
       { sessionId, message: newMessage, token },
       {
-        onSuccess: (data) => {
+        onSuccess: () => {
           setNewMessage("");
-          // Don't need to update messages here anymore as it will happen via the useEffect
-          // Just need to control typing indicator
           setTimeout(() => setIsTyping(false), 1000);
         },
-        onError: (error) => {
-          // Handle errors, possibly by marking the message as failed
+        onError: () => {
           setIsTyping(false);
           toast.error("Failed to send message. Please try again.");
         },
       },
     );
 
-    // Clear the input field immediately
+    // Immediately clear the input field
     setNewMessage("");
-
-    // Force scroll to bottom
-    setTimeout(() => {
-      messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, 100);
   };
 
+  // Handle enter key
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -144,6 +109,7 @@ const ChatUI = ({ className = "" }) => {
     }
   };
 
+  // Format a timestamp
   const formatTime = (ts) => {
     const date = new Date(ts);
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -272,9 +238,9 @@ const ChatUI = ({ className = "" }) => {
           </div>
         </div>
 
-        {/* Content Area - Show placeholder or chat depending on sessionId */}
+        {/* Content Area - show placeholder or chat depending on sessionId */}
         {!sessionId ? (
-          // Placeholder UI when no chat is selected
+          // Placeholder if no session selected
           <div className="flex-1 flex flex-col items-center justify-center text-center p-6 bg-white dark:bg-gray-900">
             {isNewChat ? (
               <>
@@ -309,16 +275,16 @@ const ChatUI = ({ className = "" }) => {
             )}
           </div>
         ) : (
-          // Chat messages and input area
+          // Main chat + input
           <>
             {/* Messages */}
-            <div className="flex-1 bg-gray-100 dark:bg-gray-900 overflow-y-auto p-4 space-y-4">
-              {isLoadingHistory && localMessages.length === 0 ? (
+            <div className="flex-1 bg-gray-100 dark:bg-gray-900 overflow-y-auto p-4 space-y-3">
+              {isLoadingHistory && sessionHistory.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center text-gray-700 dark:text-gray-300">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#22C55E] mb-4"></div>
                   <div className="text-xl">Loading conversation...</div>
                 </div>
-              ) : localMessages.length === 0 ? (
+              ) : sessionHistory.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center text-gray-700 dark:text-gray-300">
                   <div className="text-6xl mb-6 bg-[#DCFCE7] dark:bg-[#0F4021] p-6 rounded-full">
                     <MessageSquare size={48} className="text-[#22C55E]" />
@@ -329,42 +295,46 @@ const ChatUI = ({ className = "" }) => {
                   </p>
                 </div>
               ) : (
-                localMessages.map((m, idx) => (
+                // Render messages from sessionHistory with improved styling
+                sessionHistory.map((m, idx) => (
                   <div
-                    key={m.tempId || idx}
-                    className={`flex items-end ${
-                      m.role === "user" ? "justify-end" : "justify-start"
-                    } gap-2`}
+                    key={m.id || idx}
+                    className={`flex items-start ${m.role === "user" ? "justify-end" : "justify-start"} gap-2`}
                   >
                     {/* Bot icon for assistant messages */}
                     {m.role !== "user" && (
-                      <div className="w-8 h-8 rounded-full bg-[#DCFCE7] dark:bg-[#0F4021] flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-[#DCFCE7] dark:bg-[#0F4021] flex items-center justify-center mt-1">
                         <Bot size={18} className="text-[#22C55E]" />
                       </div>
                     )}
 
                     <div
-                      className={`max-w-[70%] rounded-2xl p-4 ${
+                      className={`max-w-[80%] rounded-lg p-3 ${
                         m.role === "user"
-                          ? "bg-[#22C55E] text-white shadow-lg rounded-tr-none"
-                          : "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 shadow-md rounded-tl-none border border-gray-100 dark:border-gray-700"
+                          ? "bg-[#22C55E] text-white shadow-md rounded-tr-none"
+                          : "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 shadow-sm rounded-tl-none border border-gray-100 dark:border-gray-700"
                       }`}
                     >
+                      {/* Message content */}
                       <div className="text-sm whitespace-pre-wrap">
                         {m.message}
                       </div>
+
+                      {/* Timestamp - more subtle positioning */}
                       <div
-                        className={`text-right mt-2 ${m.role === "user" ? "text-green-100" : "text-gray-400"}`}
+                        className={`text-right mt-1 ${
+                          m.role === "user" ? "text-green-100" : "text-gray-400"
+                        }`}
                       >
-                        <span className="text-xs">
+                        <span className="text-xs font-light">
                           {formatTime(m.timestamp)}
                         </span>
                       </div>
                     </div>
 
-                    {/* User icon for user messages */}
+                    {/* User icon */}
                     {m.role === "user" && (
-                      <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center mt-1">
                         <UserCircle
                           size={18}
                           className="text-gray-600 dark:text-gray-300"
@@ -375,40 +345,33 @@ const ChatUI = ({ className = "" }) => {
                 ))
               )}
 
-              {/* Typing indicator */}
+              {/* Replaced animated typing indicator with a simple loading state */}
               {isTyping && (
-                <div className="flex items-end justify-start gap-2">
-                  <div className="w-8 h-8 rounded-full bg-[#DCFCE7] dark:bg-[#0F4021] flex items-center justify-center">
+                <div className="flex items-start justify-start gap-2">
+                  <div className="w-8 h-8 rounded-full bg-[#DCFCE7] dark:bg-[#0F4021] flex items-center justify-center mt-1">
                     <Bot size={18} className="text-[#22C55E]" />
                   </div>
-                  <div className="max-w-[70%] rounded-2xl p-4 bg-white dark:bg-gray-800 shadow-md rounded-tl-none border border-gray-100 dark:border-gray-700">
-                    <div className="flex space-x-2">
-                      <div className="h-3 w-3 bg-[#22C55E] rounded-full animate-pulse" />
-                      <div
-                        className="h-3 w-3 bg-[#22C55E] rounded-full animate-pulse"
-                        style={{ animationDelay: "0.2s" }}
-                      />
-                      <div
-                        className="h-3 w-3 bg-[#22C55E] rounded-full animate-pulse"
-                        style={{ animationDelay: "0.4s" }}
-                      />
+                  <div className="max-w-[80%] rounded-lg p-3 bg-white dark:bg-gray-800 shadow-sm rounded-tl-none border border-gray-100 dark:border-gray-700">
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      Assistant is typing...
                     </div>
                   </div>
                 </div>
               )}
 
+              {/* Scroll anchor */}
               <div ref={messageEndRef} />
             </div>
 
             {/* Message Input */}
-            <div className="p-4 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800">
-              <div className="flex space-x-3 items-center">
+            <div className="p-3 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800">
+              <div className="flex space-x-2 items-center">
                 <div className="flex-1 relative">
                   <textarea
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    className="w-full py-3 px-4 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-2xl resize-none focus:outline-none focus:ring-2 focus:ring-[#22C55E] focus:border-transparent transition-all"
+                    className="w-full py-2 px-3 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#22C55E] focus:border-transparent transition-all"
                     placeholder="Type your message..."
                     rows={1}
                   />

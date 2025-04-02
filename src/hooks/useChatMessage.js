@@ -58,6 +58,12 @@ const sendChatMessageAPI = async ({ sessionId, message, token }) => {
     throw new Error(error || "Failed to send message");
   }
   return res.json();
+  // Expected shape:
+  // {
+  //   session_id: "...",
+  //   userMessage: { id: "...", role: "user", message: "...", timestamp: "..." },
+  //   assistantMessage: { id: "...", role: "assistant", message: "...", timestamp: "..." }
+  // }
 };
 
 /**
@@ -101,35 +107,108 @@ export const useFetchSessionHistory = (sessionId, token) => {
 };
 
 /**
- * useSendChatMessage:
- *  - POST /chat/message
- *  - If session doesn't exist, server creates one
- *  - Invalidate relevant queries so UI stays in sync
+ * useSendChatMessage (Optimistic Updates)
+ *
+ * If a session doesn't exist, the server creates one.
+ * This hook modifies the cache for ["chatHistory", sessionId] so that:
+ *  1) The user's new message appears immediately (optimistic update).
+ *  2) On error, we rollback to the previous cache.
+ *  3) On success, we replace the temp message with the final user/assistant messages from the server.
  */
 export const useSendChatMessage = ({ onSessionCreated, token }) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: sendChatMessageAPI,
-    onSuccess: (data, variables) => {
+
+    // 1) onMutate: immediately show user’s message in ["chatHistory", sid]
+    async onMutate(variables) {
+      const { sessionId, message } = variables;
+      // If no sessionId, we might be creating a new session
+      const sid = sessionId || "temp_session";
+
+      const queryKey = ["chatHistory", sid];
+
+      // Cancel any outgoing fetches to avoid overwriting the optimistic update
+      await queryClient.cancelQueries({ queryKey });
+
+      // Snapshot the previous messages for rollback
+      const previousMessages = queryClient.getQueryData(queryKey);
+
+      // Create an optimistic user message
+      const optimisticMessage = {
+        // If the server eventually returns an ID, we can replace this later
+        id: `temp-${Date.now()}`,
+        role: "user",
+        message,
+        timestamp: new Date().toISOString(),
+      };
+
+      // Update the query data optimistically
+      queryClient.setQueryData(queryKey, (old = []) => [
+        ...old,
+        optimisticMessage,
+      ]);
+
+      // Return context for rollback
+      return { previousMessages, sid, optimisticMessage };
+    },
+
+    // 2) onError: rollback to snapshot if something goes wrong
+    onError(error, variables, context) {
+      toast.error(error.message || "Failed to send message");
+      if (context?.previousMessages) {
+        queryClient.setQueryData(
+          ["chatHistory", context.sid],
+          context.previousMessages,
+        );
+      }
+    },
+
+    // 3) onSuccess: replace the optimistic message with final messages from the server
+    onSuccess(data, variables, context) {
       // If new session was created
-      if (data.session_id && onSessionCreated) {
+      if (data.session_id && variables.sessionId === null && onSessionCreated) {
         onSessionCreated(data.session_id);
       }
 
-      // Invalidate that session's messages so we can refetch updated data
-      const sid = data.session_id || variables.sessionId;
-      if (sid) {
-        queryClient.invalidateQueries(["chatHistory", sid]);
+      const sid = data.session_id || context.sid;
+      const queryKey = ["chatHistory", sid];
+
+      // If the server returned final userMessage & assistantMessage
+      // we'll replace our temp user message with the real user message
+      // and also add the assistant message.
+      if (data.userMessage && data.assistantMessage) {
+        queryClient.setQueryData(queryKey, (old = []) => {
+          // Filter out the optimistic user message (by ID)
+          const filtered = old.filter(
+            (msg) => msg.id !== context.optimisticMessage.id,
+          );
+          // Add official userMessage + assistantMessage
+          return [...filtered, data.userMessage, data.assistantMessage];
+        });
+      } else if (data.userMessage) {
+        // Possibly the assistant message isn't ready yet
+        queryClient.setQueryData(queryKey, (old = []) => {
+          const filtered = old.filter(
+            (msg) => msg.id !== context.optimisticMessage.id,
+          );
+          return [...filtered, data.userMessage];
+        });
       }
 
-      // Also update session list if needed (e.g., new session added)
+      // If you want to also update session list (e.g. if new session was created)
       queryClient.invalidateQueries(["chatSessions", token]);
-
-      // toast.success("Message sent");
     },
-    onError: (err) => {
-      toast.error(err.message || "Something went wrong");
+
+    // 4) onSettled: always re-invalidate to fetch the final server state
+    onSettled(data, error, variables, context) {
+      if (!error && data) {
+        const sid = data.session_id || context.sid || variables.sessionId;
+        if (sid) {
+          queryClient.invalidateQueries(["chatHistory", sid]);
+        }
+      }
     },
   });
 };

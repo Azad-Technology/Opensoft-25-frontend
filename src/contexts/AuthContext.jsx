@@ -15,10 +15,34 @@ export const AuthProvider = ({ children }) => {
     const stored = localStorage.getItem("auth");
     if (stored) {
       const parsed = JSON.parse(stored);
-      setUser(parsed.user);
-      setToken(parsed.access_token);
+      const currentTime = Date.now();
+      if (parsed.expiration && currentTime > parsed.expiration) {
+        localStorage.removeItem("auth"); // Expired, clean up
+      } else {
+        setUser(parsed.user);
+        setToken(parsed.access_token);
+      }
     }
     setIsLoading(false);
+  }, []);
+
+  // Auto-logout on token expiration
+  useEffect(() => {
+    const checkTokenExpiration = () => {
+      const stored = localStorage.getItem("auth");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        const currentTime = Date.now();
+        if (parsed.expiration && currentTime > parsed.expiration) {
+          console.warn("Token expired, logging out.");
+          logout();
+        }
+      }
+    };
+
+    checkTokenExpiration(); // Run immediately
+    const interval = setInterval(checkTokenExpiration, 60 * 60 * 1000); // Every 1 minute
+    return () => clearInterval(interval);
   }, []);
 
   // Handle redirects based on auth status and role
@@ -29,7 +53,7 @@ export const AuthProvider = ({ children }) => {
       if (user) {
         if (["/", "/login", "/signup"].includes(path)) {
           const redirectPath =
-            user.role_type === "admin"
+            user.role_type === "hr"
               ? "/admin/dashboard"
               : "/employee/dashboard";
           navigate(redirectPath);
@@ -67,6 +91,37 @@ export const AuthProvider = ({ children }) => {
     navigate("/login");
   };
 
+
+  const refreshToken = async () => {
+    const tokenData = JSON.parse(localStorage.getItem("auth"));
+    try {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_URL}/auth/token`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tokenData.access_token}`,
+        }
+      })
+
+      const res= await response.json();
+      const expTime=Date.now()+res.expires_in;
+
+      const newTokenData={
+        access_token:res.access_token,
+        expiration:expTime,
+        user:tokenData.user
+      }
+
+      // localStorage.removeItem("auth");
+      localStorage.setItem("auth",JSON.stringify(newTokenData));
+      setToken(newTokenData.access_token);
+    } catch (error) {
+      console.error("refresh token error:", error);
+      toast.error("Error refreshing token");
+    }
+
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -77,6 +132,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         setUser,
+        refreshToken
       }}
     >
       {children}

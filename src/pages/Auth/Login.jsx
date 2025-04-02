@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { toast } from "sonner";
 import { Lock, Mail, ArrowRight } from "lucide-react";
@@ -8,26 +7,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { login, setUser } = useAuth();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    checkTokenExpiration();
-    const interval = setInterval(checkTokenExpiration, 60 * 1000); // Every 60 seconds
-    return () => clearInterval(interval);
-  }, []);
-
-  const checkTokenExpiration = () => {
-    const tokenData = JSON.parse(localStorage.getItem("auth"));
-    if (tokenData) {
-      const currentTime = new Date().getTime();
-      if (currentTime > tokenData.expiration) {
-        localStorage.removeItem("auth");
-        setUser(null);
-        navigate("/login");
-      }
-    }
-  };
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
