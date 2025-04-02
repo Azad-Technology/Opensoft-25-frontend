@@ -75,20 +75,6 @@ const EmployeeReports = () => {
     },
   ];
 
-  // const userVibes = [
-  //   { id: 1, date: "2024-03-25", vibe: "happy" },
-  //   { id: 2, date: "2024-03-26", vibe: "sad" },
-  //   { id: 3, date: "2024-03-27", vibe: "frustrated" },
-  //   { id: 4, date: "2024-03-28", vibe: "excited" },
-  //   { id: 5, date: "2024-03-29", vibe: "okay" },
-  //   { id: 6, date: "2024-03-30", vibe: "happy" },
-  //   { id: 7, date: "2024-03-31", vibe: "happy" },
-  //   { id: 8, date: "2024-04-1", vibe: "frustrated" },
-  //   { id: 9, date: "2024-04-2", vibe: "excited" },
-  //   { id: 10, date: "2024-04-3", vibe: "sad" },
-  //   { id: 11, date: "2024-04-4", vibe: "okay" },
-  // ];
-
   const userRecognitions = [
     {
       id: 1,
@@ -106,43 +92,42 @@ const EmployeeReports = () => {
     },
   ];
 
-  const userLeaves = [
-    {
-      id: 1,
-      startDate: "2024-03-10",
-      endDate: "2024-03-12",
-      reason: "Medical leave due to illness",
-      status: "approved",
-    },
-    {
-      id: 2,
-      startDate: "2024-03-20",
-      endDate: "2024-03-22",
-      reason: "Family function",
-      status: "pending",
-    },
-    {
-      id: 3,
-      startDate: "2024-04-05",
-      endDate: "2024-04-06",
-      reason: "Personal work",
-      status: "rejected",
-    },
-    {
-      id: 4,
-      startDate: "2024-04-15",
-      endDate: "2024-04-18",
-      reason: "Vacation",
-      status: "approved",
-    },
-    {
-      id: 5,
-      startDate: "2024-05-01",
-      endDate: "2024-05-02",
-      reason: "Emergency leave",
-      status: "pending",
-    },
-  ];
+  //   {
+  //     id: 1,
+  //     startDate: "2024-03-10",
+  //     endDate: "2024-03-12",
+  //     reason: "Medical leave due to illness",
+  //     status: "approved",
+  //   },
+  //   {
+  //     id: 2,
+  //     startDate: "2024-03-20",
+  //     endDate: "2024-03-22",
+  //     reason: "Family function",
+  //     status: "pending",
+  //   },
+  //   {
+  //     id: 3,
+  //     startDate: "2024-04-05",
+  //     endDate: "2024-04-06",
+  //     reason: "Personal work",
+  //     status: "rejected",
+  //   },
+  //   {
+  //     id: 4,
+  //     startDate: "2024-04-15",
+  //     endDate: "2024-04-18",
+  //     reason: "Vacation",
+  //     status: "approved",
+  //   },
+  //   {
+  //     id: 5,
+  //     startDate: "2024-05-01",
+  //     endDate: "2024-05-02",
+  //     reason: "Emergency leave",
+  //     status: "pending",
+  //   },
+  // ];
 
   useEffect(() => {
     if (!token) return;
@@ -204,8 +189,9 @@ const EmployeeReports = () => {
       </Layout>
     );
   }
-  const userVibes = Object.values(stats.vibe_trend)
-  console.log("Vibe data: ", userVibes);
+  const userVibes = Object.values(stats.vibe_trend);
+  const userLeaves = Object.values(stats.all_leaves);
+  console.log("Leave Data ", userLeaves);
   return (
     <Layout>
       <div className="page-container py-8">
@@ -345,29 +331,34 @@ const EmployeeReports = () => {
                   <thead>
                     <tr className="text-left border-b border-border">
                       <th className="py-3 px-4 font-medium">Date Range</th>
-                      <th className="py-3 px-4 font-medium">Reason</th>
-                      <th className="py-3 px-4 font-medium">Status</th>
+                      <th className="py-3 px-4 font-medium">Leave Days</th>
+                      <th className="py-3 px-4 font-medium">Leave Type</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {userLeaves.map((leave) => (
-                      <tr key={leave.id} className="border-b border-border">
+                    {userLeaves.map((leave, index) => (
+                      <tr key={index} className="border-b border-border">
                         <td className="py-3 px-4">
-                          {new Date(leave.startDate).toLocaleDateString()} -{" "}
-                          {new Date(leave.endDate).toLocaleDateString()}
+                          {new Date(leave.leave_start_date).toLocaleDateString()} -{" "}
+                          {new Date(leave.leave_end_date).toLocaleDateString()}
                         </td>
-                        <td className="py-3 px-4">{leave.reason}</td>
+                        <td className="py-3 px-4">{leave.leave_days}</td>
                         <td className="py-3 px-4">
                           <span
-                            className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${leave.status === "approved"
-                              ? "bg-green-100 text-green-800"
-                              : leave.status === "pending"
-                                ? "bg-yellow-100 text-yellow-800"
-                                : "bg-red-100 text-red-800"
-                              }`}
+                            className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
+                              leave.leave_type === "Casual Leave"
+                                ? "bg-blue-100 text-blue-800"
+                                : leave.leave_type === "Sick Leave"
+                                ? "bg-red-100 text-gray-800"
+                                : leave.leave_type === "Unpaid Leave"
+                                ? "bg-gray-100  text-red-800"
+                                : leave.leave_type === "Annual Leave"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-purple-100 text-purple-800"
+                            }`}
                           >
-                            {leave.status.charAt(0).toUpperCase() +
-                              leave.status.slice(1)}
+                            {leave.leave_type.charAt(0).toUpperCase() +
+                              leave.leave_type.slice(1)}
                           </span>
                         </td>
                       </tr>
