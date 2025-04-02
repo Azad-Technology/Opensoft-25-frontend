@@ -18,117 +18,85 @@ import Layout from "../../components/employeeCompo/Layout";
 import { cn } from "../../lib/utils";
 import { useTheme } from "../../contexts/ThemeContext";
 
-// Dummy data for events (holidays and religious celebrations)
-const dummyEvents = [
-  {
-    id: 1,
-    date: new Date(2025, 3, 1),
-    title: "Chaitra Sukhladi",
-    note: "Hindu new year celebrated in many parts of India.",
-  },
-  {
-    id: 2,
-    date: new Date(2025, 3, 1),
-    title: "Gudi Padwa",
-    note: "Traditional new year celebration in Maharashtra.",
-  },
-  {
-    id: 3,
-    date: new Date(2025, 3, 1),
-    title: "Ugadi",
-    note: "New Year's Day for people in Karnataka and Andhra Pradesh.",
-  },
-  {
-    id: 4,
-    date: new Date(2025, 3, 1),
-    title: "Ramzan Id",
-    note: "Marks the end of Ramadan, the Islamic holy month of fasting.",
-  },
-  {
-    id: 5,
-    date: new Date(2025, 3, 1),
-    title: "Ramzan Id/Eid-ul-Fitar (tentative)",
-    note: "Date may vary based on moon sighting.",
-  },
-  {
-    id: 6,
-    date: new Date(2025, 3, 6),
-    title: "Rama Navami",
-    note: "Celebrates the birth of Lord Rama.",
-  },
-  {
-    id: 7,
-    date: new Date(2025, 3, 10),
-    title: "Mahavir Jayanti",
-    note: "Celebrates the birth of Lord Mahavira.",
-  },
-  {
-    id: 8,
-    date: new Date(2025, 3, 13),
-    title: "Vaisakhi",
-    note: "Sikh New Year festival and spring harvest celebration.",
-  },
-  {
-    id: 9,
-    date: new Date(2025, 3, 14),
-    title: "Ambedkar Jayanti",
-    note: "Birth anniversary of Dr. B.R. Ambedkar.",
-  },
-  {
-    id: 10,
-    date: new Date(2025, 3, 14),
-    title: "Mesadi",
-    note: "Traditional new year celebrated in Assam.",
-  },
-  {
-    id: 11,
-    date: new Date(2025, 3, 15),
-    title: "Bahag Bihu/Vaisakhadi",
-    note: "Assamese New Year celebration.",
-  },
-  {
-    id: 12,
-    date: new Date(2025, 3, 18),
-    title: "Good Friday",
-    note: "Christian observance commemorating the crucifixion of Jesus Christ.",
-  },
-  {
-    id: 13,
-    date: new Date(2025, 3, 20),
-    title: "Easter Day",
-    note: "Christian celebration of the resurrection of Jesus Christ.",
-  },
-];
-
 export default function EmployeeSchedule() {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const { schedules = [] } = useData() || {};
   const { theme } = useTheme();
   const isDarkMode = theme === "dark";
   const [isEventDetailsOpen, setIsEventDetailsOpen] = useState(false);
-
-  // Use dummy data if no schedules are provided from context
-  const [events, setEvents] = useState(
-    schedules.length > 0 ? schedules : dummyEvents,
-  );
+  const [loading, setLoading] = useState(true);
+  const [events, setEvents] = useState([]);
 
   // State for current date and selected day
   const [currentDate, setCurrentDate] = useState(new Date(2025, 3, 1)); // April 2025
-  const [selectedDay, setSelectedDay] = useState(null);
+  const [selectedDay, setSelectedDay] = useState(new Date(2025, 3, 1)); // Initialize with current date
 
   // State for new event form
   const [newEvent, setNewEvent] = useState({ title: "", note: "" });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isAddingEvent, setIsAddingEvent] = useState(false);
 
   // State for delete button visibility on events
   const [selectedEvent, setSelectedEvent] = useState(null);
+
+  // Safe token retrieval
+  const getToken = () => {
+    try {
+      const authData = localStorage.getItem("auth");
+      if (!authData) return null;
+      return JSON.parse(authData).access_token;
+    } catch (error) {
+      console.error("Error retrieving auth token:", error);
+      return null;
+    }
+  };
+
+  async function fetchSchedules() {
+    if (!selectedDay) return; // Don't fetch if no date is selected
+    
+    const token = getToken();
+    if (!token) {
+      console.error("No auth token found");
+      return;
+    }
+    
+    try {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_URL}/employee/get_schedules?date=${new Date(selectedDay).toISOString().split("T")[0]}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch schedules");
+      }
+      const data = await response.json();
+      setEvents(data.schedules || []);
+    } catch (error) {
+      console.error("Error fetching schedules:", error);
+    }
+  }
 
   // Function to delete an event
   const deleteEvent = (id) => {
     setEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
     // Clear delete button visibility if the deleted event was active
-    setDeleteVisibleEventId(null);
+    if (selectedEvent && selectedEvent.id === id) {
+      setSelectedEvent(null);
+    }
   };
+
+  // Fetch schedules on initial load and when month changes
+  useEffect(() => {
+    async function loadData() {
+      setLoading(true);
+      await fetchSchedules();
+      setLoading(false);
+    }
+    loadData();
+  }, [currentDate]); // Only load data when month changes, not on every selectedDay change
+
   // Get days in month
   const getDaysInMonth = (year, month) => {
     return new Date(year, month + 1, 0).getDate();
@@ -163,7 +131,7 @@ export default function EmployeeSchedule() {
     const selectedDate = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth(),
-      day,
+      day
     );
     setSelectedDay(selectedDate);
     setIsDialogOpen(true);
@@ -177,24 +145,60 @@ export default function EmployeeSchedule() {
   };
 
   // Add new event
-  const handleAddEvent = () => {
+  const handleAddEvent = async () => {
     if (selectedDay && newEvent.title) {
-      const newEventObj = {
-        id: events.length + 1,
-        date: selectedDay,
-        title: newEvent.title,
-        note: newEvent.note || "",
-      };
-
-      setEvents([...events, newEventObj]);
+      setIsAddingEvent(true);
+      await addSchedule();
       setNewEvent({ title: "", note: "" });
       setIsDialogOpen(false);
+      setIsAddingEvent(false);
     }
   };
 
+  async function addSchedule() {
+    const token = getToken();
+    if (!token) {
+      console.error("No auth token found");
+      return;
+    }
+    
+    try {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_URL}/employee/add_schedule`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          "date": new Date(selectedDay).toISOString().split("T")[0],
+          "title": newEvent.title,
+          "note": newEvent.note
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to add schedule: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      console.log('Schedule added successfully:', result);
+      alert('Schedule added successfully!');
+      
+      // Refresh the events after adding a new one
+      await fetchSchedules();
+    } catch (error) {
+      console.error('Error adding schedule:', error);
+      alert('Failed to add schedule. Please try again.');
+    }
+  }
+
   // Get events for a specific day
   const getEventsForDay = (day) => {
+    if (!events || !Array.isArray(events)) return [];
+    
     return events.filter((event) => {
+      if (!event.date) return false;
+      
       const eventDate = new Date(event.date);
       return (
         eventDate.getDate() === day &&
@@ -344,9 +348,10 @@ export default function EmployeeSchedule() {
               {isOtherMonth ? `${displayMonth} ${day}` : day}
             </span>
 
-            {/* Add event button */}
-            {!isOtherMonth && (
+              {/* Add schedule button */}
+              {!isOtherMonth && (
               <button
+                id="plusButton"
                 onClick={(e) => handleAddEventClick(day, e)}
                 className={cn(
                   "w-6 h-6 rounded-full flex items-center justify-center text-white transition-colors",
@@ -357,12 +362,12 @@ export default function EmployeeSchedule() {
               >
                 <Plus className="h-4 w-4" />
               </button>
-            )}
+              )}
           </div>
 
           {/* Events */}
           <div className="px-1">
-            {dayEvents.map((event) => (
+            {dayEvents?.map((event) => (
               <div
                 key={event.id}
                 className={cn(
@@ -389,6 +394,16 @@ export default function EmployeeSchedule() {
       <Layout>
         <div className="rounded-xl p-6 animate-fade-in">
           <p>Loading your schedule...</p>
+        </div>
+      </Layout>
+    );
+  }
+  
+  if (loading) {
+    return (
+      <Layout>
+        <div className="rounded-xl p-6 animate-fade-in">
+          <p>Loading...</p>
         </div>
       </Layout>
     );
@@ -522,14 +537,19 @@ export default function EmployeeSchedule() {
                         : "border-gray-300 hover:bg-gray-100",
                     )}
                     onClick={() => setIsDialogOpen(false)}
+                    disabled={isAddingEvent}
                   >
                     Cancel
                   </button>
                   <button
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className={cn(
+                      "px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors",
+                      isAddingEvent && "opacity-70 cursor-not-allowed"
+                    )}
                     onClick={handleAddEvent}
+                    disabled={isAddingEvent}
                   >
-                    Add Event
+                    {isAddingEvent ? "Adding..." : "Add Event"}
                   </button>
                 </div>
               </div>

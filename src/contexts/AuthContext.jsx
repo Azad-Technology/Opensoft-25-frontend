@@ -111,10 +111,9 @@ export const AuthProvider = ({ children }) => {
         expiration:expTime,
         user:tokenData.user
       }
-
       // localStorage.removeItem("auth");
       localStorage.setItem("auth",JSON.stringify(newTokenData));
-      setToken(newTokenData);
+      setToken(newTokenData.access_tokens);
     } catch (error) {
       console.error("refresh token error:", error);
       toast.error("Error refreshing token");
