@@ -105,6 +105,7 @@ export default function EmployeeSchedule() {
   const { schedules = [] } = useData() || {};
   const { theme } = useTheme();
   const isDarkMode = theme === "dark";
+  const [isEventDetailsOpen, setIsEventDetailsOpen] = useState(false);
 
   // Use dummy data if no schedules are provided from context
   const [events, setEvents] = useState(
@@ -119,10 +120,15 @@ export default function EmployeeSchedule() {
   const [newEvent, setNewEvent] = useState({ title: "", note: "" });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  // State for event details popup
+  // State for delete button visibility on events
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [isEventDetailsOpen, setIsEventDetailsOpen] = useState(false);
 
+  // Function to delete an event
+  const deleteEvent = (id) => {
+    setEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
+    // Clear delete button visibility if the deleted event was active
+    setDeleteVisibleEventId(null);
+  };
   // Get days in month
   const getDaysInMonth = (year, month) => {
     return new Date(year, month + 1, 0).getDate();
@@ -360,15 +366,16 @@ export default function EmployeeSchedule() {
               <div
                 key={event.id}
                 className={cn(
-                  "text-xs p-1 mb-1 rounded-sm truncate cursor-pointer",
+                  "text-xs p-1 mb-1 rounded-sm cursor-pointer",
                   isDarkMode
                     ? "bg-green-900 hover:bg-green-800"
                     : "bg-green-300 hover:bg-green-400",
                   isDarkMode ? "text-white" : "text-black",
                 )}
-                onClick={(e) => handleEventClick(event, e)}
               >
-                {event.title}
+                <div className="flex justify-between items-center" onClick={(e) => handleEventClick(event, e)}>
+                  <span className="truncate">{event.title}</span>
+                </div>
               </div>
             ))}
           </div>
@@ -572,7 +579,13 @@ export default function EmployeeSchedule() {
                     <p>{selectedEvent.note}</p>
                   </div>
                 )}
-                <div className="flex justify-end">
+                <div className="flex justify-end gap-2">
+                  <button
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                    onClick={() => { deleteEvent(selectedEvent.id); setIsEventDetailsOpen(false); }}
+                  >
+                    Delete
+                  </button>
                   <button
                     className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                     onClick={() => setIsEventDetailsOpen(false)}
