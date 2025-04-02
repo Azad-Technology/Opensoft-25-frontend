@@ -19,12 +19,18 @@ import {
 } from "recharts";
 
 const EmployeeReports = () => {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const { vibes, leaves, activities, recognitions, performances } = useData();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [stats, setStats] = useState(null);
+
+  const BASE_URL = import.meta.env.VITE_REACT_APP_URL;
+
 
   // const [userVibes, setUserVibes] = useState([]);
   // const [userLeaves, setUserLeaves] = useState([]);
-  // const [userActivities, setUserActivities] = useState([]);
+  const [userActivities, setUserActivities] = useState([]);
   // const [userRecognitions, setUserRecognitions] = useState([]);
   // const [userPerformance, setUserPerformance] = useState(null);
 
@@ -69,19 +75,19 @@ const EmployeeReports = () => {
     },
   ];
 
-  const userVibes = [
-    { id: 1, date: "2024-03-25", vibe: "happy" },
-    { id: 2, date: "2024-03-26", vibe: "sad" },
-    { id: 3, date: "2024-03-27", vibe: "frustrated" },
-    { id: 4, date: "2024-03-28", vibe: "excited" },
-    { id: 5, date: "2024-03-29", vibe: "okay" },
-    { id: 6, date: "2024-03-30", vibe: "happy" },
-    { id: 7, date: "2024-03-31", vibe: "happy" },
-    { id: 8, date: "2024-04-1", vibe: "frustrated" },
-    { id: 9, date: "2024-04-2", vibe: "excited" },
-    { id: 10, date: "2024-04-3", vibe: "sad" },
-    { id: 11, date: "2024-04-4", vibe: "okay" },
-  ];
+  // const userVibes = [
+  //   { id: 1, date: "2024-03-25", vibe: "happy" },
+  //   { id: 2, date: "2024-03-26", vibe: "sad" },
+  //   { id: 3, date: "2024-03-27", vibe: "frustrated" },
+  //   { id: 4, date: "2024-03-28", vibe: "excited" },
+  //   { id: 5, date: "2024-03-29", vibe: "okay" },
+  //   { id: 6, date: "2024-03-30", vibe: "happy" },
+  //   { id: 7, date: "2024-03-31", vibe: "happy" },
+  //   { id: 8, date: "2024-04-1", vibe: "frustrated" },
+  //   { id: 9, date: "2024-04-2", vibe: "excited" },
+  //   { id: 10, date: "2024-04-3", vibe: "sad" },
+  //   { id: 11, date: "2024-04-4", vibe: "okay" },
+  // ];
 
   const userRecognitions = [
     {
@@ -97,39 +103,6 @@ const EmployeeReports = () => {
       date: "2024-02-10",
       description: "Acknowledged for exceptional teamwork and collaboration.",
       givenBy: "Project Manager",
-    },
-  ];
-
-  const userActivities = [
-    {
-      date: "2024-03-25",
-      teamsMessages: 15,
-      emails: 8,
-      meetings: 2,
-    },
-    {
-      date: "2024-03-26",
-      teamsMessages: 20,
-      emails: 5,
-      meetings: 3,
-    },
-    {
-      date: "2024-03-27",
-      teamsMessages: 12,
-      emails: 10,
-      meetings: 1,
-    },
-    {
-      date: "2024-03-28",
-      teamsMessages: 18,
-      emails: 6,
-      meetings: 4,
-    },
-    {
-      date: "2024-03-29",
-      teamsMessages: 25,
-      emails: 12,
-      meetings: 5,
     },
   ];
 
@@ -170,65 +143,69 @@ const EmployeeReports = () => {
       status: "pending",
     },
   ];
-  
 
-  // useEffect(() => {
-  //   if (user) {
-  //     const filteredVibes = vibes.filter(
-  //       (v) => v.employeeId === user.employeeId,
-  //     );
-  //     const filteredLeaves = leaves.filter(
-  //       (l) => l.employeeId === user.employeeId,
-  //     );
-  //     const filteredActivities = activities.filter(
-  //       (a) => a.employeeId === user.employeeId,
-  //     );
-  //     const filteredRecognitions = recognitions.filter(
-  //       (r) => r.employeeId === user.employeeId,
-  //     );
-  //     const filteredPerformance = performances.find(
-  //       (p) => p.employeeId === user.employeeId,
-  //     );
+  useEffect(() => {
+    if (!token) return;
 
-  //     const formattedVibes = filteredVibes
-  //       .sort((a, b) => new Date(a.date) - new Date(b.date))
-  //       .map((v) => ({
-  //         ...v,
-  //         date: new Date(v.date).toLocaleDateString("en-US", {
-  //           month: "short",
-  //           day: "numeric",
-  //         }),
-  //       }));
+    const fetchDashboardData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`${BASE_URL}/employee/dashboard/`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-  //     const formattedActivities = filteredActivities
-  //       .sort((a, b) => new Date(a.date) - new Date(b.date))
-  //       .map((a) => ({
-  //         ...a,
-  //         date: new Date(a.date).toLocaleDateString("en-US", {
-  //           month: "short",
-  //           day: "numeric",
-  //         }),
-  //         total: a.teamsMessages + a.emails + a.meetings,
-  //       }));
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          const text = await response.text();
+          throw new Error("Expected JSON but got: " + text);
+        }
 
-  //     setUserVibes(formattedVibes);
-  //     setUserLeaves(filteredLeaves);
-  //     setUserActivities(formattedActivities);
-  //     setUserRecognitions(filteredRecognitions);
-  //     setUserPerformance(filteredPerformance);
-  //   }
-  // }, [user, vibes, leaves, activities, recognitions, performances]);
+        const data = await response.json();
 
-  if (!user) {
+        // Update stats directly with the new data
+        setStats(data);
+      } catch (error) {
+        setError(error.message);
+        console.error("Error fetching dashboard data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, [token, BASE_URL]);
+
+  if (loading) {
     return (
       <Layout>
         <div className="flex items-center justify-center h-80">
-          <div className="animate-pulse-slow">Loading your reports...</div>
+          <div className="animate-pulse-slow">Loading your dashboard...</div>
         </div>
       </Layout>
     );
   }
 
+  if (error) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center h-80">
+          <div className="text-red-500">Error: {error}</div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (!user) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center h-80">
+          <div>User not found. Please log in.</div>
+        </div>
+      </Layout>
+    );
+  }
+  const userVibes = Object.values(stats.vibe_trend)
+  console.log("Vibe data: ", userVibes);
   return (
     <Layout>
       <div className="page-container py-8">
@@ -252,7 +229,7 @@ const EmployeeReports = () => {
                 <VibeChart vibes={userVibes} height={200} />
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-                  {["frustrated", "sad", "okay", "happy", "excited"].map(
+                  {["Frustrated", "Sad", "Okay", "Happy", "Excited"].map(
                     (vibe) => {
                       const count = userVibes.filter(
                         (v) => v.vibe === vibe,
@@ -283,7 +260,7 @@ const EmployeeReports = () => {
                 </div>
 
                 <div className="text-sm text-muted-foreground">
-                  Based on {userVibes.length} entries
+                  Based on {stats.vibe_trend.length} entries
                 </div>
               </div>
             ) : (
@@ -299,9 +276,6 @@ const EmployeeReports = () => {
             <AchievementsSection />
           </div>
 
-
-
-
           {/* Activity levels */}
           <div
             className="neo-glass rounded-xl p-6 animate-fade-in"
@@ -309,11 +283,11 @@ const EmployeeReports = () => {
           >
             <h2 className="text-xl font-medium mb-6">Activity Levels</h2>
 
-            {userActivities.length > 0 ? (
+            {(!stats.activity_level) ? (
               <div className="h-72">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
-                    data={userActivities}
+                    data={stats.activity_level}
                     margin={{ top: 20, right: 30, left: 20, bottom: 40 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -334,19 +308,19 @@ const EmployeeReports = () => {
                       dataKey="teamsMessages"
                       name="Teams Messages"
                       fill="#8E44AD"
-                      radius={[10, 10, 0, 0]} 
+                      radius={[10, 10, 0, 0]}
                     />
                     <Bar
                       dataKey="emails"
-                      name="Emails"                     
+                      name="Emails"
                       fill="#1ABC9C"
-                      radius={[10, 10, 0, 0]} 
+                      radius={[10, 10, 0, 0]}
                     />
                     <Bar
                       dataKey="meetings"
-                      name="Meetings"                     
+                      name="Meetings"
                       fill="#E67E22"
-                      radius={[10, 10, 0, 0]} 
+                      radius={[10, 10, 0, 0]}
                     />
                   </BarChart>
                 </ResponsiveContainer>
@@ -422,7 +396,7 @@ const EmployeeReports = () => {
                   <div className="flex items-baseline justify-between">
                     <div className="text-sm font-medium">Rating</div>
                     <div className="flex items-center text-2xl font-medium">
-                      {userPerformance.rating.toFixed(1)}
+                      {stats.performance_rating}
                       <span className="text-sm text-muted-foreground ml-1">
                         /5.0
                       </span>
