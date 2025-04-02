@@ -23,6 +23,8 @@ import Home from "./pages/HomePage/Home";
 import Profile from "./pages/profilePage1/Profile";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Onboarding from "./components/HRDashboard/Onboarding"
+import Report from "./components/EmployeeReportPdf/Report";
+import EmployeeReportPage from "./components/EmployeeReportPdf/dashPage";
 
 // Protected route component
 const ProtectedRoute = ({ children, allowedRoles = [] }) => {
@@ -45,7 +47,7 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
   if (allowedRoles.length > 0 && user && !allowedRoles.includes(user.role_type)) {
     return (
       <Navigate
-        to={user.role_type === "admin" ? "/admin/dashboard" : "/employee/dashboard"}
+        to={user.role_type === "hr" ? "/admin/dashboard" : "/employee/dashboard"}
       />
     );
   }
@@ -70,7 +72,7 @@ const App = () => (
               <Route
                 path="/profile"
                 element={
-                  <ProtectedRoute allowedRoles={["employee", "admin"]}>
+                  <ProtectedRoute allowedRoles={["employee", "hr"]}>
                     <Profile />
                   </ProtectedRoute>
                 }
@@ -101,11 +103,20 @@ const App = () => (
                 }
               />
 
+              <Route
+                path="/employee/exportReport"
+                element={
+                  <ProtectedRoute allowedRoles={["employee"]}>
+                    <EmployeeReportPage />
+                  </ProtectedRoute>
+                }
+              />
+
               {/* Protected Admin routes */}
               <Route
                 path="/admin/dashboard"
                 element={
-                  <ProtectedRoute allowedRoles={["admin"]}>
+                  <ProtectedRoute allowedRoles={["hr"]}>
                     <AdminDashboard />
                   </ProtectedRoute>
                 }
@@ -113,7 +124,7 @@ const App = () => (
               <Route
                 path="/admin/reports"
                 element={
-                  <ProtectedRoute allowedRoles={["admin"]}>
+                  <ProtectedRoute allowedRoles={["hr"]}>
                     <AdminReports />
                   </ProtectedRoute>
                 }
@@ -121,7 +132,7 @@ const App = () => (
               <Route
                 path="/admin/onboarding"
                 element={
-                  <ProtectedRoute allowedRoles={["admin"]}>
+                  <ProtectedRoute allowedRoles={["hr"]}>
                     <Onboarding />
                   </ProtectedRoute>
                 }
@@ -129,7 +140,7 @@ const App = () => (
               <Route
                 path="/admin/reports/:employeeId"
                 element={
-                  <ProtectedRoute allowedRoles={["admin"]}>
+                  <ProtectedRoute allowedRoles={["hr"]}>
                     <AdminEmployeeDetail />
                   </ProtectedRoute>
                 }
@@ -137,7 +148,7 @@ const App = () => (
               <Route
                 path="/admin/employees"
                 element={
-                  <ProtectedRoute allowedRoles={["admin"]}>
+                  <ProtectedRoute allowedRoles={["hr"]}>
                     <EmployeesPage />
                   </ProtectedRoute>
                 }
@@ -145,7 +156,7 @@ const App = () => (
               <Route
                 path="/admin/employee-report/:month/:year"
                 element={
-                  <ProtectedRoute allowedRoles={["admin"]}>
+                  <ProtectedRoute allowedRoles={["hr"]}>
                     <AdminEmployeeReportPage />
                   </ProtectedRoute>
                 }
