@@ -13,6 +13,7 @@ import Signup from "./pages/Auth/Signup";
 import EmployeeDashboard from "./pages/employeePage/EmployeeDashboard";
 import EmployeeChat from "./pages/employeePage/EmployeeChat";
 import EmployeeReports from "./pages/employeePage/EmployeeReports";
+import EmployeeSchedule from "./pages/schedule/myschedule"; // Add this import
 import AdminReports from "./pages/admin/AdminReports";
 import AdminEmployeeDetail from "./pages/admin/AdminEmployeeDetail";
 import NotFound from "./pages/NotFound/NotFound";
@@ -22,7 +23,7 @@ import AdminEmployeeReportPage from "./pages/admin/AdminEmployeeReportPage";
 import Home from "./pages/HomePage/Home";
 import Profile from "./pages/profilePage1/Profile";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import Onboarding from "./components/HRDashboard/Onboarding"
+import Onboarding from "./components/HRDashboard/Onboarding";
 
 // Protected route component
 const ProtectedRoute = ({ children, allowedRoles = [] }) => {
@@ -75,7 +76,6 @@ const App = () => (
                   </ProtectedRoute>
                 }
               />
-
               <Route
                 path="/employee/dashboard"
                 element={
@@ -97,6 +97,14 @@ const App = () => (
                 element={
                   <ProtectedRoute allowedRoles={["employee"]}>
                     <EmployeeReports />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/employee/schedule"
+                element={
+                  <ProtectedRoute allowedRoles={["employee"]}>
+                    <EmployeeSchedule />
                   </ProtectedRoute>
                 }
               />
