@@ -20,13 +20,19 @@ import {
 import { useNavigate } from "react-router-dom";
 
 const EmployeeReports = () => {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const { vibes, leaves, activities, recognitions, performances } = useData();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [stats, setStats] = useState(null);
+
+  const BASE_URL = import.meta.env.VITE_REACT_APP_URL;
+
   const navigate=useNavigate();
 
   // const [userVibes, setUserVibes] = useState([]);
   // const [userLeaves, setUserLeaves] = useState([]);
-  // const [userActivities, setUserActivities] = useState([]);
+  const [userActivities, setUserActivities] = useState([]);
   // const [userRecognitions, setUserRecognitions] = useState([]);
   // const [userPerformance, setUserPerformance] = useState(null);
 
@@ -71,20 +77,6 @@ const EmployeeReports = () => {
     },
   ];
 
-  const userVibes = [
-    { id: 1, date: "2024-03-25", vibe: "happy" },
-    { id: 2, date: "2024-03-26", vibe: "sad" },
-    { id: 3, date: "2024-03-27", vibe: "frustrated" },
-    { id: 4, date: "2024-03-28", vibe: "excited" },
-    { id: 5, date: "2024-03-29", vibe: "okay" },
-    { id: 6, date: "2024-03-30", vibe: "happy" },
-    { id: 7, date: "2024-03-31", vibe: "happy" },
-    { id: 8, date: "2024-04-1", vibe: "frustrated" },
-    { id: 9, date: "2024-04-2", vibe: "excited" },
-    { id: 10, date: "2024-04-3", vibe: "sad" },
-    { id: 11, date: "2024-04-4", vibe: "okay" },
-  ];
-
   const userRecognitions = [
     {
       id: 1,
@@ -102,139 +94,110 @@ const EmployeeReports = () => {
     },
   ];
 
-  const userActivities = [
-    {
-      date: "2024-03-25",
-      teamsMessages: 15,
-      emails: 8,
-      meetings: 2,
-    },
-    {
-      date: "2024-03-26",
-      teamsMessages: 20,
-      emails: 5,
-      meetings: 3,
-    },
-    {
-      date: "2024-03-27",
-      teamsMessages: 12,
-      emails: 10,
-      meetings: 1,
-    },
-    {
-      date: "2024-03-28",
-      teamsMessages: 18,
-      emails: 6,
-      meetings: 4,
-    },
-    {
-      date: "2024-03-29",
-      teamsMessages: 25,
-      emails: 12,
-      meetings: 5,
-    },
-  ];
+  //   {
+  //     id: 1,
+  //     startDate: "2024-03-10",
+  //     endDate: "2024-03-12",
+  //     reason: "Medical leave due to illness",
+  //     status: "approved",
+  //   },
+  //   {
+  //     id: 2,
+  //     startDate: "2024-03-20",
+  //     endDate: "2024-03-22",
+  //     reason: "Family function",
+  //     status: "pending",
+  //   },
+  //   {
+  //     id: 3,
+  //     startDate: "2024-04-05",
+  //     endDate: "2024-04-06",
+  //     reason: "Personal work",
+  //     status: "rejected",
+  //   },
+  //   {
+  //     id: 4,
+  //     startDate: "2024-04-15",
+  //     endDate: "2024-04-18",
+  //     reason: "Vacation",
+  //     status: "approved",
+  //   },
+  //   {
+  //     id: 5,
+  //     startDate: "2024-05-01",
+  //     endDate: "2024-05-02",
+  //     reason: "Emergency leave",
+  //     status: "pending",
+  //   },
+  // ];
 
-  const userLeaves = [
-    {
-      id: 1,
-      startDate: "2024-03-10",
-      endDate: "2024-03-12",
-      reason: "Medical leave due to illness",
-      status: "approved",
-    },
-    {
-      id: 2,
-      startDate: "2024-03-20",
-      endDate: "2024-03-22",
-      reason: "Family function",
-      status: "pending",
-    },
-    {
-      id: 3,
-      startDate: "2024-04-05",
-      endDate: "2024-04-06",
-      reason: "Personal work",
-      status: "rejected",
-    },
-    {
-      id: 4,
-      startDate: "2024-04-15",
-      endDate: "2024-04-18",
-      reason: "Vacation",
-      status: "approved",
-    },
-    {
-      id: 5,
-      startDate: "2024-05-01",
-      endDate: "2024-05-02",
-      reason: "Emergency leave",
-      status: "pending",
-    },
-  ];
-  
+  useEffect(() => {
+    if (!token) return;
 
-  // useEffect(() => {
-  //   if (user) {
-  //     const filteredVibes = vibes.filter(
-  //       (v) => v.employeeId === user.employeeId,
-  //     );
-  //     const filteredLeaves = leaves.filter(
-  //       (l) => l.employeeId === user.employeeId,
-  //     );
-  //     const filteredActivities = activities.filter(
-  //       (a) => a.employeeId === user.employeeId,
-  //     );
-  //     const filteredRecognitions = recognitions.filter(
-  //       (r) => r.employeeId === user.employeeId,
-  //     );
-  //     const filteredPerformance = performances.find(
-  //       (p) => p.employeeId === user.employeeId,
-  //     );
+    const fetchDashboardData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`${BASE_URL}/employee/dashboard/`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-  //     const formattedVibes = filteredVibes
-  //       .sort((a, b) => new Date(a.date) - new Date(b.date))
-  //       .map((v) => ({
-  //         ...v,
-  //         date: new Date(v.date).toLocaleDateString("en-US", {
-  //           month: "short",
-  //           day: "numeric",
-  //         }),
-  //       }));
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          const text = await response.text();
+          throw new Error("Expected JSON but got: " + text);
+        }
 
-  //     const formattedActivities = filteredActivities
-  //       .sort((a, b) => new Date(a.date) - new Date(b.date))
-  //       .map((a) => ({
-  //         ...a,
-  //         date: new Date(a.date).toLocaleDateString("en-US", {
-  //           month: "short",
-  //           day: "numeric",
-  //         }),
-  //         total: a.teamsMessages + a.emails + a.meetings,
-  //       }));
+        const data = await response.json();
 
-  //     setUserVibes(formattedVibes);
-  //     setUserLeaves(filteredLeaves);
-  //     setUserActivities(formattedActivities);
-  //     setUserRecognitions(filteredRecognitions);
-  //     setUserPerformance(filteredPerformance);
-  //   }
-  // }, [user, vibes, leaves, activities, recognitions, performances]);
+        // Update stats directly with the new data
+        setStats(data);
+      } catch (error) {
+        setError(error.message);
+        console.error("Error fetching dashboard data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, [token, BASE_URL]);
 
   const handleExport=()=>{
     navigate("/employee/exportReport");
+  }
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center h-80">
+          <div className="animate-pulse-slow">Loading your dashboard...</div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center h-80">
+          <div className="text-red-500">Error: {error}</div>
+        </div>
+      </Layout>
+    );
   }
 
   if (!user) {
     return (
       <Layout>
         <div className="flex items-center justify-center h-80">
-          <div className="animate-pulse-slow">Loading your reports...</div>
+          <div>User not found. Please log in.</div>
         </div>
       </Layout>
     );
   }
-
+  const userVibes = Object.values(stats.vibe_trend);
+  const userLeaves = Object.values(stats.all_leaves);
+  console.log("Leave Data ", userLeaves);
   return (
     <Layout>
       <div className="page-container py-8">
@@ -265,7 +228,7 @@ const EmployeeReports = () => {
                 <VibeChart vibes={userVibes} height={200} />
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-                  {["frustrated", "sad", "okay", "happy", "excited"].map(
+                  {["Frustrated", "Sad", "Okay", "Happy", "Excited"].map(
                     (vibe) => {
                       const count = userVibes.filter(
                         (v) => v.vibe === vibe,
@@ -296,7 +259,7 @@ const EmployeeReports = () => {
                 </div>
 
                 <div className="text-sm text-muted-foreground">
-                  Based on {userVibes.length} entries
+                  Based on {stats.vibe_trend.length} entries
                 </div>
               </div>
             ) : (
@@ -312,9 +275,6 @@ const EmployeeReports = () => {
             <AchievementsSection />
           </div>
 
-
-
-
           {/* Activity levels */}
           <div
             className="neo-glass rounded-xl p-6 animate-fade-in"
@@ -322,11 +282,11 @@ const EmployeeReports = () => {
           >
             <h2 className="text-xl font-medium mb-6">Activity Levels</h2>
 
-            {userActivities.length > 0 ? (
+            {(!stats.activity_level) ? (
               <div className="h-72">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
-                    data={userActivities}
+                    data={stats.activity_level}
                     margin={{ top: 20, right: 30, left: 20, bottom: 40 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -347,19 +307,19 @@ const EmployeeReports = () => {
                       dataKey="teamsMessages"
                       name="Teams Messages"
                       fill="#8E44AD"
-                      radius={[10, 10, 0, 0]} 
+                      radius={[10, 10, 0, 0]}
                     />
                     <Bar
                       dataKey="emails"
-                      name="Emails"                     
+                      name="Emails"
                       fill="#1ABC9C"
-                      radius={[10, 10, 0, 0]} 
+                      radius={[10, 10, 0, 0]}
                     />
                     <Bar
                       dataKey="meetings"
-                      name="Meetings"                     
+                      name="Meetings"
                       fill="#E67E22"
-                      radius={[10, 10, 0, 0]} 
+                      radius={[10, 10, 0, 0]}
                     />
                   </BarChart>
                 </ResponsiveContainer>
@@ -384,29 +344,34 @@ const EmployeeReports = () => {
                   <thead>
                     <tr className="text-left border-b border-border">
                       <th className="py-3 px-4 font-medium">Date Range</th>
-                      <th className="py-3 px-4 font-medium">Reason</th>
-                      <th className="py-3 px-4 font-medium">Status</th>
+                      <th className="py-3 px-4 font-medium">Leave Days</th>
+                      <th className="py-3 px-4 font-medium">Leave Type</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {userLeaves.map((leave) => (
-                      <tr key={leave.id} className="border-b border-border">
+                    {userLeaves.map((leave, index) => (
+                      <tr key={index} className="border-b border-border">
                         <td className="py-3 px-4">
-                          {new Date(leave.startDate).toLocaleDateString()} -{" "}
-                          {new Date(leave.endDate).toLocaleDateString()}
+                          {new Date(leave.leave_start_date).toLocaleDateString()} -{" "}
+                          {new Date(leave.leave_end_date).toLocaleDateString()}
                         </td>
-                        <td className="py-3 px-4">{leave.reason}</td>
+                        <td className="py-3 px-4">{leave.leave_days}</td>
                         <td className="py-3 px-4">
                           <span
-                            className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${leave.status === "approved"
-                              ? "bg-green-100 text-green-800"
-                              : leave.status === "pending"
-                                ? "bg-yellow-100 text-yellow-800"
-                                : "bg-red-100 text-red-800"
-                              }`}
+                            className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
+                              leave.leave_type === "Casual Leave"
+                                ? "bg-blue-100 text-blue-800"
+                                : leave.leave_type === "Sick Leave"
+                                ? "bg-red-100 text-gray-800"
+                                : leave.leave_type === "Unpaid Leave"
+                                ? "bg-gray-100  text-red-800"
+                                : leave.leave_type === "Annual Leave"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-purple-100 text-purple-800"
+                            }`}
                           >
-                            {leave.status.charAt(0).toUpperCase() +
-                              leave.status.slice(1)}
+                            {leave.leave_type.charAt(0).toUpperCase() +
+                              leave.leave_type.slice(1)}
                           </span>
                         </td>
                       </tr>
@@ -435,7 +400,7 @@ const EmployeeReports = () => {
                   <div className="flex items-baseline justify-between">
                     <div className="text-sm font-medium">Rating</div>
                     <div className="flex items-center text-2xl font-medium">
-                      {userPerformance.rating.toFixed(1)}
+                      {stats.performance_rating}
                       <span className="text-sm text-muted-foreground ml-1">
                         /5.0
                       </span>

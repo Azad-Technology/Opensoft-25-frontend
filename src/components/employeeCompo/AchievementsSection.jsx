@@ -1,54 +1,95 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useAuth } from "../../contexts/AuthContext";
 import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import { AchievementCard } from './AchievementCard';
 
-const achievements = [
-  {
-    id: 1,
-    title: 'Leadership Excellence',
-    criterion: 'Lead at least 5 projects successfully',
-    date: '12-02-2025',
-    points: 150,
-    category: 'leadership',
-  },
-  {
-    id: 2,
-    title: 'Technical Maestro',
-    criterion: 'Complete advanced certification',
-    date: '15-02-2025',
-    points: 200,
-    category: 'technical',
-  },
-  {
-    id: 3,
-    title: 'Innovation Champion',
-    criterion: 'Implement 3 innovative solutions',
-    date: '18-02-2025',
-    points: 175,
-    category: 'innovation',
-  },
-  {
-    id: 4,
-    title: 'Team Player',
-    criterion: 'Mentor 5 junior team members',
-    date: '20-02-2025',
-    points: 125,
-    category: 'teamwork',
-  },
-  {
-    id: 5,
-    title: 'Project Excellence',
-    criterion: 'Deliver project ahead of schedule',
-    date: '22-02-2025',
-    points: 180,
-    category: 'leadership',
-  },
-];
+// const achievements = [
+//   {
+//     id: 1,
+//     title: 'Leadership Excellence',
+//     criterion: 'Lead at least 5 projects successfully',
+//     date: '12-02-2025',
+//     points: 150,
+//     category: 'leadership',
+//   },
+//   {
+//     id: 2,
+//     title: 'Technical Maestro',
+//     criterion: 'Complete advanced certification',
+//     date: '15-02-2025',
+//     points: 200,
+//     category: 'technical',
+//   },
+//   {
+//     id: 3,
+//     title: 'Innovation Champion',
+//     criterion: 'Implement 3 innovative solutions',
+//     date: '18-02-2025',
+//     points: 175,
+//     category: 'innovation',
+//   },
+//   {
+//     id: 4,
+//     title: 'Team Player',
+//     criterion: 'Mentor 5 junior team members',
+//     date: '20-02-2025',
+//     points: 125,
+//     category: 'teamwork',
+//   },
+//   {
+//     id: 5,
+//     title: 'Project Excellence',
+//     criterion: 'Deliver project ahead of schedule',
+//     date: '22-02-2025',
+//     points: 180,
+//     category: 'leadership',
+//   },
+// ];
+
+
+
 
 export const AchievementsSection = () => {
   const scrollContainerRef = useRef(null);
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { token } = useAuth();
+  const BASE_URL = import.meta.env.VITE_REACT_APP_URL;
 
+  useEffect(() => {
+    if (!token) return;
+
+    const fetchDashboardData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`${BASE_URL}/employee/dashboard/`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          const text = await response.text();
+          throw new Error("Expected JSON but got: " + text);
+        }
+
+        const data = await response.json();
+
+        // Update stats directly with the new data
+        setStats(data);
+      } catch (error) {
+        setError(error.message);
+        console.error("Error fetching dashboard data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, [token, BASE_URL]);
+
+  const achievements = stats?.awards || [];
   const scroll = (direction) => {
     const container = scrollContainerRef.current;
     if (container) {
@@ -78,8 +119,8 @@ export const AchievementsSection = () => {
             WebkitOverflowScrolling: 'touch',
           }}
         >
-          {achievements.map((achievement) => (
-            <div key={achievement.id} className="snap-start">
+          {achievements.map((achievement, index) => (
+            <div key={index} className="snap-start">
               <AchievementCard achievement={achievement} />
             </div>
           ))}

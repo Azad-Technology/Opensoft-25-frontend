@@ -37,6 +37,7 @@ const EmployeeDashboard = () => {
 
   const BASE_URL = import.meta.env.VITE_REACT_APP_URL;
 
+
   useEffect(() => {
     refreshToken();
   }, []);
@@ -63,18 +64,26 @@ const EmployeeDashboard = () => {
   };
 
   const handleVibeSubmit = () => {
-    if (!user || !selectedVibe) return;
 
-    submitNewVibe(user.employeeId, selectedVibe, vibeComment);
-    const updatedStats = getEmployeeStats(user.employeeId);
-    setStats(updatedStats);
+    const vibeMapping = {
+      "frustrated": 1,
+      "sad": 2,
+      "okay": 3,
+      "happy": 4,
+      "excited": 5
+    };
+    const vibeScore = vibeMapping[selectedVibe.toLowerCase()] || 3;
+    const now = new Date().toJSON().slice(0, 19);
 
-    setShowVibeSubmitted(true);
-    setTimeout(() => setShowVibeSubmitted(false), 3000);
+    stats.latest_vibe = {
+      "vibe_score": vibeScore,
+      "date": now,
+    };
 
+    stats.vibe_trend.push(stats.latest_vibe);
     setSelectedVibe(null);
     setVibeComment("");
-    toast.success("Thank you for sharing your vibe!");
+
   };
 
   useEffect(() => {
@@ -235,66 +244,12 @@ const EmployeeDashboard = () => {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <MetricCard
-                title="Performance Rating"
-                value={stats.performance_rating}
-                icon={
-                  <TrendingUp
-                    size={24}
-                    className="text-green-600 dark:text-green-400"
-                  />
-                }
-              />
-              <MetricCard
-                title="Leave Balance"
-                value={stats.leave_balance}
-                icon={
-                  <Clock
-                    size={24}
-                    className="text-green-600 dark:text-green-400"
-                  />
-                }
-              />
-              <MetricCard
-                title="Total Meetings"
-                value={stats.meetings_attended}
-                icon={
-                  <Calendar
-                    size={24}
-                    className="text-green-600 dark:text-green-400"
-                  />
-                }
-              />
-              <MetricCard
-                title="Current Vibe"
-                value={stats.latest_vibe.vibe_score}
-                icon={
-                  <Smile
-                    size={24}
-                    className="text-green-600 dark:text-green-400"
-                  />
-                }
-              />
-              <MetricCard
-                title="Average Work hours"
-                value={stats.average_work_hours}
-                icon={
-                  <Hourglass
-                    size={24}
-                    className="text-green-600 dark:text-green-400"
-                  />
-                }
-              />
-              <MetricCard
-                title="Awards"
-                value={awardsCount}
-                icon={
-                  <Trophy
-                    size={24}
-                    className="text-green-600 dark:text-green-400"
-                  />
-                }
-              />
+              <MetricCard title="Performance Rating" value={stats.performance_rating} icon={<TrendingUp size={24} className="text-green-600 dark:text-green-400" />} />
+              <MetricCard title="Leave Balance" value={stats.leave_balance} icon={<Clock size={24} className="text-green-600 dark:text-green-400" />} />
+              <MetricCard title="Total Meetings" value={stats.meetings_attended} icon={<Calendar size={24} className="text-green-600 dark:text-green-400" />} />
+              <MetricCard title="Current Vibe" value={stats.latest_vibe.vibe_score} icon={<Smile size={24} className="text-green-600 dark:text-green-400" />} />
+              <MetricCard title="Average Work hours" value={stats.average_work_hours} icon={<Hourglass size={24} className="text-green-600 dark:text-green-400" />} />
+              <MetricCard title="Awards" value={awardsCount} icon={<Trophy size={24} className="text-green-600 dark:text-green-400" />} />
             </div>
           </div>
         </div>

@@ -3,22 +3,22 @@ import { motion } from 'framer-motion';
 import { Award } from 'lucide-react';
 
 const categoryColors = {
-  leadership: {
+  "Leadership Excellence": {
     bg: 'bg-blue-50 dark:bg-blue-900/20',
     text: 'text-blue-600 dark:text-blue-400',
     border: 'border-blue-200 dark:border-blue-800',
   },
-  technical: {
+  "Innovation Award": {
     bg: 'bg-green-50 dark:bg-green-900/20',
     text: 'text-green-600 dark:text-green-400',
     border: 'border-green-200 dark:border-green-800',
   },
-  innovation: {
+  "Best Team Player": {
     bg: 'bg-purple-50 dark:bg-purple-900/20',
     text: 'text-purple-600 dark:text-purple-400',
     border: 'border-purple-200 dark:border-purple-800',
   },
-  teamwork: {
+  "Star Performer": {
     bg: 'bg-orange-50 dark:bg-orange-900/20',
     text: 'text-orange-600 dark:text-orange-400',
     border: 'border-orange-200 dark:border-orange-800',
@@ -26,7 +26,7 @@ const categoryColors = {
 };
 
 export const AchievementCard = ({ achievement }) => {
-  const colors = categoryColors[achievement.category];
+  const colors = categoryColors[achievement.type];
 
   return (
     <motion.div
@@ -38,16 +38,16 @@ export const AchievementCard = ({ achievement }) => {
         <div className={`p-2 rounded-lg ${colors.bg}`}>
           <Award className={`w-6 h-6 ${colors.text}`} />
         </div>
-        <span className={`text-lg font-bold ${colors.text}`}>+{achievement.points} pts</span>
+        <span className={`text-lg font-bold ${colors.text}`}>+{achievement.reward_points} pts</span>
       </div>
       
       <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-        {achievement.title}
+        {achievement.type}
       </h3>
       
-      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+      {/* <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
         {achievement.criterion}
-      </p>
+      </p> */}
       
       <div className="text-xs text-gray-500 dark:text-gray-500">
         Accomplished on {achievement.date}
