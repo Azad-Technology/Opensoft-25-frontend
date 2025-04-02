@@ -101,7 +101,7 @@ const Signup = () => {
 
   if (isAuthenticated) {
     console.log("isauthencated: "+ user)
-    if(user.role_type==="admin")
+    if(user.role_type==="hr")
       return <Navigate to="/admin/dashboard" />;
     else
     return <Navigate to="/employee/dashboard" />;
@@ -162,7 +162,7 @@ const Signup = () => {
                   className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-green-500 transition-all appearance-none bg-white"
                 >
                   <option value="employee">Employee</option>
-                  <option value="admin">Admin (HR)</option>
+                  <option value="hr">Admin (HR)</option>
                 </select>
               </div>
             </div>

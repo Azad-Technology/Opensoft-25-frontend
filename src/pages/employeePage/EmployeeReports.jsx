@@ -17,6 +17,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { useNavigate } from "react-router-dom";
 
 const EmployeeReports = () => {
   const { user, token } = useAuth();
@@ -27,6 +28,7 @@ const EmployeeReports = () => {
 
   const BASE_URL = import.meta.env.VITE_REACT_APP_URL;
 
+  const navigate=useNavigate();
 
   // const [userVibes, setUserVibes] = useState([]);
   // const [userLeaves, setUserLeaves] = useState([]);
@@ -160,6 +162,10 @@ const EmployeeReports = () => {
     fetchDashboardData();
   }, [token, BASE_URL]);
 
+  const handleExport=()=>{
+    navigate("/employee/exportReport");
+  }
+
   if (loading) {
     return (
       <Layout>
@@ -195,11 +201,18 @@ const EmployeeReports = () => {
   return (
     <Layout>
       <div className="page-container py-8">
-        <div className="mb-8 animate-fade-in">
+        <div className="mb-8 animate-fade-in flex items-center justify-between">
+          <div>
           <h1 className="page-header mb-2">My Reports</h1>
           <p className="text-muted-foreground">
             View detailed information about your well-being and performance
           </p>
+          </div>
+          <div>
+            <button className="bg-green-800 p-2 rounded-xl text-white" onClick={handleExport}>
+              Export
+            </button>
+          </div>
         </div>
 
         <div className="space-y-8">
