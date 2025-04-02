@@ -14,6 +14,7 @@ import {
 } from "../../hooks/useChatMessage";
 import { useAuth } from "../../contexts/AuthContext";
 
+
 const ChatUI = ({ className = "" }) => {
   const { token } = useAuth();
 
@@ -50,7 +51,7 @@ const ChatUI = ({ className = "" }) => {
   }, [sessionHistory, isTyping]);
 
   // Start a brand-new chat
-  const handleNewChat = () => {
+   const handleNewChat = () => {
     if (!token) {
       toast.error("No token found; please log in again.");
       return;

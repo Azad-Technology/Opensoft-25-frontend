@@ -6,6 +6,8 @@ import Sidebar from "../Sidebar";
 import ThemeSwitch from "./ThemeSwitch";
 import { useTheme } from "../../contexts/ThemeContext";
 import { notifications } from "../../data/mockData";
+import toast, { Toaster } from 'react-hot-toast';
+
 
 const Layout = ({ children }) => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -17,6 +19,9 @@ const Layout = ({ children }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const { theme, toggleTheme } = useTheme();
   const[showAll, setShowAll]=useState(false);
+
+  
+  
 
   useEffect(() => {
     const handleResize = () => {
@@ -119,7 +124,9 @@ const Layout = ({ children }) => {
                   </button>
 
                   {showNotifications && (
-                    <div className="absolute right-0 mt-2 w-80 max-h-96 overflow-y-auto neo-glass rounded-lg shadow-xl z-20 animate-fade-in">
+                    <div className={`fixed sm:absolute right-0 sm:right-auto mt-2 w-full max-w-[calc(100vw-2rem)] sm:w-80 sm:max-w-sm overflow-y-auto neo-glass rounded-lg shadow-xl z-20 animate-fade-in ${
+                         showAll ? "max-h-[600px]" : "max-h-96"
+                       }`}>
                       <div className="flex items-center justify-between p-3 border-b border-green-100/50 dark:border-green-900/50">
                         <h3 className="font-medium text-gray-700 dark:text-gray-200">
                           Notifications
@@ -132,14 +139,15 @@ const Layout = ({ children }) => {
                         </button>
                       </div>
                       
-                      <div className="p-2 max-h-32 overflow-y-auto">
+                      <div className="p-2 overflow-y-auto" style={{ maxHeight: showAll ? 'none' : '128px' }}>
                          
-                          {(showAll ? notifications : notifications.slice(0, 2)).map(
+                          {notifications.map(
                             (notification, index) => (
                           <a
                             key={index}
                             href={notification.route}
                             className="block px-3 py-2 hover:bg-green-50 dark:hover:bg-green-900/30 rounded-md transition-colors"
+                            
                           >
                             <div className="flex items-start">
                               <div className="flex-shrink-0 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 p-2 rounded-lg">
@@ -168,6 +176,7 @@ const Layout = ({ children }) => {
                          <button
                            onClick={() => setShowAll(!showAll)}
                            className="block w-full text-center text-xs text-green-600 hover:underline py-1"
+                           
                          >
                            {showAll ? "Show Less" : "View all notifications"}
                          </button>
