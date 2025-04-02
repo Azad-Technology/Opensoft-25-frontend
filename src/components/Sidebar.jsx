@@ -87,7 +87,7 @@ const Sidebar = ({ expanded, onToggle }) => {
     
   ];
 
-  const navItems = user?.role_type === "admin" ? adminNavItems : employeeNavItems;
+  const navItems = user?.role_type === "hr" ? adminNavItems : employeeNavItems;
 
   const handleLogout = () => {
     logout();

@@ -32,7 +32,7 @@ export const users = [
     employeeId: "HR001",
     name: "Sarah Williams",
     email: "sarah.williams@company.com",
-    role: "admin",
+    role: "hr",
     department: "Human Resources",
     avatar: "https://randomuser.me/api/portraits/women/4.jpg",
   },
