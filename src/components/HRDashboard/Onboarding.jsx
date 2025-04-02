@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { 
-  UserPlus, CheckCircle, Sparkles, 
-  Users, UserCog, Briefcase 
+import {
+  UserPlus, CheckCircle, Sparkles,
+  Users, UserCog, Briefcase
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Layout from "../employeeCompo/Layout";
 import { useTheme } from "../../contexts/ThemeContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 const Button = ({ children, variant, size, type, onClick, className, disabled }) => {
   const getVariantClass = () => {
@@ -172,6 +173,7 @@ function EmployeeOnboarding() {
   const isMobile = useMobile();
   const { toast } = useToast();
   const { theme } = useTheme();
+  const { token } = useAuth();
 
   const handleUserTypeChange = (value) => {
     console.log("User type changed to:", value);
@@ -181,21 +183,48 @@ function EmployeeOnboarding() {
   useEffect(() => {
     console.log("User type changed in effect:", userType);
     generateEmployeeId();
-    
+
     if (formData.name) {
       generateEmail(formData.name);
     }
-    
+
     generatePassword();
   }, [userType, formData.name]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     toast({
       title: `${userType === "hr" ? "HR Personnel" : "Employee"} added successfully`,
       description: `The new ${userType === "hr" ? "HR personnel" : "employee"} has been added to the system.`,
       variant: "success",
     });
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_URL}/admin/add_onboarding`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          "role_type": userType,
+          "name": formData.name,
+          "role": formData.role,
+          "employee_id": formData.employeeId,
+          "email": formData.email,
+          "password": formData.password
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      console.log("success")
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+      toast.error("Error fetching profile data");
+    }
   };
 
   const handleInputChange = (e) => {
@@ -209,9 +238,9 @@ function EmployeeOnboarding() {
   const generateEmployeeId = () => {
     const randomNum = Math.floor(1000 + Math.random() * 9000);
     const prefix = userType === "hr" ? "HR" : "EMP";
-    
+
     console.log("Generating ID with prefix:", prefix);
-    
+
     setFormData((prev) => ({
       ...prev,
       employeeId: `${prefix}${randomNum}`,
@@ -328,7 +357,7 @@ function EmployeeOnboarding() {
                     <Label className="mb-3 block font-medium text-green-800 dark:text-green-200">
                       Select Member Type
                     </Label>
-                    
+
                     <div className="flex flex-col gap-3 sm:flex-row">
                       <div className="flex items-center space-x-2">
                         <input

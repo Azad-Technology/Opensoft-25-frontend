@@ -25,6 +25,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import Onboarding from "./components/HRDashboard/Onboarding"
 import Report from "./components/EmployeeReportPdf/Report";
 import EmployeeReportPage from "./components/EmployeeReportPdf/dashPage";
+import { UserProvider } from "./contexts/UserContext";
 
 // Protected route component
 const ProtectedRoute = ({ children, allowedRoles = [] }) => {
@@ -61,6 +62,7 @@ const App = () => (
       <ThemeProvider>
         <AuthProvider>
           <DataProvider>
+          <UserProvider>
             <Sonner />
             <Routes>
               {/* Public routes */}
@@ -168,9 +170,11 @@ const App = () => (
               {/* 404 catch-all */}
               <Route path="*" element={<NotFound />} />
             </Routes>
+            </UserProvider>
           </DataProvider>
         </AuthProvider>
       </ThemeProvider>
+      
     </BrowserRouter>
   </QueryClientProvider>
 );
