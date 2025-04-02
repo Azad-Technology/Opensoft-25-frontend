@@ -1,8 +1,11 @@
 import React from "react";
+import { useAuth } from "./../../../contexts/AuthContext"
+import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import "./HeroSection.css";
 
 const HeroSection = () => {
+  const { user } = useAuth();
   return (
     <section className="hero-section">
       <div className="hero-overlay"></div>
@@ -23,13 +26,27 @@ const HeroSection = () => {
                 want to solve it together as a community
               </p>
               <div className="hero-buttons">
-                <button className="btn-primary">
-                  <span>Get Started</span>
-                  <ArrowRight size={16} style={{ marginLeft: "0.5rem", transition: "transform 0.3s" }} />
-                </button>
-                <button className="btn-secondary">
-                  Learn More
-                </button>
+                {user && (
+                  <>
+                    {user.role === "employee" && (
+                      <Link to="/employee/dashboard">
+                        <button className="btn-primary">
+                          <span>Dashboard</span>
+                          <ArrowRight size={16} style={{ marginLeft: "0.5rem", transition: "transform 0.3s" }} />
+                        </button>
+                      </Link>
+                    )}
+
+                    {user.role === "hr" && (
+                      <Link to="/admin/dashboard">
+                        <button className="btn-primary">
+                          <span>Dashboard</span>
+                          <ArrowRight size={16} style={{ marginLeft: "0.5rem", transition: "transform 0.3s" }} />
+                        </button>
+                      </Link>
+                    )}
+                  </>
+                )}
               </div>
             </div>
           </div>

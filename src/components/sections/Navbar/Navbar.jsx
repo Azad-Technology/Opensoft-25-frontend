@@ -1,10 +1,12 @@
 import React from "react";
+import { useAuth } from "./../../../contexts/AuthContext"
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { User, Menu, X } from "lucide-react";
 import "./Navbar.css";
 
 const Navbar = () => {
+  const { user } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -36,12 +38,17 @@ const Navbar = () => {
 
         {/* Profile/Login Button */}
         <div className="navbar-actions">
-          <div className="navbar-profile">
-            <User size={18} className="navbar-profile-icon" />
-          </div>
-          <Link to="/login">
-            <button className="navbar-login-button">Login</button>
-          </Link>
+          {user ? (
+            <Link to="/profile">
+              <div className="navbar-profile">
+                <User size={18} className="navbar-profile-icon" />
+              </div>
+            </Link>
+          ) : (
+            <Link to="/login">
+              <button className="navbar-login-button">Login</button>
+            </Link>
+          )}
         </div>
 
         {/* Mobile Menu Button */}

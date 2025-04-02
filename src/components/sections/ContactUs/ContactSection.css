@@ -146,7 +146,7 @@
   
   .form-textarea {
     resize: none;
-    min-height: 8rem;
+    min-height: 2rem;
   }
   
   .form-submit {

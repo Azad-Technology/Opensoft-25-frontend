@@ -47,21 +47,6 @@ const ContactSection = () => {
                 <div className="contact-method">
                   <div className="contact-method-inner">
                     <div className="contact-method-icon-container">
-                      <MessageSquare className="contact-method-icon" />
-                    </div>
-                    <div className="contact-method-content">
-                      <h4>Live Chat</h4>
-                      <p className="contact-method-description">Get instant answers to your questions</p>
-                      <button className="contact-method-action">
-                        Start a conversation
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="contact-method">
-                  <div className="contact-method-inner">
-                    <div className="contact-method-icon-container">
                       <Mail className="contact-method-icon" />
                     </div>
                     <div className="contact-method-content">
@@ -169,7 +154,7 @@ const ContactSection = () => {
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    rows={5}
+                    rows={1}
                     className="form-textarea"
                     required
                   ></textarea>

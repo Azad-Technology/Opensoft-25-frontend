@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
       const path = location.pathname;
 
       if (user) {
-        if (["/", "/login", "/signup"].includes(path)) {
+        if (["/login", "/signup"].includes(path)) {
           const redirectPath =
             user.role_type === "hr"
               ? "/admin/dashboard"
