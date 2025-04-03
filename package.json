@@ -15,7 +15,6 @@
     "@react-pdf/renderer": "^4.3.0",
     "@tailwindcss/vite": "^4.0.15",
     "@tanstack/react-query": "^5.70.0",
-    "axios": "^1.8.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.7",
