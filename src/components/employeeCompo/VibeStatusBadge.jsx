@@ -7,11 +7,11 @@ const VibeStatusBadge = ({
   className = "",
 }) => {
   const vibeEmoji = {
-    frustrated: "😠",
-    sad: "😢",
-    okay: "😐",
-    happy: "😊",
-    excited: "🤩",
+    Frustrated: "😠",
+    Sad: "😢",
+    Okay: "😐",
+    Happy: "😊",
+    Excited: "🤩",
   };
 
   const sizeClasses = {
@@ -21,19 +21,19 @@ const VibeStatusBadge = ({
   };
 
   const vibeBgColors = {
-    frustrated: "bg-vibe-frustrated bg-opacity-15",
-    sad: "bg-vibe-sad bg-opacity-15",
-    okay: "bg-vibe-okay bg-opacity-15",
-    happy: "bg-vibe-happy bg-opacity-15",
-    excited: "bg-vibe-excited bg-opacity-15",
+    Frustrated: "bg-vibe-frustrated bg-opacity-15",
+    Sad: "bg-vibe-sad bg-opacity-15",
+    Okay: "bg-vibe-okay bg-opacity-15",
+    Happy: "bg-vibe-happy bg-opacity-15",
+    Excited: "bg-vibe-excited bg-opacity-15",
   };
 
   const vibeTextColors = {
-    frustrated: "text-vibe-frustrated",
-    sad: "text-vibe-sad",
-    okay: "text-vibe-okay",
-    happy: "text-vibe-happy",
-    excited: "text-vibe-excited",
+    Frustrated: "text-vibe-frustrated",
+    Sad: "text-vibe-sad",
+    Okay: "text-vibe-okay",
+    Happy: "text-vibe-happy",
+    Excited: "text-vibe-excited",
   };
 
   return (

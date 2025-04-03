@@ -2,7 +2,7 @@
 export const users = [
   {
     id: "user_1",
-    employeeId: "EMP001",
+    employeeId: "EMP0001",
     name: "John Doe",
     email: "john.doe@company.com",
     role: "employee",
@@ -11,7 +11,7 @@ export const users = [
   },
   {
     id: "user_2",
-    employeeId: "EMP002",
+    employeeId: "EMP0002",
     name: "Jane Smith",
     email: "jane.smith@company.com",
     role: "employee",
@@ -20,7 +20,7 @@ export const users = [
   },
   {
     id: "user_3",
-    employeeId: "EMP003",
+    employeeId: "EMP0003",
     name: "Alex Johnson",
     email: "alex.johnson@company.com",
     role: "employee",

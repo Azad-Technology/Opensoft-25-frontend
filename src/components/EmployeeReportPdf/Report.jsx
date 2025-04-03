@@ -211,8 +211,7 @@ const EmployeeReportGenerator = ({ employeeData }) => {
         <PDFDownloadLink
           document={<EmployeeReportPDF employeeData={employeeData} />}
           fileName={`${employeeData.user.name.replace(/\s+/g, '_')}_performance_report.pdf`}
-          className="inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-6 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        >
+          className="inline-flex h-10 items-center justify-center rounded-md bg-green-700 px-6 text-sm font-medium text-white shadow-sm transition-colors hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
           {({ loading }) => (
             <>
               {loading ? (

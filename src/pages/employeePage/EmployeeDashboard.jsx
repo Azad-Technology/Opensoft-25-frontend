@@ -1,134 +1,172 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../../components/employeeCompo/Layout";
 import { useAuth } from "../../contexts/AuthContext";
-import { useData } from "../../contexts/DataContext";
 import VibeChart from "../../components/employeeCompo/VibeChart";
 import VibeSelector from "../../components/employeeCompo/VibeSelector";
 import { MetricCard } from "../../components/employeeCompo/metricCard";
-import StatCard from "../../components/employeeCompo/StatCard";
-import { Link } from "react-router-dom";
 import {
   Calendar,
-  CalendarCheck,
-  MessageSquare,
-  Bell,
   CheckCheck,
-  ArrowRight,
   TrendingUp,
   Clock,
   Smile,
   Hourglass,
-  BookOpen,
   Trophy,
 } from "lucide-react";
 import { toast } from "sonner";
-import { useTheme } from "../../contexts/ThemeContext";
+import { queryClient } from "../../services/react-query-client"; // Import the query client
+
+// 1) Import React Query
+import { useQuery, useMutation } from "@tanstack/react-query";
 
 const EmployeeDashboard = () => {
   const { user, refreshToken, token } = useAuth();
-  const { getEmployeeStats, submitNewVibe } = useData();
-  const { theme } = useTheme();
 
+  // For vibe submission UI
   const [selectedVibe, setSelectedVibe] = useState(null);
   const [vibeComment, setVibeComment] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [showVibeSubmitted, setShowVibeSubmitted] = useState(false);
 
   const BASE_URL = import.meta.env.VITE_REACT_APP_URL;
 
+  // Refresh auth token on mount
   useEffect(() => {
     refreshToken();
   }, []);
 
-  // https://opensoft-25-backend.onrender.com/data/employee/:id/summary
+  // 2) React Query Client (for invalidating queries on success)
 
-  const [stats, setStats] = useState({
-    totalLeaves: 5,
-    currentMonthLeaves: 1,
-    averageVibe: "happy",
-    recentVibes: [
-      { date: "2024-03-30", vibe: "excited" },
-      { date: "2024-03-29", vibe: "frustrated" },
-      { date: "2024-03-28", vibe: "okay" },
-    ],
-    activityLevel: "high",
-    totalMeetings: 12,
-    totalEmails: 45,
-    totalMessages: 120,
+  // 3) useQuery for employee dashboard stats
+  const {
+    data: stats, // "stats" will contain the returned JSON object
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["employeeDashboard"],
+    queryFn: async () => {
+      const response = await fetch(`${BASE_URL}/employee/dashboard/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch dashboard data");
+      }
+      return response.json();
+    },
+    enabled: !!token, // Only fetch if we have a valid token
   });
 
+  // 4) useMutation for submitting vibe
+  const submitVibeMutation = useMutation({
+    mutationFn: async ({ vibe_score, message }) => {
+      const res = await fetch(`${BASE_URL}/employee/submit_vibe`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          vibe_score,
+          message: message?.trim() || null,
+        }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.detail || "Failed to submit vibe");
+      }
+
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["employeeDashboard"]);
+      setShowVibeSubmitted(true);
+      toast.success("Vibe submitted successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message); // displays server "detail"
+    },
+  });
+
+  // 5) Handle vibe selection changes
   const handleVibeChange = (vibe) => {
     setSelectedVibe(vibe);
   };
 
+  // 6) Submit vibe via mutation
   const handleVibeSubmit = () => {
-    if (!user || !selectedVibe) return;
+    if (!selectedVibe) return;
 
-    submitNewVibe(user.employeeId, selectedVibe, vibeComment);
-    const updatedStats = getEmployeeStats(user.employeeId);
-    setStats(updatedStats);
+    const vibeMapping = {
+      frustrated: 1,
+      sad: 2,
+      okay: 3,
+      happy: 4,
+      excited: 5,
+    };
+    const vibeScore = vibeMapping[selectedVibe.toLowerCase()] || 3;
 
-    setShowVibeSubmitted(true);
-    setTimeout(() => setShowVibeSubmitted(false), 3000);
+    // Pass both vibeScore and optional message
+    submitVibeMutation.mutate({
+      vibe_score: vibeScore,
+      message: vibeComment,
+    });
 
+    // Reset local UI state
     setSelectedVibe(null);
     setVibeComment("");
-    toast.success("Thank you for sharing your vibe!");
   };
 
-  useEffect(() => {
-    if (!token) return;
+  // 7) Loading & Error States
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen w-full">
+        <div className="flex flex-col items-center justify-center">
+          <div className="relative h-20 w-20">
+            {/* Pulse animation around the spinner */}
+            <span className="absolute inset-0 rounded-full animate-ping opacity-20 bg-emerald-500"></span>
 
-    const fetchDashboardData = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(`${BASE_URL}/employee/dashboard/`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+            {/* Main spinner with nice transition effect */}
+            <svg className="absolute inset-0 animate-spin" viewBox="0 0 50 50">
+              <circle
+                cx="25"
+                cy="25"
+                r="20"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeLinecap="round"
+                className="text-emerald-500"
+                strokeDasharray="80"
+                strokeDashoffset="60"
+              />
+            </svg>
+          </div>
 
-        const contentType = response.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
-          const text = await response.text();
-          throw new Error("Expected JSON but got: " + text);
-        }
+          {/* Text with subtle fade-in animation */}
+          <div className="mt-6 text-xl font-medium text-gray-800 dark:text-gray-100 animate-fadeIn">
+            Loading
+          </div>
+          <div className="text-sm text-gray-500 dark:text-gray-400 animate-pulse">
+            Just a moment
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-        const data = await response.json();
-        console.log("Fetched Data:", data);
-
-        // Update stats directly with the new data
-        setStats(data);
-      } catch (error) {
-        setError(error.message);
-        console.error("Error fetching dashboard data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDashboardData();
-  }, [token, BASE_URL]);
-
-  if (loading) {
+  if (isError) {
     return (
       <Layout>
         <div className="flex items-center justify-center h-80">
-          <div className="animate-pulse-slow">Loading your dashboard...</div>
+          <div className="text-red-500">Error: {error.message}</div>
         </div>
       </Layout>
     );
   }
 
-  if (error) {
-    return (
-      <Layout>
-        <div className="flex items-center justify-center h-80">
-          <div className="text-red-500">Error: {error}</div>
-        </div>
-      </Layout>
-    );
-  }
-
+  // 8) If no user, show a fallback
   if (!user) {
     return (
       <Layout>
@@ -139,23 +177,10 @@ const EmployeeDashboard = () => {
     );
   }
 
-  const getActivityDescription = (level) => {
-    switch (level) {
-      case "low":
-        return "Your activity level is lower than usual. Taking time to recharge?";
-      case "high":
-        return "You have higher than usual activity. Make sure to take breaks!";
-      default:
-        return "Your activity level is within a healthy range.";
-    }
-  };
+  // 9) Safely access stats (e.g. optional chaining)
+  const awardsCount = stats?.awards?.length ?? 0;
 
-  const getLeaveDescription = (count) => {
-    if (count === 0) return "You haven't taken any leaves this month.";
-    if (count === 1) return "You've taken 1 leave this month.";
-    return `You've taken ${count} leaves this month.`;
-  };
-  const awardsCount = stats && stats.awards ? stats.awards.length : 0;
+  // 10) Render the page
   return (
     <Layout>
       <div className="page-container py-8">
@@ -170,6 +195,7 @@ const EmployeeDashboard = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="md:col-span-2 space-y-8">
+            {/* Vibe Chart & Submission */}
             <div
               className="neo-glass rounded-xl p-6 animate-fade-in"
               style={{ animationDelay: "0.1s" }}
@@ -181,12 +207,14 @@ const EmployeeDashboard = () => {
                 </div>
               </div>
 
+              {/* Chart */}
               <VibeChart
-                vibes={stats.vibe_trend}
+                vibes={stats?.vibe_trend}
                 height={180}
                 className="mb-6"
               />
 
+              {/* Vibe input */}
               {!showVibeSubmitted ? (
                 <div>
                   <VibeSelector
@@ -218,6 +246,7 @@ const EmployeeDashboard = () => {
                         <button
                           onClick={handleVibeSubmit}
                           className="px-4 py-2 bg-green-600 text-primary-foreground rounded-lg hover:bg-green-600/90 transition-colors button-hover"
+                          disabled={submitVibeMutation.isLoading}
                         >
                           Submit
                         </button>
@@ -234,10 +263,11 @@ const EmployeeDashboard = () => {
               )}
             </div>
 
+            {/* Metrics */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <MetricCard
                 title="Performance Rating"
-                value={stats.performance_rating}
+                value={stats?.performance_rating}
                 icon={
                   <TrendingUp
                     size={24}
@@ -247,7 +277,7 @@ const EmployeeDashboard = () => {
               />
               <MetricCard
                 title="Leave Balance"
-                value={stats.leave_balance}
+                value={stats?.leave_balance}
                 icon={
                   <Clock
                     size={24}
@@ -257,7 +287,7 @@ const EmployeeDashboard = () => {
               />
               <MetricCard
                 title="Total Meetings"
-                value={stats.meetings_attended}
+                value={stats?.meetings_attended}
                 icon={
                   <Calendar
                     size={24}
@@ -267,7 +297,7 @@ const EmployeeDashboard = () => {
               />
               <MetricCard
                 title="Current Vibe"
-                value={stats.latest_vibe.vibe_score}
+                value={stats?.latest_vibe?.vibe_score}
                 icon={
                   <Smile
                     size={24}
@@ -277,7 +307,7 @@ const EmployeeDashboard = () => {
               />
               <MetricCard
                 title="Average Work hours"
-                value={stats.average_work_hours}
+                value={stats?.average_work_hours}
                 icon={
                   <Hourglass
                     size={24}
