@@ -177,12 +177,12 @@ function EmployeeOnboarding() {
   const { token } = useAuth();
 
   const handleUserTypeChange = (value) => {
-    console.log("User type changed to:", value);
+    // console.log("User type changed to:", value);
     setUserType(value);
   };
 
   useEffect(() => {
-    console.log("User type changed in effect:", userType);
+    // console.log("User type changed in effect:", userType);
     generateEmployeeId();
 
     if (formData.name) {
@@ -221,7 +221,7 @@ function EmployeeOnboarding() {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      console.log("success")
+      // console.log("success")
       toast.success(`${userType === "hr" ? "HR Personnel" : "Employee"} added successfully!`);
     } catch (error) {
       console.error("Error fetching profile data:", error);
@@ -241,7 +241,7 @@ function EmployeeOnboarding() {
     const randomNum = Math.floor(1000 + Math.random() * 9000);
     const prefix = userType === "hr" ? "HR" : "EMP";
 
-    console.log("Generating ID with prefix:", prefix);
+    // console.log("Generating ID with prefix:", prefix);
 
     setFormData((prev) => ({
       ...prev,
@@ -269,7 +269,7 @@ function EmployeeOnboarding() {
       }
     }
 
-    console.log("Generated email:", email);
+    // console.log("Generated email:", email);
 
     setFormData((prev) => ({
       ...prev,

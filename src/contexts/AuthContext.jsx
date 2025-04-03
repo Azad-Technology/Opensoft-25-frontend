@@ -106,18 +106,17 @@ export const AuthProvider = ({ children }) => {
         },
       );
 
-      const res = await response.json();
-      const expTime = Date.now() + res.expires_in * 1000;
+      const res= await response.json();
+      const expTime=Date.now()+(res.expires_in*1000);
 
-      const newTokenData = {
-        access_token: res.access_token,
-        expiration: expTime,
-        user: tokenData.user,
-      };
-
+      const newTokenData={
+        access_token:res.access_token,
+        expiration:expTime,
+        user:tokenData.user
+      }
       // localStorage.removeItem("auth");
-      localStorage.setItem("auth", JSON.stringify(newTokenData));
-      setToken(newTokenData.access_token);
+      localStorage.setItem("auth",JSON.stringify(newTokenData));
+      setToken(newTokenData.access_tokens);
     } catch (error) {
       console.error("refresh token error:", error);
       toast.error("Error refreshing token");

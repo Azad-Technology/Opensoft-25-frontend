@@ -194,9 +194,9 @@ const AdminReports = () => {
               },
             );
             const data = await response.json();
-            console.log("response" , data);
+            // console.log("response" , data);
             setEmployees(data.users);
-            console.log("employee list" , data.users);
+            // console.log("employee list" , data.users);
             setFilteredEmployees(data.users);
         } catch (error) {
             console.log("error in fetching employee list" , error);
@@ -208,7 +208,7 @@ const AdminReports = () => {
 }, [token]);
 
 useEffect(() => {
-  const filtered = employees.filter((employee) => {
+  const filtered = employees?.filter((employee) => {
     const matchesSearch =
       searchTerm === "" ||
       (employee.name && employee.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
@@ -222,28 +222,28 @@ useEffect(() => {
     return matchesSearch && matchesVibe;
   });
 
-  console.log("filtered" , filtered);
+  // console.log("filtered" , filtered);
   setFilteredEmployees(filtered);
   setCurrentPage(1);
-}, [searchTerm, vibeFilter, employees.length]);
+}, [searchTerm, vibeFilter, employees?.length]);
 
 useEffect(() => {
-  if (currentPage > Math.ceil(filteredEmployees.length / postsPerPage)) {
+  if (currentPage > Math.ceil(filteredEmployees?.length / postsPerPage)) {
     setCurrentPage(1);
   }
-}, [filteredEmployees.length]);
+}, [filteredEmployees?.length]);
 
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = filteredEmployees.slice(indexOfFirstPost, indexOfLastPost);
 
-  console.log("Current Posts" , currentPosts);
+  // console.log("Current Posts" , currentPosts);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const nextPage = () => {
-    if (currentPage < Math.ceil(filteredEmployees.length / postsPerPage)) {
+    if (currentPage < Math.ceil(filteredEmployees?.length / postsPerPage)) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -569,13 +569,13 @@ useEffect(() => {
                   </tr>
                 ) : currentPosts.length > 0 ? (
                   currentPosts.map((employee) => (
-                    <tr key={employee.employee_id} className="border-b border-border">
+                    <tr key={Date.now()} className="border-b border-border">
                       <td className="p-4">
                         <div className="flex items-center space-x-3">
-                          {employee.avatar ? (
+                          {employee?.avatar ? (
                             <img
-                              src={employee.avatar}
-                              alt={employee.name}
+                              src={employee?.avatar}
+                              alt={employee?.name}
                               className="h-10 w-10 rounded-full object-cover border border-border"
                             />
                           ) : (
@@ -584,16 +584,16 @@ useEffect(() => {
                             </div>
                           )}
                           <div>
-                            <div className="font-medium">{employee.name}</div>
+                            <div className="font-medium">{employee?.name}</div>
                             <div className="text-xs text-muted-foreground">
-                              {employee.employee_id}
+                              {employee?.employee_id}
                             </div>
                           </div>
                         </div>
                       </td>
                       <td className="p-4">
-                        {employee.latestVibe ? (
-                          <VibeStatusBadge vibe={employee.latestVibe} />
+                        {employee?.latestVibe ? (
+                          <VibeStatusBadge vibe={employee?.latestVibe} />
                         ) : (
                           <span className="text-muted-foreground text-sm">
                             No data
@@ -610,21 +610,21 @@ useEffect(() => {
                                 : "bg-green-100 text-green-800"
                           }`}
                         >
-                          {employee.activityLevel
+                          {employee?.activityLevel
                             ? employee.activityLevel.charAt(0).toUpperCase() +
                               employee.activityLevel.slice(1)
                             : "Normal"}
                         </span>
                       </td>
-                      <td className="p-4">{employee.monthlyLeaves || 0}</td>
+                      <td className="p-4">{employee?.monthlyLeaves || 0}</td>
                       <td className="p-4">
-                        {employee.lastCheckIn
+                        {employee?.lastCheckIn
                           ? new Date(employee.lastCheckIn).toLocaleDateString()
                           : "Never"}
                       </td>
                       <td className="p-4">
                         <Link
-                          to={`/admin/reports/${employee.employee_id}`}
+                          to={`/admin/reports/${employee?.employee_id}`}
                           className="text-primary hover:underline flex items-center"
                         >
                           View details <ArrowRight size={16} className="ml-1" />
@@ -647,7 +647,7 @@ useEffect(() => {
           </div>
           
           {/* Pagination */}
-          {filteredEmployees.length > 0 && (
+          {filteredEmployees?.length > 0 && (
             <div className="flex justify-between items-center px-4 py-3 bg-secondary rounded-b-lg">
               <div className="text-sm text-muted-foreground">
                 Showing {indexOfFirstPost + 1} to {Math.min(indexOfLastPost, filteredEmployees.length)} of {filteredEmployees.length} employees
@@ -664,9 +664,9 @@ useEffect(() => {
                 >
                   <ChevronLeft size={18} />
                 </button>
-                {[...Array(Math.ceil(filteredEmployees.length / postsPerPage))].slice(
+                {[...Array(Math.ceil(filteredEmployees?.length / postsPerPage))].slice(
                   Math.max(0, currentPage - 3),
-                  Math.min(Math.ceil(filteredEmployees.length / postsPerPage), currentPage + 2)
+                  Math.min(Math.ceil(filteredEmployees?.length / postsPerPage), currentPage + 2)
                 ).map((_, index) => {
                   const pageNumber = Math.max(1, currentPage - 2) + index;
                   return (
@@ -685,9 +685,9 @@ useEffect(() => {
                 })}
                 <button
                   onClick={nextPage}
-                  disabled={currentPage === Math.ceil(filteredEmployees.length / postsPerPage)}
+                  disabled={currentPage === Math.ceil(filteredEmployees?.length / postsPerPage)}
                   className={`p-2 rounded-md ${
-                    currentPage === Math.ceil(filteredEmployees.length / postsPerPage)
+                    currentPage === Math.ceil(filteredEmployees?.length / postsPerPage)
                       ? "text-gray-400 cursor-not-allowed"
                       : "text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
                   }`}
