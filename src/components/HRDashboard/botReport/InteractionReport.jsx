@@ -9,22 +9,49 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const InteractionReports = () => {
+const InteractionReports = ({ result }) => {
   const [selectedEmployee, setSelectedEmployee] = useState("John Doe");
 
-  const communicationData = [
-    { name: "Mon", teamMessages: 12, emails: 8, meetings: 1 },
-    { name: "Tue", teamMessages: 15, emails: 10, meetings: 2 },
-    { name: "Wed", teamMessages: 10, emails: 7, meetings: 3 },
-    { name: "Thu", teamMessages: 9, emails: 6, meetings: 2 },
-    { name: "Fri", teamMessages: 6, emails: 4, meetings: 1 },
-  ];
+
+  // const communicationData = [
+  //   { name: "Mon", teamMessages: 12, emails: 8, meetings: 1 },
+  //   { name: "Tue", teamMessages: 15, emails: 10, meetings: 2 },
+  //   { name: "Wed", teamMessages: 10, emails: 7, meetings: 3 },
+  //   { name: "Thu", teamMessages: 9, emails: 6, meetings: 2 },
+  //   { name: "Fri", teamMessages: 6, emails: 4, meetings: 1 },
+  // ];
+  console.log("result in Interaction Page" , result);
+  const communicationActivity = result?.communication_activity_weekly || {};
+
+  const communicationData = (communicationActivity) => {
+    const daysOrder = ["Mon", "Tue", "Wed", "Thu", "Fri","Sat","Sun"];
+    return daysOrder.map((day) => ({
+      name: day,
+      teamMessages: communicationActivity[day]?.teams_messages_sent || 0,
+      emails: communicationActivity[day]?.emails_sent || 0,
+      meetings: communicationActivity[day]?.meetings_attended || 0,
+    }));
+  };
+
+  console.log("communicationData" , communicationData(communicationActivity));
+
+  const totalCommunication = Object.values(result?.communication_activity_weekly).reduce(
+    (acc, day) => {
+        acc.teamMessages += day.teams_messages_sent;
+        acc.emails += day.emails_sent;
+        acc.meetings += day.meetings_attended;
+        return acc;
+    },
+    { teamMessages: 0, emails: 0, meetings: 0 }
+);
+
+console.log(totalCommunication);
 
   return (
     <div className="p-4 mt-10">
-      {/* Main Content */}
+   
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Communication Activity Chart */}
+       
         <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-5 border border-gray-100 dark:border-gray-700">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Communication Activity</h2>
@@ -33,7 +60,7 @@ const InteractionReports = () => {
             </div>
           </div>
           <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={communicationData}>
+            <LineChart data={communicationData(communicationActivity)}>
               <CartesianGrid
                 strokeDasharray="3 3"
                 vertical={false}
@@ -81,18 +108,17 @@ const InteractionReports = () => {
           </div>
         </div>
 
-        {/* Inactivity Analysis */}
+        
         <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-5 border border-gray-100 dark:border-gray-700">
           <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Inactivity Analysis</h2>
 
-          {/* Team Messages */}
           <div className="mb-4">
             <div className="flex justify-between text-sm mb-2">
               <div className="flex items-center space-x-2">
                 <div className="w-5 h-5 bg-green-500 rounded-full"></div>
                 <span className="text-gray-700 dark:text-gray-300">Team Messages</span>
               </div>
-              <span className="text-gray-700 dark:text-gray-300">50 / week</span>
+              <span className="text-gray-700 dark:text-gray-300">{totalCommunication.teamMessages} / week</span>
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
               <div
@@ -105,14 +131,14 @@ const InteractionReports = () => {
             </div>
           </div>
 
-          {/* Emails Sent */}
+        
           <div className="mb-4">
             <div className="flex justify-between text-sm mb-2">
               <div className="flex items-center space-x-2">
                 <div className="w-5 h-5 bg-blue-500 rounded-full"></div>
                 <span className="text-gray-700 dark:text-gray-300">Emails Sent</span>
               </div>
-              <span className="text-gray-700 dark:text-gray-300">35 / week</span>
+              <span className="text-gray-700 dark:text-gray-300">{totalCommunication.emails} / week</span>
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
               <div
@@ -125,14 +151,14 @@ const InteractionReports = () => {
             </div>
           </div>
 
-          {/* Meetings Attended */}
+         
           <div className="mb-4">
             <div className="flex justify-between text-sm mb-2">
               <div className="flex items-center space-x-2">
                 <div className="w-5 h-5 bg-gray-500 rounded-full"></div>
                 <span className="text-gray-700 dark:text-gray-300">Meetings Attended</span>
               </div>
-              <span className="text-gray-700 dark:text-gray-300">9 / week</span>
+              <span className="text-gray-700 dark:text-gray-300">{totalCommunication.meetings} / week</span>
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
               <div
@@ -145,7 +171,7 @@ const InteractionReports = () => {
             </div>
           </div>
 
-          {/* Inactivity Alert */}
+         
           <div className="bg-yellow-50 dark:bg-yellow-900/30 border-l-4 border-yellow-500 p-3 mt-4">
             <div className="flex items-center space-x-2 mb-2">
               <svg

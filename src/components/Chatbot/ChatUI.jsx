@@ -13,6 +13,7 @@ import {
   useSendChatMessage,
 } from "../../hooks/useChatMessage";
 import { useAuth } from "../../contexts/AuthContext";
+import ReactMarkdown from "react-markdown";
 
 const ChatUI = ({ className = "" }) => {
   const { token } = useAuth();
@@ -75,6 +76,13 @@ const ChatUI = ({ className = "" }) => {
     );
   };
 
+  const handleCloseChat = () => {
+    setSessionId(null);
+    localStorage.removeItem("lastSessionId");
+    setIsTyping(false);
+    toast.success("Chat closed");
+  };
+
   // Send a user message
   const handleSendMessage = () => {
     if (!newMessage.trim() || !token) return;
@@ -114,6 +122,20 @@ const ChatUI = ({ className = "" }) => {
     const date = new Date(ts);
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
+
+  // Restore last session on component mount
+  useEffect(() => {
+    const storedSession = localStorage.getItem("lastSessionId");
+    if (storedSession) {
+      setSessionId(storedSession);
+    }
+  }, []);
+  // Store sessionId in localStorage whenever it changes
+  useEffect(() => {
+    if (sessionId) {
+      localStorage.setItem("lastSessionId", sessionId);
+    }
+  }, [sessionId]);
 
   return (
     <div className={`flex h-full overflow-hidden ${className}`}>
@@ -198,9 +220,7 @@ const ChatUI = ({ className = "" }) => {
                       {`Session ${session.session_id.substring(0, 8)}...`}
                     </div>
                     <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                      {new Date(
-                        session.createdAt || Date.now(),
-                      ).toLocaleDateString()}
+                      {new Date(session.timestamp).toLocaleDateString()}
                     </div>
                   </button>
                 ))}
@@ -236,6 +256,30 @@ const ChatUI = ({ className = "" }) => {
               </p>
             </div>
           </div>
+          {sessionId && (
+            <button
+              onClick={handleCloseChat}
+              className="px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
+            >
+              <span className="flex items-center justify-center w-5 h-5 bg-white bg-opacity-10 rounded-full">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="10"
+                  height="10"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </span>
+              <span className="font-medium">Close Chat</span>
+            </button>
+          )}
         </div>
 
         {/* Content Area - show placeholder or chat depending on sessionId */}
@@ -316,8 +360,37 @@ const ChatUI = ({ className = "" }) => {
                       }`}
                     >
                       {/* Message content */}
-                      <div className="text-sm whitespace-pre-wrap">
-                        {m.message}
+                      <div className="text-sm prose prose-sm dark:prose-invert max-w-none break-words">
+                        <ReactMarkdown
+                          components={{
+                            // Apply styles to the root div
+                            root: ({ node, ...props }) => <div {...props} />,
+                            // Style links
+                            a: ({ node, ...props }) => (
+                              <a
+                                {...props}
+                                className="text-green-600 hover:underline"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              />
+                            ),
+                            // Style code blocks and inline code
+                            code: ({ node, inline, ...props }) =>
+                              inline ? (
+                                <code
+                                  {...props}
+                                  className="px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs"
+                                />
+                              ) : (
+                                <code
+                                  {...props}
+                                  className="block bg-gray-100 dark:bg-gray-800 p-3 rounded-md text-xs overflow-x-auto"
+                                />
+                              ),
+                          }}
+                        >
+                          {m.message}
+                        </ReactMarkdown>
                       </div>
 
                       {/* Timestamp - more subtle positioning */}
