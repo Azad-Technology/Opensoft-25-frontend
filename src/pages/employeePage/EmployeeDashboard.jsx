@@ -98,6 +98,11 @@ const EmployeeDashboard = () => {
   const handleVibeSubmit = () => {
     if (!selectedVibe) return;
 
+    if (!vibeComment.trim()) {
+      toast.error("Please share a comment about how you're feeling.");
+      return;
+    }
+
     const vibeMapping = {
       frustrated: 1,
       sad: 2,
@@ -107,13 +112,11 @@ const EmployeeDashboard = () => {
     };
     const vibeScore = vibeMapping[selectedVibe.toLowerCase()] || 3;
 
-    // Pass both vibeScore and optional message
     submitVibeMutation.mutate({
       vibe_score: vibeScore,
       message: vibeComment,
     });
 
-    // Reset local UI state
     setSelectedVibe(null);
     setVibeComment("");
   };
@@ -228,7 +231,7 @@ const EmployeeDashboard = () => {
                       <div>
                         <label
                           htmlFor="vibeComment"
-                          className="block text-sm font-medium mb-1"
+                          className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
                         >
                           Would you like to share more about how you're feeling?
                         </label>
@@ -236,8 +239,8 @@ const EmployeeDashboard = () => {
                           id="vibeComment"
                           value={vibeComment}
                           onChange={(e) => setVibeComment(e.target.value)}
-                          className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
-                          placeholder="Optional: Share your thoughts..."
+                          className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
+                          placeholder="Share your thoughts..."
                           rows={2}
                         />
                       </div>
@@ -245,7 +248,7 @@ const EmployeeDashboard = () => {
                       <div className="flex justify-end">
                         <button
                           onClick={handleVibeSubmit}
-                          className="px-4 py-2 bg-green-600 text-primary-foreground rounded-lg hover:bg-green-600/90 transition-colors button-hover"
+                          className="px-4 py-2 bg-green-600 text-white dark:text-white rounded-lg hover:bg-green-600/90 transition-colors button-hover"
                           disabled={submitVibeMutation.isLoading}
                         >
                           Submit
