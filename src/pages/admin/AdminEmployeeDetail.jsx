@@ -33,21 +33,14 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import { useAuth } from "../../contexts/AuthContext";
 
 const AdminEmployeeDetail = () => {
   const { employeeId } = useParams();
-  const {
-    vibes,
-    leaves,
-    activities,
-    recognitions,
-    performances,
-    onboardings,
-    chatSessions,
-    chatMessages,
-  } = useData();
-
+  const { token } = useAuth();
+  const VITE_REACT_APP_URL = import.meta.env.VITE_REACT_APP_URL;
   const [employee, setEmployee] = useState(null);
+  const [result , setResult] = useState(null);
   const [employeeVibes, setEmployeeVibes] = useState([]);
   const [employeeLeaves, setEmployeeLeaves] = useState([]);
   const [employeeActivities, setEmployeeActivities] = useState([]);
@@ -55,83 +48,263 @@ const AdminEmployeeDetail = () => {
   const [employeePerformance, setEmployeePerformance] = useState(null);
   const [employeeOnboarding, setEmployeeOnboarding] = useState(null);
   const [employeeChatSessions, setEmployeeChatSessions] = useState([]);
+  // const {
+  //   vibes,
+  //   leaves,
+  //   activities,
+  //   recognitions,
+  //   performances,
+  //   onboardings,
+  //   chatSessions,
+  //   chatMessages,
+  // } = useData();
+  console.log("token" , token);
+  // const token = getToken.access_token;
+  // console.log("token" , token);
+  const employeeData = async () => {
+    try {
+      const response = await fetch(`${VITE_REACT_APP_URL}/admin/${employeeId}/summary` ,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
 
-  useEffect(() => {
-    if (employeeId) {
-      const foundEmployee = users.find((u) => u.employeeId === employeeId);
-      setEmployee(foundEmployee);
-
-      if (foundEmployee) {
-        const filteredVibes = vibes.filter((v) => v.employeeId === employeeId);
-        const filteredLeaves = leaves.filter(
-          (l) => l.employeeId === employeeId,
-        );
-        const filteredActivities = activities.filter(
-          (a) => a.employeeId === employeeId,
-        );
-        const filteredRecognitions = recognitions.filter(
-          (r) => r.employeeId === employeeId,
-        );
-        const filteredPerformance = performances.find(
-          (p) => p.employeeId === employeeId,
-        );
-        const filteredOnboarding = onboardings.find(
-          (o) => o.employeeId === employeeId,
-        );
-        const filteredChatSessions = chatSessions
-          .filter((s) => s.employeeId === employeeId)
-          .sort(
-            (a, b) =>
-              new Date(b.startTime).getTime() - new Date(a.startTime).getTime(),
-          );
-
-        const formattedVibes = filteredVibes
-          .sort(
-            (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-          )
-          .map((v) => ({
-            ...v,
-            date: new Date(v.date).toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-            }),
-          }));
-
-        const formattedActivities = filteredActivities
-          .sort(
-            (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-          )
-          .map((a) => ({
-            ...a,
-            date: new Date(a.date).toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-            }),
-            total: a.teamsMessages + a.emails + a.meetings,
-          }));
-
-        setEmployeeVibes(formattedVibes);
-        setEmployeeLeaves(filteredLeaves);
-        setEmployeeActivities(formattedActivities);
-        setEmployeeRecognitions(filteredRecognitions);
-        setEmployeePerformance(filteredPerformance);
-        setEmployeeOnboarding(filteredOnboarding);
-        setEmployeeChatSessions(filteredChatSessions);
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
       }
-    }
-  }, [
-    employeeId,
-    users,
-    vibes,
-    leaves,
-    activities,
-    recognitions,
-    performances,
-    onboardings,
-    chatSessions,
-    chatMessages,
-  ]);
 
+      const resultData = await response.json();
+      console.log("result", resultData);
+      setResult(resultData);
+
+        if (resultData.employee_id) {
+              // const foundEmployee = users.find((u) => u.employeeId === employeeId);
+              // setEmployee(foundEmployee);
+               setEmployee(resultData.employee_id);
+                // const filteredVibes = vibes.filter((v) => v.employeeId === employeeId);
+                // const filteredLeaves = leaves.filter(
+                //   (l) => l.employeeId === employeeId,
+                // );
+                if(resultData.mental_states){
+                  const filteredVibes = Object.entries(resultData.mental_states).map(([state, count]) => ({
+                    state,
+                    count,
+                  }));
+                  setEmployeeVibes(filteredVibes);
+                }
+                // const filteredVibes = result.mental_states;
+                // const filteredLeaves = result.leaves;
+                if (resultData.leaves) {
+                  const filteredLeaves = Object.entries(resultData.leaves).map(([reason, count]) => ({
+                    reason,
+                    count,
+                  }));
+                  setEmployeeLeaves(filteredLeaves);
+                }
+                // const filteredActivities = activities.filter(
+                //   (a) => a.employeeId === employeeId,
+                // );
+                // const filteredActivities = result.communication_activity;
+                if(resultData.communication_activity){
+                  const filteredActivities = Object.entries(resultData.communication_activity).map(([message_type, count]) => ({
+                    message_type,
+                    count,
+                  }));
+                  
+                  const formattedActivities = filteredActivities.map((a) => ({
+                    ...a,
+                    total:
+                      (resultData.communication_activity.teams_messages_sent || 0) +
+                      (resultData.communication_activity.emails_sent || 0) +
+                      (resultData.communication_activity.meetings_attended || 0),
+                  }));
+                  setEmployeeActivities(formattedActivities);
+                }
+                // const filteredRecognitions = recognitions.filter(
+                //   (r) => r.employeeId === employeeId,
+                // );
+                // const filteredRecognitions = result.rewards;
+                if(resultData.rewards){
+                  const formattedRewards = [
+                    {
+                      total_points: resultData.rewards.total_points,
+                      awards: resultData.rewards.awards,
+                    },
+                  ];
+                  setEmployeeRecognitions(formattedRewards);
+                }
+                // const filteredPerformance = performances.find(
+                //   (p) => p.employeeId === employeeId,
+                // );
+                // const filteredPerformance = result.performance;
+                if (resultData.performance) {
+                  setEmployeePerformance({
+                    employeeId: resultData.performance.Employee_ID,
+                    reviewPeriod: resultData.performance.Review_Period,
+                    performanceRating: resultData.performance.Performance_Rating,
+                    managerFeedback: resultData.performance.Manager_Feedback,
+                    promotionConsideration: resultData.performance.Promotion_Consideration,
+                  });
+                }
+                // const filteredOnboarding = onboardings.find(
+                //   (o) => o.employeeId === employeeId,
+                // );
+                // const filteredOnboarding = result.onboarding_data;
+                if (resultData.onboarding_data) {
+                  setEmployeeOnboarding({
+                    feedback: resultData.onboarding_data.feedback,
+                    mentorAssigned: resultData.onboarding_data.mentor_assigned,
+                    trainingCompleted: resultData.onboarding_data.training_completed,
+                  });
+                }
+                // const filteredChatSessions = chatSessions
+                //   .filter((s) => s.employeeId === employeeId)
+                //   .sort(
+                //     (a, b) =>
+                //       new Date(b.startTime).getTime() - new Date(a.startTime).getTime(),
+                //   );
+        
+                // const formattedVibes = filteredVibes
+                //   .sort(
+                //     (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+                //   )
+                //   .map((v) => ({
+                //     ...v,
+                //     date: new Date(v.date).toLocaleDateString("en-US", {
+                //       month: "short",
+                //       day: "numeric",
+                //     }),
+                //   }));
+        
+                // const formattedActivities = filteredActivities
+                //   .sort(
+                //     (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+                //   )
+                //   .map((a) => ({
+                //     ...a,
+                //     date: new Date(a.date).toLocaleDateString("en-US", {
+                //       month: "short",
+                //       day: "numeric",
+                //     }),
+                //     total: a.teamsMessages + a.emails + a.meetings,
+                //   }));
+        
+                // setEmployeeVibes(formattedVibes);
+                // setEmployeeLeaves(filteredLeaves);
+                // setEmployeeActivities(formattedActivities);
+                // setEmployeeRecognitions(filteredRecognitions);
+                // setEmployeePerformance(filteredPerformance);
+                // setEmployeeOnboarding(filteredOnboarding);
+                // setEmployeeChatSessions(filteredChatSessions);
+              }
+          // }, [
+          //   employeeId,
+          //   users,
+          //   vibes,
+          //   leaves,
+          //   activities,
+          //   recognitions,
+          //   performances,
+          //   onboardings,
+          //   chatSessions,
+          //   chatMessages,
+          // ]);
+    }catch (error) {
+      console.log("unable to fetch user data", error);
+    }
+  };
+  
+
+  useEffect(() =>{
+    employeeData()
+  } , [employeeId, token]);
+
+  // const [employee, setEmployee] = useState(null);
+  // const [employeeVibes, setEmployeeVibes] = useState([]);
+  // const [employeeLeaves, setEmployeeLeaves] = useState([]);
+  // const [employeeActivities, setEmployeeActivities] = useState([]);
+  // const [employeeRecognitions, setEmployeeRecognitions] = useState([]);
+  // const [employeePerformance, setEmployeePerformance] = useState(null);
+  // const [employeeOnboarding, setEmployeeOnboarding] = useState(null);
+  // const [employeeChatSessions, setEmployeeChatSessions] = useState([]);
+
+  // useEffect(() => {
+  //   if (employeeId) {
+  //     const foundEmployee = users.find((u) => u.employeeId === employeeId);
+  //     setEmployee(foundEmployee);
+
+  //     if (foundEmployee) {
+  //       const filteredVibes = vibes.filter((v) => v.employeeId === employeeId);
+  //       const filteredLeaves = leaves.filter(
+  //         (l) => l.employeeId === employeeId,
+  //       );
+  //       const filteredActivities = activities.filter(
+  //         (a) => a.employeeId === employeeId,
+  //       );
+  //       const filteredRecognitions = recognitions.filter(
+  //         (r) => r.employeeId === employeeId,
+  //       );
+  //       const filteredPerformance = performances.find(
+  //         (p) => p.employeeId === employeeId,
+  //       );
+  //       const filteredOnboarding = onboardings.find(
+  //         (o) => o.employeeId === employeeId,
+  //       );
+  //       const filteredChatSessions = chatSessions
+  //         .filter((s) => s.employeeId === employeeId)
+  //         .sort(
+  //           (a, b) =>
+  //             new Date(b.startTime).getTime() - new Date(a.startTime).getTime(),
+  //         );
+
+  //       const formattedVibes = filteredVibes
+  //         .sort(
+  //           (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+  //         )
+  //         .map((v) => ({
+  //           ...v,
+  //           date: new Date(v.date).toLocaleDateString("en-US", {
+  //             month: "short",
+  //             day: "numeric",
+  //           }),
+  //         }));
+
+  //       const formattedActivities = filteredActivities
+  //         .sort(
+  //           (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+  //         )
+  //         .map((a) => ({
+  //           ...a,
+  //           date: new Date(a.date).toLocaleDateString("en-US", {
+  //             month: "short",
+  //             day: "numeric",
+  //           }),
+  //           total: a.teamsMessages + a.emails + a.meetings,
+  //         }));
+
+  //       setEmployeeVibes(formattedVibes);
+  //       setEmployeeLeaves(filteredLeaves);
+  //       setEmployeeActivities(formattedActivities);
+  //       setEmployeeRecognitions(filteredRecognitions);
+  //       setEmployeePerformance(filteredPerformance);
+  //       setEmployeeOnboarding(filteredOnboarding);
+  //       setEmployeeChatSessions(filteredChatSessions);
+  //     }
+  //   }
+  // }, [
+  //   employeeId,
+  //   users,
+  //   // vibes,
+  //   // leaves,
+  //   // activities,
+  //   // recognitions,
+  //   // performances,
+  //   // onboardings,
+  //   // chatSessions,
+  //   // chatMessages,
+  // ]); to be uncommented
+ 
+  // setEmployee(result.employee_id);
   if (!employee) {
     return (
       <Layout>
@@ -259,16 +432,16 @@ const AdminEmployeeDetail = () => {
               <ArrowLeft size={16} className="mr-1" />
               Back to Reports
             </Link>
-            <h1 className="page-header mb-2">{employee.name}</h1>
+            <h1 className="page-header mb-2">{result.name}</h1>
             <div className="flex flex-wrap items-center gap-2">
-              <p className="text-muted-foreground">ID: {employee.employeeId}</p>
-              {employee.department && (
+              <p className="text-muted-foreground">ID: {result.employee_id}</p>
+              {/* {employee.department && (
                 <>
                   <span className="text-muted-foreground">•</span>
-                  <p className="text-muted-foreground">{employee.department}</p>
+                  <p className="text-muted-foreground">{result.department}</p>
                 </>
-              )}
-              <span className="text-muted-foreground">•</span>
+              )} */}
+              {/* <span className="text-muted-foreground">•</span> */}
               {getRiskBadge()}
             </div>
           </div>
@@ -292,22 +465,22 @@ const AdminEmployeeDetail = () => {
               {employee.avatar ? (
                 <img
                   src={employee.avatar}
-                  alt={employee.name}
+                  alt={result.name}
                   className="h-20 w-20 rounded-full object-cover border border-border mb-3"
                 />
               ) : (
                 <div className="h-20 w-20 bg-secondary rounded-full flex items-center justify-center mb-3">
                   <span className="text-2xl font-medium text-secondary-foreground">
-                    {employee.name.charAt(0)}
+                    {result.name.charAt(0)}
                   </span>
                 </div>
               )}
-              <h3 className="text-lg font-medium">{employee.name}</h3>
-              {employee.department && (
+              <h3 className="text-lg font-medium">{result.name}</h3>
+              {/* {employee.department && (
                 <p className="text-sm text-muted-foreground">
                   {employee.department}
                 </p>
-              )}
+              )} */}
             </div>
 
             <div className="space-y-3">
@@ -317,7 +490,7 @@ const AdminEmployeeDetail = () => {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Employee ID</p>
-                  <p className="text-sm">{employee.employeeId}</p>
+                  <p className="text-sm">{result.employee_id}</p>
                 </div>
               </div>
 
@@ -327,7 +500,7 @@ const AdminEmployeeDetail = () => {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Email</p>
-                  <p className="text-sm">{employee.email}</p>
+                  <p className="text-sm">{result.email}</p>
                 </div>
               </div>
 
@@ -432,7 +605,7 @@ const AdminEmployeeDetail = () => {
                 </div>
                 <div className="flex items-baseline">
                   <span className="text-2xl font-medium">
-                    {employeePerformance.rating.toFixed(1)}
+                    {employeePerformance.performanceRating.toFixed(1)}
                   </span>
                   <span className="text-sm text-muted-foreground ml-1">
                     /5.0
@@ -715,11 +888,11 @@ const AdminEmployeeDetail = () => {
               )}
             </div> */}
           </div>
-      <Emotion />
-      <Experience />
-      <InteractionReports />
-      <LeaveAnalysis />
-      <Performance />
+      <Emotion  result={result} />
+      <Experience  result={result} />
+      <InteractionReports  result={result} />
+      <LeaveAnalysis result={result} />
+      <Performance token={token} employeeId={employeeId} result={result} />
     </Layout>
   );
 };
