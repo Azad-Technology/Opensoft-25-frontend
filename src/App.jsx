@@ -27,6 +27,7 @@ import HelpAndSupportPage from "./pages/employeePage/HelpSupport";
 import AdminSupportPage from "./pages/admin/AdminSupportPage";
 import Report from "./components/EmployeeReportPdf/Report";
 import EmployeeReportPage from "./components/EmployeeReportPdf/dashPage";
+import EmployeeSchedule from "./pages/schedule/myschedule"; // Updated import
 import { UserProvider } from "./contexts/UserContext";
 
 // Protected route component
@@ -103,6 +104,15 @@ const App = () => (
                 element={
                   <ProtectedRoute allowedRoles={["employee"]}>
                     <EmployeeReports />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/employee/schedule" // New route for EmployeeSchedule
+                element={
+                  <ProtectedRoute allowedRoles={["employee"]}>
+                    <EmployeeSchedule />
                   </ProtectedRoute>
                 }
               />

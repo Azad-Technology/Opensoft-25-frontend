@@ -225,13 +225,13 @@ useEffect(() => {
   console.log("filtered" , filtered);
   setFilteredEmployees(filtered);
   setCurrentPage(1);
-}, [searchTerm, vibeFilter, employees.length]);
+}, [searchTerm, vibeFilter, employees?.length]);
 
 useEffect(() => {
   if (currentPage > Math.ceil(filteredEmployees.length / postsPerPage)) {
     setCurrentPage(1);
   }
-}, [filteredEmployees.length]);
+}, [filteredEmployees?.length]);
 
 
   const indexOfLastPost = currentPage * postsPerPage;
@@ -243,7 +243,7 @@ useEffect(() => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const nextPage = () => {
-    if (currentPage < Math.ceil(filteredEmployees.length / postsPerPage)) {
+    if (currentPage < Math.ceil(filteredEmployees?.length / postsPerPage)) {
       setCurrentPage(currentPage + 1);
     }
   };
