@@ -15,6 +15,8 @@ import {
   HelpCircle,
   Calendar,
   AlertCircle,
+  Handshake,
+  
 } from "lucide-react";
 
 const Sidebar = ({ expanded, onToggle }) => {
@@ -49,7 +51,12 @@ const Sidebar = ({ expanded, onToggle }) => {
     {
       path: "/admin/onboarding",
       label: "Onboarding",
-      icon: <BarChart4 size={20} />,
+      icon: <Handshake size={20} />,
+    },
+    {
+      path: "/admin/inquiries",
+      label: "Inquiries",
+      icon: <AlertCircle size={20} />,
     },
   ];
 

@@ -23,6 +23,8 @@ import Home from "./pages/HomePage/Home";
 import Profile from "./pages/profilePage1/Profile";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Onboarding from "./components/HRDashboard/Onboarding"
+import HelpAndSupportPage from "./pages/employeePage/HelpSupport";
+import AdminSupportPage from "./pages/admin/AdminSupportPage";
 import Report from "./components/EmployeeReportPdf/Report";
 import EmployeeReportPage from "./components/EmployeeReportPdf/dashPage";
 import { UserProvider } from "./contexts/UserContext";
@@ -104,6 +106,14 @@ const App = () => (
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/employee/help"
+                element={
+                  <ProtectedRoute allowedRoles={["employee"]}>
+                    <HelpAndSupportPage/>
+                  </ProtectedRoute>
+                }
+              />
 
               <Route
                 path="/employee/exportReport"
@@ -128,6 +138,14 @@ const App = () => (
                 element={
                   <ProtectedRoute allowedRoles={["hr"]}>
                     <AdminReports />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/inquiries"
+                element={
+                  <ProtectedRoute allowedRoles={["hr"]}>
+                    <AdminSupportPage />
                   </ProtectedRoute>
                 }
               />
