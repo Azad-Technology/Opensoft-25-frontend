@@ -11,12 +11,18 @@ const fetchSessionsAPI = async (token) => {
   const res = await fetch(`${BASE_URL}/chat/sessions`, {
     headers: { Authorization: `Bearer ${token}` },
   });
+
   if (!res.ok) {
     const error = await res.text();
     throw new Error(error || "Failed to fetch sessions");
   }
+
   const data = await res.json();
-  return data.sessions; // return just the array
+
+  // ✅ Sort sessions so newest is first
+  return data.sessions.sort(
+    (a, b) => new Date(b.timestamp) - new Date(a.timestamp),
+  );
 };
 
 /**
@@ -167,7 +173,6 @@ export const useSendChatMessage = ({ onSessionCreated, token }) => {
 
     // 3) onSuccess: replace the optimistic message with final messages from the server
     onSuccess(data, variables, context) {
-      // If new session was created
       if (data.session_id && variables.sessionId === null && onSessionCreated) {
         onSessionCreated(data.session_id);
       }
@@ -175,32 +180,29 @@ export const useSendChatMessage = ({ onSessionCreated, token }) => {
       const sid = data.session_id || context.sid;
       const queryKey = ["chatHistory", sid];
 
-      // If the server returned final userMessage & assistantMessage
-      // we'll replace our temp user message with the real user message
-      // and also add the assistant message.
       if (data.userMessage && data.assistantMessage) {
         queryClient.setQueryData(queryKey, (old = []) => {
-          // Filter out the optimistic user message (by ID)
           const filtered = old.filter(
             (msg) => msg.id !== context.optimisticMessage.id,
           );
-          // Add official userMessage + assistantMessage
           return [...filtered, data.userMessage, data.assistantMessage];
-        });
-      } else if (data.userMessage) {
-        // Possibly the assistant message isn't ready yet
-        queryClient.setQueryData(queryKey, (old = []) => {
-          const filtered = old.filter(
-            (msg) => msg.id !== context.optimisticMessage.id,
-          );
-          return [...filtered, data.userMessage];
         });
       }
 
-      // If you want to also update session list (e.g. if new session was created)
-      queryClient.invalidateQueries(["chatSessions", token]);
-    },
+      // ✅ Optimistically add new session
+      queryClient.setQueryData(["chatSessions", token], (old = []) => {
+        const exists = old.find((s) => s.session_id === data.session_id);
+        if (exists) return old;
 
+        const newSession = {
+          session_id: data.session_id,
+          timestamp: new Date().toISOString(),
+          last_message: null,
+        };
+
+        return [newSession, ...old];
+      });
+    },
     // 4) onSettled: always re-invalidate to fetch the final server state
     onSettled(data, error, variables, context) {
       if (!error && data) {
@@ -208,6 +210,7 @@ export const useSendChatMessage = ({ onSessionCreated, token }) => {
         if (sid) {
           queryClient.invalidateQueries(["chatHistory", sid]);
         }
+        queryClient.invalidateQueries(["chatSessions", token]); // ✅ ensures latest data
       }
     },
   });
