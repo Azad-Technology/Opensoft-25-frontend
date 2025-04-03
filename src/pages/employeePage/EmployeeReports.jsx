@@ -6,6 +6,7 @@ import VibeChart from "../../components/employeeCompo/VibeChart";
 import VibeStatusBadge from "../../components/employeeCompo/VibeStatusBadge";
 import { AchievementsSection } from '../../components/employeeCompo/AchievementsSection';
 import ProjectCard from "../../components/employeeCompo/ProjectCard";
+import ChatAlert from "../../components/employeeCompo/ChatAlert";
 import {
   AreaChart,
   Area,
@@ -25,7 +26,6 @@ const EmployeeReports = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [stats, setStats] = useState(null);
-  const [projectData, setProjectData] = useState(null);
 
   const BASE_URL = import.meta.env.VITE_REACT_APP_URL;
 
@@ -40,40 +40,6 @@ const EmployeeReports = () => {
     strengths: ["Leadership", "Problem-Solving", "Time Management"],
     improvements: ["Communication", "Technical Documentation"],
   };
-
-  //Hard coded data
-  // const projectData = [
-  //   {
-  //     id: '1',
-  //     name: 'Website Redesign',
-  //     priority: 'high',
-  //     status: 'in-progress',
-  //     startDate: '2024-03-01',
-  //     endDate: '2024-04-15',
-  //     progress: 65,
-  //     assignees: ['Sarah J.', 'Michael C.'],
-  //   },
-  //   {
-  //     id: '2',
-  //     name: 'Mobile App Development',
-  //     priority: 'medium',
-  //     status: 'not-started',
-  //     startDate: '2024-04-01',
-  //     endDate: '2024-06-30',
-  //     progress: 0,
-  //     assignees: ['Emily D.', 'John S.'],
-  //   },
-  //   {
-  //     id: '3',
-  //     name: 'Data Migration',
-  //     priority: 'low',
-  //     status: 'completed',
-  //     startDate: '2024-02-15',
-  //     endDate: '2024-03-15',
-  //     progress: 100,
-  //     assignees: ['Robert K.', 'Lisa M.'],
-  //   },
-  // ];
 
   const userRecognitions = [
     {
@@ -135,7 +101,6 @@ const EmployeeReports = () => {
     const fetchDashboardData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`${BASE_URL}/employee/projects/`);
         const response = await fetch(`${BASE_URL}/employee/dashboard/`, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -147,11 +112,9 @@ const EmployeeReports = () => {
         }
 
         const data = await response.json();
-        const dt = await res.json();
         // Update stats directly with the new data
         setStats(data);
-        setProjectData(dt);
-        
+
       } catch (error) {
         setError(error.message);
         console.error("Error fetching dashboard data:", error);
@@ -200,11 +163,12 @@ const EmployeeReports = () => {
   const userLeaves = Object.values(stats.all_leaves);
   const activityData = Object.values(stats.activity_level);
   const awards = Object.values(stats.awards);
-  // console.log("Awards data", awards);
-  console.log("Project Data", projectData)
+  const projectData = Object.values(stats.projects);
+
   return (
     <Layout>
       <div className="page-container py-8">
+      
         <div className="mb-8 animate-fade-in flex items-center justify-between">
           <div>
             <h1 className="page-header mb-2">My Reports</h1>
@@ -218,6 +182,7 @@ const EmployeeReports = () => {
             </button>
           </div>
         </div>
+            {stats.is_chat_required && <ChatAlert/>}
 
         <div className="space-y-8">
           {/* Vibe trend */}
@@ -286,7 +251,7 @@ const EmployeeReports = () => {
           >
             <h2 className="text-xl font-medium mb-6">Activity Levels</h2>
 
-            {(activityData) ? (
+            {(activityData.length > 0) ? (
               <div className="h-72">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
@@ -361,14 +326,14 @@ const EmployeeReports = () => {
                         <td className="py-3 px-4">
                           <span
                             className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${leave.leave_type === "Casual Leave"
-                                ? "bg-blue-100 text-blue-800"
-                                : leave.leave_type === "Sick Leave"
-                                  ? "bg-red-100 text-gray-800"
-                                  : leave.leave_type === "Unpaid Leave"
-                                    ? "bg-gray-100  text-red-800"
-                                    : leave.leave_type === "Annual Leave"
-                                      ? "bg-green-100 text-green-800"
-                                      : "bg-purple-100 text-purple-800"
+                              ? "bg-blue-100 text-blue-800"
+                              : leave.leave_type === "Sick Leave"
+                                ? "bg-red-100 text-gray-800"
+                                : leave.leave_type === "Unpaid Leave"
+                                  ? "bg-gray-100  text-red-800"
+                                  : leave.leave_type === "Annual Leave"
+                                    ? "bg-green-100 text-green-800"
+                                    : "bg-purple-100 text-purple-800"
                               }`}
                           >
                             {leave.leave_type.charAt(0).toUpperCase() +

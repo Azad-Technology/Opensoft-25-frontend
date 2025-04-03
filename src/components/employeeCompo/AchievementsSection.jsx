@@ -98,7 +98,7 @@ export const AchievementsSection = ({awards}) => {
       container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
-  console.log(stats);
+
 
   return (
     <div className="relative">
