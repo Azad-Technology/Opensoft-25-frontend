@@ -170,7 +170,7 @@ const EmployeeReports = () => {
     return (
       <Layout>
         <div className="flex items-center justify-center h-80">
-          <div className="animate-pulse-slow">Loading your dashboard...</div>
+          <div className="animate-pulse-slow">Loading your Reports...</div>
         </div>
       </Layout>
     );
@@ -209,7 +209,7 @@ const EmployeeReports = () => {
           </p>
           </div>
           <div>
-            <button className="bg-green-800 p-2 rounded-xl text-white" onClick={handleExport}>
+            <button className="bg-green-700 p-2 px-5 rounded-xl text-white" onClick={handleExport}>
               Export
             </button>
           </div>

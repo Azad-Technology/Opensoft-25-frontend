@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Layout from "../employeeCompo/Layout";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useAuth } from "../../contexts/AuthContext";
+import { toast } from "sonner";
 
 const Button = ({ children, variant, size, type, onClick, className, disabled }) => {
   const getVariantClass = () => {
@@ -135,15 +136,15 @@ const RadioGroupItem = ({ value, id, label }) => {
   return null;
 };
 
-const useToast = () => {
-  const [toasts, setToasts] = useState([]);
+// const useToast = () => {
+//   const [toasts, setToasts] = useState([]);
 
-  const toast = ({ title, description, variant }) => {
-    console.log(`Toast: ${title} - ${description} (${variant})`);
-  };
+//   const toast = ({ title, description, variant }) => {
+//     console.log(`Toast: ${title} - ${description} (${variant})`);
+//   };
 
-  return { toast };
-};
+//   return { toast };
+// };
 
 const useMobile = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -171,7 +172,7 @@ function EmployeeOnboarding() {
     password: "",
   });
   const isMobile = useMobile();
-  const { toast } = useToast();
+  // const { toast } = useToast();
   const { theme } = useTheme();
   const { token } = useAuth();
 
@@ -193,11 +194,11 @@ function EmployeeOnboarding() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    toast({
-      title: `${userType === "hr" ? "HR Personnel" : "Employee"} added successfully`,
-      description: `The new ${userType === "hr" ? "HR personnel" : "employee"} has been added to the system.`,
-      variant: "success",
-    });
+    // toast({
+    //   title: `${userType === "hr" ? "HR Personnel" : "Employee"} added successfully`,
+    //   description: `The new ${userType === "hr" ? "HR personnel" : "employee"} has been added to the system.`,
+    //   variant: "success",
+    // });
 
     try {
       const response = await fetch(`${import.meta.env.VITE_REACT_APP_URL}/admin/add_onboarding`, {
@@ -221,9 +222,10 @@ function EmployeeOnboarding() {
       }
 
       console.log("success")
+      toast.success(`${userType === "hr" ? "HR Personnel" : "Employee"} added successfully!`);
     } catch (error) {
       console.error("Error fetching profile data:", error);
-      // toast.error("Error fetching profile data");
+      toast.error("Error fetching profile data");
     }
   };
 
