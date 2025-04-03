@@ -47,8 +47,6 @@ export default function EmployeeSchedule() {
     try {
       // First try to get token from context
       if (token) return token;
-      
-      // Fallback to localStorage if context token is not available
       const authData = localStorage.getItem("auth");
       if (!authData) return null;
       return JSON.parse(authData).access_token;

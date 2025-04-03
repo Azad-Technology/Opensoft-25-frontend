@@ -22,7 +22,7 @@ import AdminEmployeeReportPage from "./pages/admin/AdminEmployeeReportPage";
 import Home from "./pages/HomePage/Home";
 import Profile from "./pages/profilePage1/Profile";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import Onboarding from "./components/HRDashboard/Onboarding"
+import Onboarding from "./components/HRDashboard/Onboarding";
 import HelpAndSupportPage from "./pages/employeePage/HelpSupport";
 import AdminSupportPage from "./pages/admin/AdminSupportPage";
 import Report from "./components/EmployeeReportPdf/Report";
@@ -48,10 +48,16 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
     return <Navigate to="/login" />;
   }
 
-  if (allowedRoles.length > 0 && user && !allowedRoles.includes(user.role_type)) {
+  if (
+    allowedRoles.length > 0 &&
+    user &&
+    !allowedRoles.includes(user.role_type)
+  ) {
     return (
       <Navigate
-        to={user.role_type === "hr" ? "/admin/dashboard" : "/employee/dashboard"}
+        to={
+          user.role_type === "hr" ? "/admin/dashboard" : "/employee/dashboard"
+        }
       />
     );
   }
@@ -65,23 +71,23 @@ const App = () => (
       <ThemeProvider>
         <AuthProvider>
           <DataProvider>
-          <UserProvider>
-            <Sonner />
-            <Routes>
-              {/* Public routes */}
-              <Route path="/login" element={<Login />} />
-              {/* <Route path="/signup" element={<Signup />} /> */}
-              <Route path="/" element={<Home />} />
+            <UserProvider>
+              <Sonner />
+              <Routes>
+                {/* Public routes */}
+                <Route path="/login" element={<Login />} />
+                {/* <Route path="/signup" element={<Signup />} /> */}
+                <Route path="/" element={<Home />} />
 
-              {/* Protected Employee routes */}
-              <Route
-                path="/profile"
-                element={
-                  <ProtectedRoute allowedRoles={["employee", "hr"]}>
-                    <Profile />
-                  </ProtectedRoute>
-                }
-              />
+                {/* Protected Employee routes */}
+                <Route
+                  path="/profile"
+                  element={
+                    <ProtectedRoute allowedRoles={["employee", "hr"]}>
+                      <Profile />
+                    </ProtectedRoute>
+                  }
+                />
 
               <Route
                 path="/employee/dashboard"
@@ -125,84 +131,83 @@ const App = () => (
                 }
               />
 
-              <Route
-                path="/employee/exportReport"
-                element={
-                  <ProtectedRoute allowedRoles={["employee"]}>
-                    <EmployeeReportPage />
-                  </ProtectedRoute>
-                }
-              />
+                <Route
+                  path="/employee/exportReport"
+                  element={
+                    <ProtectedRoute allowedRoles={["employee"]}>
+                      <EmployeeReportPage />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Protected Admin routes */}
-              <Route
-                path="/admin/dashboard"
-                element={
-                  <ProtectedRoute allowedRoles={["hr"]}>
-                    <AdminDashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/reports"
-                element={
-                  <ProtectedRoute allowedRoles={["hr"]}>
-                    <AdminReports />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/inquiries"
-                element={
-                  <ProtectedRoute allowedRoles={["hr"]}>
-                    <AdminSupportPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/onboarding"
-                element={
-                  <ProtectedRoute allowedRoles={["hr"]}>
-                    <Onboarding />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/reports/:employeeId"
-                element={
-                  <ProtectedRoute allowedRoles={["hr"]}>
-                    <AdminEmployeeDetail />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/employees"
-                element={
-                  <ProtectedRoute allowedRoles={["hr"]}>
-                    <EmployeesPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/employee-report/:month/:year"
-                element={
-                  <ProtectedRoute allowedRoles={["hr"]}>
-                    <AdminEmployeeReportPage />
-                  </ProtectedRoute>
-                }
-              />
+                {/* Protected Admin routes */}
+                <Route
+                  path="/admin/dashboard"
+                  element={
+                    <ProtectedRoute allowedRoles={["hr"]}>
+                      <AdminDashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/reports"
+                  element={
+                    <ProtectedRoute allowedRoles={["hr"]}>
+                      <AdminReports />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/inquiries"
+                  element={
+                    <ProtectedRoute allowedRoles={["hr"]}>
+                      <AdminSupportPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/onboarding"
+                  element={
+                    <ProtectedRoute allowedRoles={["hr"]}>
+                      <Onboarding />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/reports/:employeeId"
+                  element={
+                    <ProtectedRoute allowedRoles={["hr"]}>
+                      <AdminEmployeeDetail />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/employees"
+                  element={
+                    <ProtectedRoute allowedRoles={["hr"]}>
+                      <EmployeesPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/employee-report/:month/:year"
+                  element={
+                    <ProtectedRoute allowedRoles={["hr"]}>
+                      <AdminEmployeeReportPage />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Default route */}
-              {/* <Route path="/" element={<Index />} /> */}
+                {/* Default route */}
+                {/* <Route path="/" element={<Index />} /> */}
 
-              {/* 404 catch-all */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+                {/* 404 catch-all */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
             </UserProvider>
           </DataProvider>
         </AuthProvider>
       </ThemeProvider>
-      
     </BrowserRouter>
   </QueryClientProvider>
 );
