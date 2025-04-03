@@ -27,24 +27,24 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(false);
   }, []);
 
-  // // Auto-logout on token expiration
-  // useEffect(() => {
-  //   const checkTokenExpiration = () => {
-  //     const stored = localStorage.getItem("auth");
-  //     if (stored) {
-  //       const parsed = JSON.parse(stored);
-  //       const currentTime = Date.now();
-  //       if (parsed.expiration && currentTime > parsed.expiration) {
-  //         console.warn("Token expired, logging out.");
-  //         logout();
-  //       }
-  //     }
-  //   };
+  // Auto-logout on token expiration
+  useEffect(() => {
+    const checkTokenExpiration = () => {
+      const stored = localStorage.getItem("auth");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        const currentTime = Date.now();
+        if (parsed.expiration && currentTime > parsed.expiration) {
+          console.warn("Token expired, logging out.");
+          logout();
+        }
+      }
+    };
 
-  //   checkTokenExpiration(); // Run immediately
-  //   const interval = setInterval(checkTokenExpiration, 60 * 60 * 1000); // Every 1 minute
-  //   return () => clearInterval(interval);
-  // }, []);
+    checkTokenExpiration(); // Run immediately
+    const interval = setInterval(checkTokenExpiration, 60 * 60 * 1000); // Every 1 minute
+    return () => clearInterval(interval);
+  }, []);
 
   // Handle redirects based on auth status and role
   useEffect(() => {
@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, [user, isLoading, location.pathname, navigate]);
 
-  // Login: user is already fetched in login page, just save to context
+
   const login = async (userData, access_token) => {
     setIsLoading(true);
     try {
@@ -105,7 +105,7 @@ export const AuthProvider = ({ children }) => {
       })
 
       const res= await response.json();
-      const expTime=Date.now()+res.expires_in;
+      const expTime=Date.now()+(res.expires_in*1000);
 
       const newTokenData={
         access_token:res.access_token,
