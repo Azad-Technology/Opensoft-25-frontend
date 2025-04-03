@@ -4,6 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import VibeChart from "../../components/employeeCompo/VibeChart";
 import VibeSelector from "../../components/employeeCompo/VibeSelector";
 import { MetricCard } from "../../components/employeeCompo/metricCard";
+import ChatAlert from "../../components/employeeCompo/ChatAlert";
 import {
   Calendar,
   CheckCheck,
@@ -193,9 +194,10 @@ const EmployeeDashboard = () => {
             <p className="text-muted-foreground">
               Track your well-being and stay connected with your team
             </p>
+            
           </div>
         </div>
-
+        {stats.is_chat_required && <ChatAlert />}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="md:col-span-2 space-y-8">
             {/* Vibe Chart & Submission */}

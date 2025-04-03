@@ -6,6 +6,7 @@ import VibeChart from "../../components/employeeCompo/VibeChart";
 import VibeStatusBadge from "../../components/employeeCompo/VibeStatusBadge";
 import { AchievementsSection } from '../../components/employeeCompo/AchievementsSection';
 import ProjectCard from "../../components/employeeCompo/ProjectCard";
+import ChatAlert from "../../components/employeeCompo/ChatAlert";
 import {
   AreaChart,
   Area,
@@ -28,10 +29,7 @@ const EmployeeReports = () => {
 
   const BASE_URL = import.meta.env.VITE_REACT_APP_URL;
 
-  const navigate=useNavigate();
-
-  // const [userVibes, setUserVibes] = useState([]);
-  // const [userLeaves, setUserLeaves] = useState([]);
+  const navigate = useNavigate();
   const [userActivities, setUserActivities] = useState([]);
   // const [userRecognitions, setUserRecognitions] = useState([]);
   // const [userPerformance, setUserPerformance] = useState(null);
@@ -42,40 +40,6 @@ const EmployeeReports = () => {
     strengths: ["Leadership", "Problem-Solving", "Time Management"],
     improvements: ["Communication", "Technical Documentation"],
   };
-
-  //Hard coded data
-  const projectData = [
-    {
-      id: '1',
-      name: 'Website Redesign',
-      priority: 'high',
-      status: 'in-progress',
-      startDate: '2024-03-01',
-      endDate: '2024-04-15',
-      progress: 65,
-      assignees: ['Sarah J.', 'Michael C.'],
-    },
-    {
-      id: '2',
-      name: 'Mobile App Development',
-      priority: 'medium',
-      status: 'not-started',
-      startDate: '2024-04-01',
-      endDate: '2024-06-30',
-      progress: 0,
-      assignees: ['Emily D.', 'John S.'],
-    },
-    {
-      id: '3',
-      name: 'Data Migration',
-      priority: 'low',
-      status: 'completed',
-      startDate: '2024-02-15',
-      endDate: '2024-03-15',
-      progress: 100,
-      assignees: ['Robert K.', 'Lisa M.'],
-    },
-  ];
 
   const userRecognitions = [
     {
@@ -148,9 +112,9 @@ const EmployeeReports = () => {
         }
 
         const data = await response.json();
-
         // Update stats directly with the new data
         setStats(data);
+
       } catch (error) {
         setError(error.message);
         console.error("Error fetching dashboard data:", error);
@@ -162,7 +126,7 @@ const EmployeeReports = () => {
     fetchDashboardData();
   }, [token, BASE_URL]);
 
-  const handleExport=()=>{
+  const handleExport = () => {
     navigate("/employee/exportReport");
   }
 
@@ -197,16 +161,20 @@ const EmployeeReports = () => {
   }
   const userVibes = Object.values(stats.vibe_trend);
   const userLeaves = Object.values(stats.all_leaves);
-  console.log("Leave Data ", userLeaves);
+  const activityData = Object.values(stats.activity_level);
+  const awards = Object.values(stats.awards);
+  const projectData = Object.values(stats.projects);
+
   return (
     <Layout>
       <div className="page-container py-8">
+      
         <div className="mb-8 animate-fade-in flex items-center justify-between">
           <div>
-          <h1 className="page-header mb-2">My Reports</h1>
-          <p className="text-muted-foreground">
-            View detailed information about your well-being and performance
-          </p>
+            <h1 className="page-header mb-2">My Reports</h1>
+            <p className="text-muted-foreground">
+              View detailed information about your well-being and performance
+            </p>
           </div>
           <div>
             <button className="bg-green-700 p-2 px-5 rounded-xl text-white" onClick={handleExport}>
@@ -214,6 +182,7 @@ const EmployeeReports = () => {
             </button>
           </div>
         </div>
+            {stats.is_chat_required && <ChatAlert/>}
 
         <div className="space-y-8">
           {/* Vibe trend */}
@@ -272,7 +241,7 @@ const EmployeeReports = () => {
 
           {/* Achievements and Rewards */}
           <div className="bg-white/80 backdrop-blur-sm dark:bg-gray-900/80 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 mb-8">
-            <AchievementsSection />
+            <AchievementsSection awards={awards} />
           </div>
 
           {/* Activity levels */}
@@ -282,11 +251,11 @@ const EmployeeReports = () => {
           >
             <h2 className="text-xl font-medium mb-6">Activity Levels</h2>
 
-            {(!stats.activity_level) ? (
+            {(activityData.length > 0) ? (
               <div className="h-72">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
-                    data={stats.activity_level}
+                    data={activityData}
                     margin={{ top: 20, right: 30, left: 20, bottom: 40 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -325,9 +294,7 @@ const EmployeeReports = () => {
                 </ResponsiveContainer>
               </div>
             ) : (
-              <div className="text-center py-8 text-muted-foreground">
-                No activity data available yet
-              </div>
+              <div className="flex items-center justify-center h-32 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">No Activity Data</div>
             )}
           </div>
 
@@ -358,17 +325,16 @@ const EmployeeReports = () => {
                         <td className="py-3 px-4">{leave.leave_days}</td>
                         <td className="py-3 px-4">
                           <span
-                            className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
-                              leave.leave_type === "Casual Leave"
-                                ? "bg-blue-100 text-blue-800"
-                                : leave.leave_type === "Sick Leave"
+                            className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${leave.leave_type === "Casual Leave"
+                              ? "bg-blue-100 text-blue-800"
+                              : leave.leave_type === "Sick Leave"
                                 ? "bg-red-100 text-gray-800"
                                 : leave.leave_type === "Unpaid Leave"
-                                ? "bg-gray-100  text-red-800"
-                                : leave.leave_type === "Annual Leave"
-                                ? "bg-green-100 text-green-800"
-                                : "bg-purple-100 text-purple-800"
-                            }`}
+                                  ? "bg-gray-100  text-red-800"
+                                  : leave.leave_type === "Annual Leave"
+                                    ? "bg-green-100 text-green-800"
+                                    : "bg-purple-100 text-purple-800"
+                              }`}
                           >
                             {leave.leave_type.charAt(0).toUpperCase() +
                               leave.leave_type.slice(1)}
@@ -380,9 +346,7 @@ const EmployeeReports = () => {
                 </table>
               </div>
             ) : (
-              <div className="text-center py-8 text-muted-foreground">
-                No leave data available yet
-              </div>
+              <div className="flex items-center justify-center h-32 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">No Leave Data</div>
             )}
           </div>
 

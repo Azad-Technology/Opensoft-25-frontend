@@ -76,11 +76,6 @@ const Sidebar = ({ expanded, onToggle }) => {
       label: "My Reports",
       icon: <FileText size={20} />,
     },
-    // {
-    //   path: "/employee/activity",
-    //   label: "Activity",
-    //   icon: <Activity size={20} />,
-    // },
     {
       path: "/employee/schedule",
       label: "My Schedule",
