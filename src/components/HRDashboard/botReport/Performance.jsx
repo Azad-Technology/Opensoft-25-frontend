@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ViewPerformanceModal from '../ViewPerformanceModal'
 import {
   AreaChart,
@@ -8,10 +8,38 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
+import { Award } from "lucide-react";
 
-const PerformanceReports = () => {
+const PerformanceReports = ({ employeeId , token }) => {
   const [selectedEmployee, setSelectedEmployee] = useState("John Doe");
   const [viewPerformanceModal , setViewPerformanceModal] = useState(false);
+  const [result , setResult] = useState(null);
+  const VITE_REACT_APP_URL = import.meta.env.VITE_REACT_APP_URL;
+
+  const employeeData = async () => {
+    try {
+      const response = await fetch(`${VITE_REACT_APP_URL}/admin/${employeeId}/summary` ,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      const resultData = await response.json();
+      console.log("result in performance", resultData);
+      setResult(resultData);
+    }catch(error){
+      console.log('unable to fetch performance data' , error);
+    }
+  }
+  
+  useEffect(()=>{
+    employeeData();
+  } , [employeeId , token]);
+
   const performanceData = [
     { name: "Jan", productivity: 100, tasks: 2 },
     { name: "Feb", productivity: 150, tasks: 3 },
@@ -100,7 +128,14 @@ const PerformanceReports = () => {
                 <div className="w-5 h-5 bg-green-500 rounded-full"></div>
                 <span className="text-gray-700 dark:text-gray-300">Performance Rating</span>
               </div>
-              <span className="font-bold text-green-600 dark:text-green-400">4.2 / 5.0</span>
+              {/* <span className="font-bold text-green-600 dark:text-green-400">{result.performance.Performance_Rating}/5</span> */}
+              {result?.performance?.Performance_Rating ? (
+             <span className="font-bold text-green-600 dark:text-green-400">
+            {result.performance.Performance_Rating}/5
+            </span>
+            ) : (
+           <span className="text-gray-500">Loading...</span>
+           )}
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
               <div
@@ -120,7 +155,7 @@ const PerformanceReports = () => {
                 <div className="w-5 h-5 bg-blue-500 rounded-full"></div>
                 <span className="text-gray-700 dark:text-gray-300">Working Hours</span>
               </div>
-              <span className="font-bold text-blue-600 dark:text-blue-400">172 hrs / month</span>
+              <span className="font-bold text-blue-600 dark:text-blue-400">{result?.working_hours_month_wise ? Object.values(result.working_hours_month_wise)[0] : "Loading..."}/month</span>
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
               <div
@@ -136,7 +171,7 @@ const PerformanceReports = () => {
           {/* Awards & Recognition */}
           <div className="mb-4">
             <h3 className="text-md font-semibold mb-2 text-gray-700 dark:text-gray-200">Awards & Recognition</h3>
-            <div className="flex space-x-4">
+            {/* <div className="flex space-x-4">
               <div className="flex items-center space-x-2 bg-yellow-50 dark:bg-yellow-900/30 px-3 py-2 rounded">
                 <div className="w-6 h-6 bg-yellow-500 rounded-full flex items-center justify-center text-white">
                   🏆
@@ -155,17 +190,30 @@ const PerformanceReports = () => {
                   <div className="text-xs text-gray-500 dark:text-gray-400">January</div>
                 </div>
               </div>
-            </div>
+            </div> */}
+            {result?.rewards?.awards?.length ? (
+            <div className="flex flex-wrap gap-4">
+          {result.rewards.awards.map((award, index) => (
+           <div key={index} className="flex items-center space-x-2 bg-yellow-50 dark:bg-yellow-900/30 px-3 py-2 rounded">
+          <div className="w-6 h-6 flex items-center justify-center text-white">
+            <Award className="text-yellow-400"/>
+          </div>
+          <div>
+            <div className="text-sm font-medium text-gray-700 dark:text-gray-300">{award}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <span className="text-xs text-gray-500">No awards yet</span>
+  )}
           </div>
 
           {/* Manager Feedback */}
           <div className="bg-gray-50 dark:bg-gray-800/50 border-l-4 border-gray-500 p-3 mt-4">
             <h3 className="text-md font-semibold mb-2 text-gray-700 dark:text-gray-200">Manager Feedback</h3>
             <p className="text-sm text-gray-700 dark:text-gray-300">
-              "John Doe has shown consistent improvement over the last quarter.
-              Their project contributions have been valuable and they've
-              demonstrated good teamwork skills. Areas for growth include taking
-              more initiative on complex tasks."
+            {result?.performance?.Manager_Feedback ? result.performance.Manager_Feedback : "No Feedback"}
             </p>
           </div>
         </div>
