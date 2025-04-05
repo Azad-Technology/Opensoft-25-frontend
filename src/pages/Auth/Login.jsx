@@ -58,11 +58,20 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[rgba(17,24,39,0.9)] p-4">
-      <div className="neo-glass rounded-2xl w-full max-w-md py-8 px-6 sm:px-10 shadow-xl">
+    <div className="min-h-screen flex items-center justify-center bg-[rgba(0,0,0,10)] p-4 relative overflow-hidden">
+      {/* Grid Background with Blur Effect */}
+      <div className="absolute bottom-0 left-0 right-0 h-full w-full" 
+           style={{
+             backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJncmlkIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiPjxwYXRoIGQ9Ik0gNDAgMCBMIDAgMCAwIDQwIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDg4NGEiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')",
+             
+             opacity: 0.5
+           }}>
+      </div>
+      
+      <div className="bg-[rgba(29,29,29,0.9)] rounded-2xl w-full max-w-md py-8 px-6 sm:px-10 shadow-xl relative z-10">
         <div className="text-center mb-6">
           <h2 className="text-3xl font-bold text-gradient mb-2">VibeCatcher</h2>
-          <p className="text-gray-600 text-sm">
+          <p className="text-gray-400 text-sm">
             Monitor well-being, boost engagement
           </p>
         </div>
@@ -71,7 +80,7 @@ const Login = () => {
           <div className="space-y-1">
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-500"
             >
               Email
             </label>
@@ -95,7 +104,7 @@ const Login = () => {
             <div className="flex items-center justify-between">
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-500"
               >
                 Password
               </label>

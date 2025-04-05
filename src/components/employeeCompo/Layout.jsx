@@ -205,7 +205,7 @@ const Layout = ({ children }) => {
                 {/* User dropdown */}
                 <div className="relative user-dropdown-container">
                   <button
-                    className="flex items-center space-x-3 rounded-full hover:bg-green-50 dark:hover:bg-green-900/30 p-1 transition-colors"
+                    className="flex items-center space-x-3 rounded-full hover:bg-green-50 dark:hover:bg-green-900/60 p-1 transition-colors pl-4"
                     onClick={toggleUserDropdown}
                     aria-label="User menu"
                   >
@@ -243,7 +243,7 @@ const Layout = ({ children }) => {
                   </button>
 
                   {showUserDropdown && (
-                    <div className="absolute right-0 mt-2 w-48 neo-glass rounded-lg shadow-xl z-20 animate-fade-in">
+                    <div className="absolute right-0 mt-2 w-48 bg-slate-700 rounded-lg shadow-xl z-20 animate-fade-in">
                       <div className="p-3 border-b border-green-100/50 dark:border-green-900/50">
                         <p className="text-sm font-medium text-gray-700 dark:text-gray-200">
                           {user?.name}
@@ -260,13 +260,7 @@ const Layout = ({ children }) => {
                           <User size={16} className="mr-2" />
                           View Profile
                         </Link>
-                        <Link
-                          to="/settings"
-                          className="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-green-50 dark:hover:bg-green-900/30 hover:text-green-700 dark:hover:text-green-400 rounded-md transition-colors"
-                        >
-                          <Settings size={16} className="mr-2" />
-                          Settings
-                        </Link>
+                        
                       </div>
                       <div className="p-2 border-t border-green-100/50 dark:border-green-900/50">
                         <button
