@@ -19,7 +19,7 @@ import { cn } from "../../lib/utils";
 import { useTheme } from "../../contexts/ThemeContext";
 import {toast} from "sonner"
 
-export default function EmployeeSchedule() {
+export default function Schedule() {
   const { user, token } = useAuth();
   const { schedules = [] } = useData() || {};
   const { theme } = useTheme();
@@ -111,11 +111,13 @@ export default function EmployeeSchedule() {
 
   // Function to delete an event
   const deleteEvent = async (id) => {
+    console.log(id)
     if (!id) return;
     
     const token = getToken();
+    console.log(token)
     if (!token) return;
-    
+    setIsEventDetailsOpen(false);
     try {
       const response = await fetch(`${import.meta.env.VITE_REACT_APP_URL}/common/delete_schedule/${id}`, {
         method: "DELETE",
@@ -138,10 +140,11 @@ export default function EmployeeSchedule() {
       }
       
       // Show success message
-      alert("Event deleted successfully");
+      toast.success("Event deleted successfully");
+      fetchSchedules();
     } catch (error) {
       console.error("Error deleting schedule:", error);
-      alert(`Failed to delete event: ${error.message}`);
+      toast.error(`Failed to delete event: ${error.message}`);
     }
   };
 
@@ -206,7 +209,7 @@ export default function EmployeeSchedule() {
   // Add new event
   const handleAddEvent = async () => {
     if (!selectedDay || !newEvent.title) {
-      alert("Please enter an event title");
+      toast.warning("Please enter an event title");
       return;
     }
     
@@ -690,7 +693,7 @@ export default function EmployeeSchedule() {
                 <div className="flex justify-end gap-2">
                   <button
                     className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                    onClick={() => { deleteEvent(selectedEvent.id); setIsEventDetailsOpen(false); }}
+                    onClick={() => deleteEvent(selectedEvent.schedule_id)}
                   >
                     Delete
                   </button>

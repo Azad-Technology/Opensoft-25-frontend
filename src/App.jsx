@@ -27,7 +27,7 @@ import HelpAndSupportPage from "./pages/employeePage/HelpSupport";
 import AdminSupportPage from "./pages/admin/AdminSupportPage";
 import Report from "./components/EmployeeReportPdf/Report";
 import EmployeeReportPage from "./components/EmployeeReportPdf/dashPage";
-import EmployeeSchedule from "./pages/schedule/myschedule"; // Updated import
+import Schedule from "./pages/schedule/myschedule"; // Updated import
 import { UserProvider } from "./contexts/UserContext";
 
 // Protected route component
@@ -115,10 +115,10 @@ const App = () => (
               />
 
               <Route
-                path="/employee/schedule" // New route for EmployeeSchedule
+                path="/employee/schedule" // New route for Schedule
                 element={
                   <ProtectedRoute allowedRoles={["employee"]}>
-                    <EmployeeSchedule />
+                    <Schedule />
                   </ProtectedRoute>
                 }
               />
@@ -173,6 +173,15 @@ const App = () => (
                     </ProtectedRoute>
                   }
                 />
+                <Route
+                  path="/admin/schedule"
+                  element={
+                    <ProtectedRoute allowedRoles={["hr"]}>
+                      <Schedule />
+                    </ProtectedRoute>
+                  }
+                />
+
                 <Route
                   path="/admin/reports/:employeeId"
                   element={
