@@ -31,12 +31,11 @@ const EmployeeDashboard = () => {
   const BASE_URL = import.meta.env.VITE_REACT_APP_URL;
 
   // Refresh auth token on mount
-  useEffect(() => {
-    refreshToken();
-  }, []);
+  // useEffect(() => {
+  //   refreshToken();
+  // }, []);
 
   // 2) React Query Client (for invalidating queries on success)
-
   // 3) useQuery for employee dashboard stats
   const {
     data: stats, // "stats" will contain the returned JSON object
@@ -125,6 +124,7 @@ const EmployeeDashboard = () => {
   // 7) Loading & Error States
   if (isLoading) {
     return (
+      <Layout>
       <div className="flex flex-col items-center justify-center h-screen w-full">
         <div className="flex flex-col items-center justify-center">
           <div className="relative h-20 w-20">
@@ -157,6 +157,7 @@ const EmployeeDashboard = () => {
           </div>
         </div>
       </div>
+      </Layout>
     );
   }
 
@@ -220,7 +221,7 @@ const EmployeeDashboard = () => {
               />
 
               {/* Vibe input */}
-              {!showVibeSubmitted ? (
+              {(!showVibeSubmitted && stats.is_vibe_feedback_required) ? (
                 <div>
                   <VibeSelector
                     selected={selectedVibe}
@@ -260,7 +261,7 @@ const EmployeeDashboard = () => {
                   )}
                 </div>
               ) : (
-                <div className="p-4 bg-green-50 text-green-800 rounded-lg flex items-center animate-fade-in">
+                <div className="p-4 bg-green-50 dark:bg-green-800 dark:text-green-50 text-green-800 rounded-lg flex items-center animate-fade-in">
                   <CheckCheck size={20} className="mr-2" />
                   Thank you for sharing your vibe! Your input helps us better
                   understand how you're doing.

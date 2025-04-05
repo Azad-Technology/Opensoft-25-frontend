@@ -19,6 +19,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useNavigate } from "react-router-dom";
+import { p } from "framer-motion/client";
 
 const EmployeeReports = () => {
   const { user, token } = useAuth();
@@ -133,8 +134,37 @@ const EmployeeReports = () => {
   if (loading) {
     return (
       <Layout>
-        <div className="flex items-center justify-center h-80">
-          <div className="animate-pulse-slow">Loading your Reports...</div>
+        <div className="flex flex-col items-center justify-center h-screen w-full">
+          <div className="flex flex-col items-center justify-center">
+            <div className="relative h-20 w-20">
+              {/* Pulse animation around the spinner */}
+              <span className="absolute inset-0 rounded-full animate-ping opacity-20 bg-emerald-500"></span>
+
+              {/* Main spinner with nice transition effect */}
+              <svg className="absolute inset-0 animate-spin" viewBox="0 0 50 50">
+                <circle
+                  cx="25"
+                  cy="25"
+                  r="20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  className="text-emerald-500"
+                  strokeDasharray="80"
+                  strokeDashoffset="60"
+                />
+              </svg>
+            </div>
+
+            {/* Text with subtle fade-in animation */}
+            <div className="mt-6 text-xl font-medium text-gray-800 dark:text-gray-100 animate-fadeIn">
+              Loading
+            </div>
+            <div className="text-sm text-gray-500 dark:text-gray-400 animate-pulse">
+              Just a moment
+            </div>
+          </div>
         </div>
       </Layout>
     );
@@ -159,16 +189,19 @@ const EmployeeReports = () => {
       </Layout>
     );
   }
+  console.log(stats);
   const userVibes = Object.values(stats.vibe_trend);
   const userLeaves = Object.values(stats.all_leaves);
   const activityData = Object.values(stats.activity_level);
   const awards = Object.values(stats.awards);
-  const projectData = Object.values(stats.projects);
+
+  // const projectData = Object.values(stats.projects);
+
 
   return (
     <Layout>
       <div className="page-container py-8">
-      
+
         <div className="mb-8 animate-fade-in flex items-center justify-between">
           <div>
             <h1 className="page-header mb-2">My Reports</h1>
@@ -182,7 +215,7 @@ const EmployeeReports = () => {
             </button>
           </div>
         </div>
-            {stats.is_chat_required && <ChatAlert/>}
+        {stats.is_chat_required && <ChatAlert />}
 
         <div className="space-y-8">
           {/* Vibe trend */}
@@ -463,16 +496,23 @@ const EmployeeReports = () => {
 
           <div className="neo-glass rounded-xl p-6 animate-fade-in" style={{ animationDelay: "0.6s" }}>
             <h2 className="text-xl font-medium mb-6">Assigned Projects</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {projectData.map((project) => (
-                <ProjectCard key={project.id} project={project} />
+
+            {(stats.projects) ?
+             (<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">{Object.values(stats.projects).map((project) => (
+              <ProjectCard key={project.id} project={project} />
               ))}
-            </div>
+              </div>) :
+              (<div className="flex items-center justify-center h-32 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">
+                No Leave Data
+              </div>)
+
+            }
+
           </div>
 
         </div>
       </div>
-    </Layout>
+    </Layout >
   );
 };
 
