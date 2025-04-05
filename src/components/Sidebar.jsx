@@ -54,6 +54,11 @@ const Sidebar = ({ expanded, onToggle }) => {
       icon: <Handshake size={20} />,
     },
     {
+      path: "/admin/schedule",
+      label: "Schedules",
+      icon:  <Calendar size={20} />,
+    },
+    {
       path: "/admin/inquiries",
       label: "Inquiries",
       icon: <AlertCircle size={20} />,
