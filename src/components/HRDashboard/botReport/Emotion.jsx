@@ -9,9 +9,10 @@ import {
   Tooltip,
 } from "recharts";
 
-const BotReportsEmotionalState = () => {
-  const [selectedEmployee, setSelectedEmployee] = useState("John Doe");
-
+const Emotion = ({ result }) => {
+  console.log("result in emotion" , result);
+  const dataToAnalyze = result?.post_chat_analysis?.wellbeing_analysis?.component_breakdown;
+  console.log("dataToAnalyse" , dataToAnalyze);
   const emotionalStateData = [
     { dimension: "Happy", value: 75, fullMark: 100 },
     { dimension: "Satisfied", value: 65, fullMark: 100 },
@@ -21,36 +22,62 @@ const BotReportsEmotionalState = () => {
     { dimension: "Frustrated", value: 25, fullMark: 100 },
   ];
 
-  const keyInsights = [
-    "Employee shows generally positive emotional state with high happiness and satisfaction scores",
-    "Moderate stress levels detected, potentially related to recent project deadlines",
-    "Motivation levels are good but could be improved with additional recognition",
-    "Frustration levels are low, indicating good problem-solving and team support",
-  ];
+  let getMainWord = (word) => {
+    let mainWord ="";
+    for(let i = 0 ; i < word.length ; i++){
+       if(word[i] === '_'){
+        return mainWord;
+       }
+       else{
+         mainWord += word[i];
+       }
+    }
+    return mainWord;
+  }
 
+  const wellbeingData = [];
+  Object.entries(dataToAnalyze).forEach(([key, value]) => {
+    wellbeingData.push({
+      dimension:getMainWord(key),
+      value:value.score,
+      fullMark:30,
+    })
+  });
+
+  console.log("wellbeingData" , wellbeingData);
+
+  const keyInsights = [];
+  Object.entries(dataToAnalyze).forEach(([key, value]) => {
+    keyInsights.push({
+      tag:getMainWord(key),
+      summary:value.summary,
+    })
+  });
+
+  console.log("KeyInsights" , keyInsights);
   return (
-    <div className="p-4 mt-10">
-      {/* Main Content */}
+    <div className="p-4">
+      
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Emotional State Chart */}
+     
         <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-5 border border-gray-100 dark:border-gray-700">
-          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Emotional State</h2>
+          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Wellbeing Analysis</h2>
           <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
             Based on bot interactions
           </p>
 
-          <div className="h-64 w-full">
+          <div className="h-64 w-full flex items-center justify-center">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart
-                data={emotionalStateData}
+                data={wellbeingData}
                 margin={{ top: 5, right: 0, left: 0, bottom: 5 }}
               >
-                <PolarGrid stroke="#90EE90" />
-                <PolarAngleAxis dataKey="dimension" stroke="#90EE90" />
-                <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="#90EE90" />
+                <PolarGrid stroke="#03C03C" />
+                <PolarAngleAxis dataKey="dimension" stroke="#03C03C" />
+                <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="##03C03C" />
                 <Radar
                   dataKey="value"
-                  stroke="#8884d8"
+                  stroke="green"
                   fill="#8884d8"
                   fillOpacity={0.6}
                 />
@@ -60,24 +87,29 @@ const BotReportsEmotionalState = () => {
           </div>
         </div>
 
-        {/* Emotional Inferences */}
+        
         <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-5 border border-gray-100 dark:border-gray-700">
-          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Emotional Inferences</h2>
+          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Wellbeing Inferences</h2>
           <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
             Based on natural language processing of bot conversations, the
-            following emotional patterns were detected.
+            following inferences were detected.
           </p>
 
           <div className="space-y-2">
             <h3 className="text-md font-semibold mb-2 text-gray-700 dark:text-gray-200">Key Insights</h3>
             {keyInsights.map((insight, index) => (
-              <div key={index} className="flex items-start text-sm">
-                <span className="mr-2 text-green-500 dark:text-green-400 font-bold">
-                  {index + 1}
-                </span>
-                <p className="text-gray-700 dark:text-gray-300">{insight}</p>
-              </div>
-            ))}
+    <div key={index} className="flex items-start space-x-3 bg-gray-50 dark:bg-gray-900 p-3 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+      <div className="flex-shrink-0 text-green-500 dark:text-green-400 font-bold">
+        {index + 1}.
+      </div>
+      <div>
+        <span className="inline-block px-2 py-0.5 text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100 rounded-md mb-1">
+          {insight.tag}
+        </span>
+        <p className="text-sm text-gray-700 dark:text-gray-300">{insight.summary}</p>
+      </div>
+    </div>
+  ))}
           </div>
         </div>
       </div>
@@ -85,4 +117,4 @@ const BotReportsEmotionalState = () => {
   );
 };
 
-export default BotReportsEmotionalState;
+export default Emotion;

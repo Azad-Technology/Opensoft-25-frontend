@@ -67,11 +67,11 @@ const PerformanceReports = ({ employeeId , token }) => {
                 vertical={false}
                 stroke="#90EE90"
               />
-              <XAxis dataKey="name" axisLine={false} tickLine={false} stroke="#90EE90" />
+              <XAxis dataKey="name" axisLine={false} tickLine={false} stroke="#03C03C" />
               <YAxis
                 yAxisId="left"
                 orientation="left"
-                stroke="#3b82f6"
+                stroke="#03C03C"
                 axisLine={false}
                 tickLine={false}
               />

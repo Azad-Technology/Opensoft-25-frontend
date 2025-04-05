@@ -35,8 +35,7 @@ const AdminDashboard = () => {
   return (
     <Layout>
       <div className="relative bg-gray-50 dark:bg-gray-900 min-h-screen pb-4">
-        {/*<HRNavbar />*/}
-
+       
         <div className="py-6 px-6 md:px-10">
           <div className="mb-8 animate-fade-in">
             <h1 className="page-header mb-2 text-gray-800 dark:text-gray-100">Admin Dashboard</h1>
@@ -72,8 +71,8 @@ const AdminDashboard = () => {
               <h2 className="text-lg font-semibold text-gray-600 dark:text-gray-300 mb-4">Weekly Wellness Trend</h2>
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={weeklyData}>
-                  <XAxis dataKey="day" stroke="#90EE90" />
-                  <YAxis domain={[6, 8]} stroke="#90EE90" />
+                  <XAxis dataKey="day" stroke="#03C03C" />
+                  <YAxis domain={[6, 8]} stroke="#03C03C" />
                   <Tooltip contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: '#fff', border: 'none' }} />
                   <Line type="monotone" dataKey="score" stroke="#03C03C" strokeWidth={3} dot={{ r: 5 }} />
                 </LineChart>

@@ -37,7 +37,7 @@ const dataPerformanceVsSentiment = [
 const tabs = [
   { id: 1, name: "Mood vs Leaves", data: dataMoodVsLeaves, key: "leaves", color: "#ff4d4d" },
   { id: 2, name: "Mood vs Working Hours", data: dataMoodVsHours, key: "hours", color: "#ffcc00" },
-  { id: 3, name: "Performance vs Sentiment", data: dataPerformanceVsSentiment, key: "performance", color: "#33cc33" },
+  { id: 3, name: "Mood Vs Performance", data: dataPerformanceVsSentiment, key: "performance", color: "#33cc33" },
 ];
 
 const CorrelationAnalysis = () => {
@@ -69,9 +69,9 @@ const CorrelationAnalysis = () => {
         <h3 className="text-lg font-medium mb-2 text-gray-700 dark:text-gray-200">{activeData.name}</h3>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={activeData.data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-            <XAxis dataKey="mood" stroke="#90EE90" />
-            <YAxis stroke="#90EE90" />
-            <Tooltip contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: '#fff', border: 'none' }} />
+            <XAxis dataKey="mood" stroke="#03C03C" />
+            <YAxis stroke="#03C03C" />
+            <Tooltip contentStyle={{ backgroundColor: '#17B169', color: '#fff', border: 'none' }} />
             <Legend formatter={(value) => <span className="text-gray-800 dark:text-gray-200">{value}</span>} />
             <Bar dataKey={activeData.key} barSize={140}>
               {activeData.data.map((entry, index) => (
