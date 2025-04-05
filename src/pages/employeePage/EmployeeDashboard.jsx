@@ -4,6 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import VibeChart from "../../components/employeeCompo/VibeChart";
 import VibeSelector from "../../components/employeeCompo/VibeSelector";
 import { MetricCard } from "../../components/employeeCompo/metricCard";
+import ChatAlert from "../../components/employeeCompo/ChatAlert";
 import {
   Calendar,
   CheckCheck,
@@ -30,12 +31,11 @@ const EmployeeDashboard = () => {
   const BASE_URL = import.meta.env.VITE_REACT_APP_URL;
 
   // Refresh auth token on mount
-  useEffect(() => {
-    refreshToken();
-  }, []);
+  // useEffect(() => {
+  //   refreshToken();
+  // }, []);
 
   // 2) React Query Client (for invalidating queries on success)
-
   // 3) useQuery for employee dashboard stats
   const {
     data: stats, // "stats" will contain the returned JSON object
@@ -98,6 +98,11 @@ const EmployeeDashboard = () => {
   const handleVibeSubmit = () => {
     if (!selectedVibe) return;
 
+    if (!vibeComment.trim()) {
+      toast.error("Please share a comment about how you're feeling.");
+      return;
+    }
+
     const vibeMapping = {
       frustrated: 1,
       sad: 2,
@@ -107,13 +112,11 @@ const EmployeeDashboard = () => {
     };
     const vibeScore = vibeMapping[selectedVibe.toLowerCase()] || 3;
 
-    // Pass both vibeScore and optional message
     submitVibeMutation.mutate({
       vibe_score: vibeScore,
       message: vibeComment,
     });
 
-    // Reset local UI state
     setSelectedVibe(null);
     setVibeComment("");
   };
@@ -121,6 +124,7 @@ const EmployeeDashboard = () => {
   // 7) Loading & Error States
   if (isLoading) {
     return (
+      <Layout>
       <div className="flex flex-col items-center justify-center h-screen w-full">
         <div className="flex flex-col items-center justify-center">
           <div className="relative h-20 w-20">
@@ -153,6 +157,7 @@ const EmployeeDashboard = () => {
           </div>
         </div>
       </div>
+      </Layout>
     );
   }
 
@@ -190,9 +195,10 @@ const EmployeeDashboard = () => {
             <p className="text-muted-foreground">
               Track your well-being and stay connected with your team
             </p>
+            
           </div>
         </div>
-
+        {stats.is_chat_required && <ChatAlert />}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="md:col-span-2 space-y-8">
             {/* Vibe Chart & Submission */}
@@ -215,7 +221,7 @@ const EmployeeDashboard = () => {
               />
 
               {/* Vibe input */}
-              {!showVibeSubmitted ? (
+              {(!showVibeSubmitted && stats.is_vibe_feedback_required) ? (
                 <div>
                   <VibeSelector
                     selected={selectedVibe}
@@ -228,7 +234,7 @@ const EmployeeDashboard = () => {
                       <div>
                         <label
                           htmlFor="vibeComment"
-                          className="block text-sm font-medium mb-1"
+                          className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
                         >
                           Would you like to share more about how you're feeling?
                         </label>
@@ -236,8 +242,8 @@ const EmployeeDashboard = () => {
                           id="vibeComment"
                           value={vibeComment}
                           onChange={(e) => setVibeComment(e.target.value)}
-                          className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
-                          placeholder="Optional: Share your thoughts..."
+                          className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
+                          placeholder="Share your thoughts..."
                           rows={2}
                         />
                       </div>
@@ -245,7 +251,7 @@ const EmployeeDashboard = () => {
                       <div className="flex justify-end">
                         <button
                           onClick={handleVibeSubmit}
-                          className="px-4 py-2 bg-green-600 text-primary-foreground rounded-lg hover:bg-green-600/90 transition-colors button-hover"
+                          className="px-4 py-2 bg-green-600 text-white dark:text-white rounded-lg hover:bg-green-600/90 transition-colors button-hover"
                           disabled={submitVibeMutation.isLoading}
                         >
                           Submit
@@ -255,7 +261,7 @@ const EmployeeDashboard = () => {
                   )}
                 </div>
               ) : (
-                <div className="p-4 bg-green-50 text-green-800 rounded-lg flex items-center animate-fade-in">
+                <div className="p-4 bg-green-50 dark:bg-green-800 dark:text-green-50 text-green-800 rounded-lg flex items-center animate-fade-in">
                   <CheckCheck size={20} className="mr-2" />
                   Thank you for sharing your vibe! Your input helps us better
                   understand how you're doing.
@@ -267,7 +273,7 @@ const EmployeeDashboard = () => {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <MetricCard
                 title="Performance Rating"
-                value={stats?.performance_rating}
+                value={stats?.performance_rating[0].Performance_Rating}
                 icon={
                   <TrendingUp
                     size={24}

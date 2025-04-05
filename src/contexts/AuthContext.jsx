@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "sonner";
+import { queryClient } from "../services/react-query-client";
 
 const AuthContext = createContext(undefined);
 
@@ -70,12 +71,12 @@ export const AuthProvider = ({ children }) => {
     }
   }, [user, isLoading, location.pathname, navigate]);
 
-
   const login = async (userData, access_token) => {
     setIsLoading(true);
     try {
       setUser(userData);
       setToken(access_token);
+      queryClient.clear(); // Clear the query cache on login
       return true;
     } catch (error) {
       console.error("Login error:", error);
@@ -89,39 +90,41 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     localStorage.removeItem("auth");
+    localStorage.removeItem("lastSessionId");
+    queryClient.clear(); // Clear the query cache on logout
     navigate("/login");
   };
-
 
   const refreshToken = async () => {
     const tokenData = JSON.parse(localStorage.getItem("auth"));
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_URL}/auth/token`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${tokenData.access_token}`,
-        }
-      })
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_APP_URL}/auth/token`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenData.access_token}`,
+          },
+        },
+      );
 
-      const res= await response.json();
-      const expTime=Date.now()+(res.expires_in*1000);
+      const res = await response.json();
+      const expTime = Date.now() + res.expires_in * 1000;
 
-      const newTokenData={
-        access_token:res.access_token,
-        expiration:expTime,
-        user:tokenData.user
-      }
-
+      const newTokenData = {
+        access_token: res.access_token,
+        expiration: expTime,
+        user: tokenData.user,
+      };
       // localStorage.removeItem("auth");
-      localStorage.setItem("auth",JSON.stringify(newTokenData));
+      localStorage.setItem("auth", JSON.stringify(newTokenData));
       setToken(newTokenData.access_token);
     } catch (error) {
       console.error("refresh token error:", error);
       toast.error("Error refreshing token");
     }
-
-  }
+  };
 
   return (
     <AuthContext.Provider
@@ -133,7 +136,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         setUser,
-        refreshToken
+        refreshToken,
       }}
     >
       {children}

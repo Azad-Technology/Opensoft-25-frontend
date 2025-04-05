@@ -5,6 +5,7 @@ import {
   UserCircle,
   Bot,
   ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -18,39 +19,26 @@ import ReactMarkdown from "react-markdown";
 const ChatUI = ({ className = "" }) => {
   const { token } = useAuth();
 
-  // Which session are we in?
   const [sessionId, setSessionId] = useState(null);
-
-  // Simple local states
   const [isTyping, setIsTyping] = useState(false);
   const [isNewChat, setIsNewChat] = useState(false);
   const [newMessage, setNewMessage] = useState("");
-  const [showSidebar, setShowSidebar] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(true);
 
-  // 1) Load all sessions for the sidebar
   const { data: conversations = [], isLoading: isLoadingSessions } =
     useFetchSessions(token);
-
-  // 2) Load session history from React Query
   const { data: sessionHistory = [], isLoading: isLoadingHistory } =
     useFetchSessionHistory(sessionId, token);
-
-  // 3) Mutation for sending chat messages (optimistic)
   const { mutate: sendChat } = useSendChatMessage({
     token,
-    onSessionCreated: (newId) => {
-      // If the server created a brand-new session
-      setSessionId(newId);
-    },
+    onSessionCreated: (newId) => setSessionId(newId),
   });
 
-  // For scrolling to the bottom
   const messageEndRef = useRef(null);
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [sessionHistory, isTyping]);
 
-  // Start a brand-new chat
   const handleNewChat = () => {
     if (!token) {
       toast.error("No token found; please log in again.");
@@ -58,16 +46,11 @@ const ChatUI = ({ className = "" }) => {
     }
     setIsNewChat(true);
     setSessionId(null);
-    setShowSidebar(false);
-
-    // Fire off the "new conversation" call
+    setShowSidebar(true);
     sendChat(
       { sessionId: null, message: "", token },
       {
-        onSuccess: (data) => {
-          setIsNewChat(false);
-          // onSessionCreated also sets the sessionId
-        },
+        onSuccess: () => setIsNewChat(false),
         onError: () => {
           setIsTyping(false);
           toast.error("Failed to start a new conversation.");
@@ -83,14 +66,9 @@ const ChatUI = ({ className = "" }) => {
     toast.success("Chat closed");
   };
 
-  // Send a user message
   const handleSendMessage = () => {
     if (!newMessage.trim() || !token) return;
-
-    // Show typing indicator
     setIsTyping(true);
-
-    // We'll rely on the optimistic update in useSendChatMessage
     sendChat(
       { sessionId, message: newMessage, token },
       {
@@ -104,12 +82,9 @@ const ChatUI = ({ className = "" }) => {
         },
       },
     );
-
-    // Immediately clear the input field
     setNewMessage("");
   };
 
-  // Handle enter key
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -117,24 +92,20 @@ const ChatUI = ({ className = "" }) => {
     }
   };
 
-  // Format a timestamp
   const formatTime = (ts) => {
-    const date = new Date(ts);
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    return new Date(ts).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
-  // Restore last session on component mount
   useEffect(() => {
     const storedSession = localStorage.getItem("lastSessionId");
-    if (storedSession) {
-      setSessionId(storedSession);
-    }
+    if (storedSession) setSessionId(storedSession);
   }, []);
-  // Store sessionId in localStorage whenever it changes
+
   useEffect(() => {
-    if (sessionId) {
-      localStorage.setItem("lastSessionId", sessionId);
-    }
+    if (sessionId) localStorage.setItem("lastSessionId", sessionId);
   }, [sessionId]);
 
   return (
@@ -142,18 +113,18 @@ const ChatUI = ({ className = "" }) => {
       {/* Mobile sidebar overlay */}
       {showSidebar && (
         <div
-          className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-20"
+          className="md:hidden fixed inset-0  z-20"
           onClick={() => setShowSidebar(false)}
         />
       )}
 
-      {/* SIDEBAR: listing sessions */}
+      {/* SIDEBAR */}
       <div
         className={`${
-          showSidebar ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 fixed md:relative z-30 h-full w-72 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-y-auto transition-transform duration-300 ease-in-out shadow-lg md:shadow-none`}
+          showSidebar ? "w-72" : "w-0"
+        } md:flex h-full border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-y-auto transition-all duration-300 ease-in-out shadow-lg md:shadow-none`}
       >
-        <div className="p-4 space-y-6">
+        <div className="p-4 space-y-6 w-72">
           <div className="flex items-center justify-between mb-2">
             <h1 className="text-xl font-bold text-gray-900 dark:text-white">
               Conversations
@@ -168,7 +139,6 @@ const ChatUI = ({ className = "" }) => {
               />
             </button>
           </div>
-
           <button
             onClick={handleNewChat}
             className="w-full px-4 py-3 bg-[#22C55E] hover:bg-[#1EA34F] text-white font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
@@ -176,12 +146,10 @@ const ChatUI = ({ className = "" }) => {
             <MessageSquare size={18} />
             New Conversation
           </button>
-
           <div className="mt-6">
             <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4 uppercase tracking-wider px-2">
               Recent Conversations
             </h2>
-
             {isLoadingSessions ? (
               <div className="text-sm text-gray-600 dark:text-gray-400 text-center py-6">
                 <div className="flex justify-center">
@@ -200,7 +168,7 @@ const ChatUI = ({ className = "" }) => {
                     key={session.session_id}
                     onClick={() => {
                       setSessionId(session.session_id);
-                      setShowSidebar(false);
+                      setShowSidebar(true);
                     }}
                     className={`w-full text-left p-3 rounded-lg transition-all duration-200 ${
                       sessionId === session.session_id
@@ -231,20 +199,39 @@ const ChatUI = ({ className = "" }) => {
       </div>
 
       {/* MAIN CHAT */}
-      <div className="flex-1 flex flex-col bg-gray-50 dark:bg-gray-900 overflow-hidden">
-        {/* Header */}
+      <div className="flex-1 flex flex-col bg-gray-50 dark:bg-gray-900 overflow-hidden transition-all duration-300 ease-in-out">
+        {/* Header with Sidebar Toggle */}
         <div className="flex justify-between items-center py-3 px-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800 shadow-sm">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setShowSidebar(true)}
               className="md:hidden p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
             >
-              <MessageSquare
-                size={20}
-                className="text-gray-600 dark:text-gray-300"
-              />
+              {showSidebar ? (
+                <></>
+              ) : (
+                <ChevronRight
+                  size={20}
+                  className="text-gray-600 dark:text-gray-300"
+                />
+              )}
             </button>
-
+            <button
+              onClick={() => setShowSidebar(!showSidebar)}
+              className="hidden md:block p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              {showSidebar ? (
+                <ChevronLeft
+                  size={20}
+                  className="text-gray-600 dark:text-gray-300"
+                />
+              ) : (
+                <ChevronRight
+                  size={20}
+                  className="text-gray-600 dark:text-gray-300"
+                />
+              )}
+            </button>
             <div>
               <h2 className="font-semibold text-gray-800 dark:text-gray-200">
                 {sessionId ? "Active Conversation" : "Chat Interface"}
@@ -259,7 +246,7 @@ const ChatUI = ({ className = "" }) => {
           {sessionId && (
             <button
               onClick={handleCloseChat}
-              className="px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
+              className="px-1 py-1 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
             >
               <span className="flex items-center justify-center w-5 h-5 bg-white bg-opacity-10 rounded-full">
                 <svg
@@ -277,14 +264,12 @@ const ChatUI = ({ className = "" }) => {
                   <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
               </span>
-              <span className="font-medium">Close Chat</span>
             </button>
           )}
         </div>
 
-        {/* Content Area - show placeholder or chat depending on sessionId */}
+        {/* Rest of the component remains unchanged */}
         {!sessionId ? (
-          // Placeholder if no session selected
           <div className="flex-1 flex flex-col items-center justify-center text-center p-6 bg-white dark:bg-gray-900">
             {isNewChat ? (
               <>
@@ -319,9 +304,7 @@ const ChatUI = ({ className = "" }) => {
             )}
           </div>
         ) : (
-          // Main chat + input
           <>
-            {/* Messages */}
             <div className="flex-1 bg-gray-100 dark:bg-gray-900 overflow-y-auto p-4 space-y-3">
               {isLoadingHistory && sessionHistory.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center text-gray-700 dark:text-gray-300">
@@ -339,19 +322,16 @@ const ChatUI = ({ className = "" }) => {
                   </p>
                 </div>
               ) : (
-                // Render messages from sessionHistory with improved styling
                 sessionHistory.map((m, idx) => (
                   <div
                     key={m.id || idx}
                     className={`flex items-start ${m.role === "user" ? "justify-end" : "justify-start"} gap-2`}
                   >
-                    {/* Bot icon for assistant messages */}
                     {m.role !== "user" && (
                       <div className="w-8 h-8 rounded-full bg-[#DCFCE7] dark:bg-[#0F4021] flex items-center justify-center mt-1">
                         <Bot size={18} className="text-[#22C55E]" />
                       </div>
                     )}
-
                     <div
                       className={`max-w-[80%] rounded-lg p-3 ${
                         m.role === "user"
@@ -359,13 +339,10 @@ const ChatUI = ({ className = "" }) => {
                           : "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 shadow-sm rounded-tl-none border border-gray-100 dark:border-gray-700"
                       }`}
                     >
-                      {/* Message content */}
                       <div className="text-sm prose prose-sm dark:prose-invert max-w-none break-words">
                         <ReactMarkdown
                           components={{
-                            // Apply styles to the root div
                             root: ({ node, ...props }) => <div {...props} />,
-                            // Style links
                             a: ({ node, ...props }) => (
                               <a
                                 {...props}
@@ -374,7 +351,6 @@ const ChatUI = ({ className = "" }) => {
                                 rel="noopener noreferrer"
                               />
                             ),
-                            // Style code blocks and inline code
                             code: ({ node, inline, ...props }) =>
                               inline ? (
                                 <code
@@ -392,8 +368,6 @@ const ChatUI = ({ className = "" }) => {
                           {m.message}
                         </ReactMarkdown>
                       </div>
-
-                      {/* Timestamp - more subtle positioning */}
                       <div
                         className={`text-right mt-1 ${
                           m.role === "user" ? "text-green-100" : "text-gray-400"
@@ -404,8 +378,6 @@ const ChatUI = ({ className = "" }) => {
                         </span>
                       </div>
                     </div>
-
-                    {/* User icon */}
                     {m.role === "user" && (
                       <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center mt-1">
                         <UserCircle
@@ -417,8 +389,6 @@ const ChatUI = ({ className = "" }) => {
                   </div>
                 ))
               )}
-
-              {/* Replaced animated typing indicator with a simple loading state */}
               {isTyping && (
                 <div className="flex items-start justify-start gap-2">
                   <div className="w-8 h-8 rounded-full bg-[#DCFCE7] dark:bg-[#0F4021] flex items-center justify-center mt-1">
@@ -431,12 +401,8 @@ const ChatUI = ({ className = "" }) => {
                   </div>
                 </div>
               )}
-
-              {/* Scroll anchor */}
               <div ref={messageEndRef} />
             </div>
-
-            {/* Message Input */}
             <div className="p-3 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800">
               <div className="flex space-x-2 items-center">
                 <div className="flex-1 relative">

@@ -6,6 +6,7 @@ import VibeChart from "../../components/employeeCompo/VibeChart";
 import VibeStatusBadge from "../../components/employeeCompo/VibeStatusBadge";
 import { AchievementsSection } from '../../components/employeeCompo/AchievementsSection';
 import ProjectCard from "../../components/employeeCompo/ProjectCard";
+import ChatAlert from "../../components/employeeCompo/ChatAlert";
 import {
   AreaChart,
   Area,
@@ -18,6 +19,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useNavigate } from "react-router-dom";
+import { p } from "framer-motion/client";
 
 const EmployeeReports = () => {
   const { user, token } = useAuth();
@@ -28,10 +30,7 @@ const EmployeeReports = () => {
 
   const BASE_URL = import.meta.env.VITE_REACT_APP_URL;
 
-  const navigate=useNavigate();
-
-  // const [userVibes, setUserVibes] = useState([]);
-  // const [userLeaves, setUserLeaves] = useState([]);
+  const navigate = useNavigate();
   const [userActivities, setUserActivities] = useState([]);
   // const [userRecognitions, setUserRecognitions] = useState([]);
   // const [userPerformance, setUserPerformance] = useState(null);
@@ -43,58 +42,6 @@ const EmployeeReports = () => {
     improvements: ["Communication", "Technical Documentation"],
   };
 
-  //Hard coded data
-  const projectData = [
-    {
-      id: '1',
-      name: 'Website Redesign',
-      priority: 'high',
-      status: 'in-progress',
-      startDate: '2024-03-01',
-      endDate: '2024-04-15',
-      progress: 65,
-      assignees: ['Sarah J.', 'Michael C.'],
-    },
-    {
-      id: '2',
-      name: 'Mobile App Development',
-      priority: 'medium',
-      status: 'not-started',
-      startDate: '2024-04-01',
-      endDate: '2024-06-30',
-      progress: 0,
-      assignees: ['Emily D.', 'John S.'],
-    },
-    {
-      id: '3',
-      name: 'Data Migration',
-      priority: 'low',
-      status: 'completed',
-      startDate: '2024-02-15',
-      endDate: '2024-03-15',
-      progress: 100,
-      assignees: ['Robert K.', 'Lisa M.'],
-    },
-  ];
-
-  const userRecognitions = [
-    {
-      id: 1,
-      type: "Employee of the Month",
-      date: "2024-03-15",
-      description: "Recognized for outstanding performance and dedication.",
-      givenBy: "HR Department",
-    },
-    {
-      id: 2,
-      type: "Best Team Player",
-      date: "2024-02-10",
-      description: "Acknowledged for exceptional teamwork and collaboration.",
-      givenBy: "Project Manager",
-    },
-  ];
-
-  //   {
   //     id: 1,
   //     startDate: "2024-03-10",
   //     endDate: "2024-03-12",
@@ -148,9 +95,9 @@ const EmployeeReports = () => {
         }
 
         const data = await response.json();
-
         // Update stats directly with the new data
         setStats(data);
+
       } catch (error) {
         setError(error.message);
         console.error("Error fetching dashboard data:", error);
@@ -162,15 +109,44 @@ const EmployeeReports = () => {
     fetchDashboardData();
   }, [token, BASE_URL]);
 
-  const handleExport=()=>{
+  const handleExport = () => {
     navigate("/employee/exportReport");
   }
 
   if (loading) {
     return (
       <Layout>
-        <div className="flex items-center justify-center h-80">
-          <div className="animate-pulse-slow">Loading your Reports...</div>
+        <div className="flex flex-col items-center justify-center h-screen w-full">
+          <div className="flex flex-col items-center justify-center">
+            <div className="relative h-20 w-20">
+              {/* Pulse animation around the spinner */}
+              <span className="absolute inset-0 rounded-full animate-ping opacity-20 bg-emerald-500"></span>
+
+              {/* Main spinner with nice transition effect */}
+              <svg className="absolute inset-0 animate-spin" viewBox="0 0 50 50">
+                <circle
+                  cx="25"
+                  cy="25"
+                  r="20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  className="text-emerald-500"
+                  strokeDasharray="80"
+                  strokeDashoffset="60"
+                />
+              </svg>
+            </div>
+
+            {/* Text with subtle fade-in animation */}
+            <div className="mt-6 text-xl font-medium text-gray-800 dark:text-gray-100 animate-fadeIn">
+              Loading
+            </div>
+            <div className="text-sm text-gray-500 dark:text-gray-400 animate-pulse">
+              Just a moment
+            </div>
+          </div>
         </div>
       </Layout>
     );
@@ -195,18 +171,25 @@ const EmployeeReports = () => {
       </Layout>
     );
   }
+  console.log(stats);
   const userVibes = Object.values(stats.vibe_trend);
   const userLeaves = Object.values(stats.all_leaves);
-  console.log("Leave Data ", userLeaves);
+  const activityData = Object.values(stats.activity_level);
+  const awards = Object.values(stats.awards);
+
+  // const projectData = Object.values(stats.projects);
+
+
   return (
     <Layout>
       <div className="page-container py-8">
+
         <div className="mb-8 animate-fade-in flex items-center justify-between">
           <div>
-          <h1 className="page-header mb-2">My Reports</h1>
-          <p className="text-muted-foreground">
-            View detailed information about your well-being and performance
-          </p>
+            <h1 className="page-header mb-2">My Reports</h1>
+            <p className="text-muted-foreground">
+              View detailed information about your well-being and performance
+            </p>
           </div>
           <div>
             <button className="bg-green-700 p-2 px-5 rounded-xl text-white" onClick={handleExport}>
@@ -214,6 +197,7 @@ const EmployeeReports = () => {
             </button>
           </div>
         </div>
+        {stats.is_chat_required && <ChatAlert />}
 
         <div className="space-y-8">
           {/* Vibe trend */}
@@ -272,7 +256,7 @@ const EmployeeReports = () => {
 
           {/* Achievements and Rewards */}
           <div className="bg-white/80 backdrop-blur-sm dark:bg-gray-900/80 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 mb-8">
-            <AchievementsSection />
+            <AchievementsSection awards={awards} />
           </div>
 
           {/* Activity levels */}
@@ -282,11 +266,11 @@ const EmployeeReports = () => {
           >
             <h2 className="text-xl font-medium mb-6">Activity Levels</h2>
 
-            {(!stats.activity_level) ? (
+            {(activityData.length > 0) ? (
               <div className="h-72">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
-                    data={stats.activity_level}
+                    data={activityData}
                     margin={{ top: 20, right: 30, left: 20, bottom: 40 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -325,64 +309,7 @@ const EmployeeReports = () => {
                 </ResponsiveContainer>
               </div>
             ) : (
-              <div className="text-center py-8 text-muted-foreground">
-                No activity data available yet
-              </div>
-            )}
-          </div>
-
-          {/* Leave history */}
-          <div
-            className="neo-glass rounded-xl p-6 animate-fade-in"
-            style={{ animationDelay: "0.3s" }}
-          >
-            <h2 className="text-xl font-medium mb-6">Leave History</h2>
-
-            {userLeaves.length > 0 ? (
-              <div className="overflow-auto">
-                <table className="w-full border-collapse">
-                  <thead>
-                    <tr className="text-left border-b border-border">
-                      <th className="py-3 px-4 font-medium">Date Range</th>
-                      <th className="py-3 px-4 font-medium">Leave Days</th>
-                      <th className="py-3 px-4 font-medium">Leave Type</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {userLeaves.map((leave, index) => (
-                      <tr key={index} className="border-b border-border">
-                        <td className="py-3 px-4">
-                          {new Date(leave.leave_start_date).toLocaleDateString()} -{" "}
-                          {new Date(leave.leave_end_date).toLocaleDateString()}
-                        </td>
-                        <td className="py-3 px-4">{leave.leave_days}</td>
-                        <td className="py-3 px-4">
-                          <span
-                            className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
-                              leave.leave_type === "Casual Leave"
-                                ? "bg-blue-100 text-blue-800"
-                                : leave.leave_type === "Sick Leave"
-                                ? "bg-red-100 text-gray-800"
-                                : leave.leave_type === "Unpaid Leave"
-                                ? "bg-gray-100  text-red-800"
-                                : leave.leave_type === "Annual Leave"
-                                ? "bg-green-100 text-green-800"
-                                : "bg-purple-100 text-purple-800"
-                            }`}
-                          >
-                            {leave.leave_type.charAt(0).toUpperCase() +
-                              leave.leave_type.slice(1)}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <div className="text-center py-8 text-muted-foreground">
-                No leave data available yet
-              </div>
+              <div className="flex items-center justify-center h-32 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">No Activity Data</div>
             )}
           </div>
 
@@ -400,7 +327,7 @@ const EmployeeReports = () => {
                   <div className="flex items-baseline justify-between">
                     <div className="text-sm font-medium">Rating</div>
                     <div className="flex items-center text-2xl font-medium">
-                      {stats.performance_rating}
+                      {stats.performance_rating[0].Performance_Rating}
                       <span className="text-sm text-muted-foreground ml-1">
                         /5.0
                       </span>
@@ -410,48 +337,10 @@ const EmployeeReports = () => {
                   <div className="space-y-2">
                     <div className="text-sm font-medium">Manager Feedback</div>
                     <div className="text-sm p-3 bg-secondary rounded-lg">
-                      {userPerformance.managerFeedback ||
-                        "No feedback provided"}
+                      {stats.performance_rating[0].Manager_Feedback || "No feedback available"}
                     </div>
                   </div>
 
-                  {userPerformance.strengths &&
-                    userPerformance.strengths.length > 0 && (
-                      <div className="space-y-2">
-                        <div className="text-sm font-medium">Strengths</div>
-                        <div className="flex flex-wrap gap-2">
-                          {userPerformance.strengths.map((strength, index) => (
-                            <span
-                              key={index}
-                              className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs"
-                            >
-                              {strength}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                  {userPerformance.improvements &&
-                    userPerformance.improvements.length > 0 && (
-                      <div className="space-y-2">
-                        <div className="text-sm font-medium">
-                          Areas for Improvement
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          {userPerformance.improvements.map(
-                            (improvement, index) => (
-                              <span
-                                key={index}
-                                className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs"
-                              >
-                                {improvement}
-                              </span>
-                            ),
-                          )}
-                        </div>
-                      </div>
-                    )}
                 </div>
               ) : (
                 <div className="text-center py-8 text-muted-foreground">
@@ -460,55 +349,84 @@ const EmployeeReports = () => {
               )}
             </div>
 
-            {/* Recognition */}
+            {/* Leave history */}
             <div
               className="neo-glass rounded-xl p-6 animate-fade-in"
-              style={{ animationDelay: "0.5s" }}
+              style={{ animationDelay: "0.3s" }}
             >
-              <h2 className="text-xl font-medium mb-6">Recognition</h2>
+              <h2 className="text-xl font-medium mb-6">Leave History</h2>
 
-              {userRecognitions.length > 0 ? (
-                <div className="space-y-4">
-                  {userRecognitions.map((recognition) => (
-                    <div
-                      key={recognition.id}
-                      className="p-4 border border-border rounded-lg"
-                    >
-                      <div className="flex justify-between items-start mb-2">
-                        <div className="text-sm font-medium">
-                          {recognition.type}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          {new Date(recognition.date).toLocaleDateString()}
-                        </div>
-                      </div>
-                      <div className="text-sm">{recognition.description}</div>
-                      <div className="text-xs text-muted-foreground mt-2">
-                        Given by: {recognition.givenBy}
-                      </div>
-                    </div>
-                  ))}
+              {userLeaves.length > 0 ? (
+                <div className="overflow-auto">
+                  <table className="w-full border-collapse">
+                    <thead>
+                      <tr className="text-left border-b border-border">
+                        <th className="py-3 px-4 font-medium">Date Range</th>
+                        <th className="py-3 px-4 font-medium">Leave Days</th>
+                        <th className="py-3 px-4 font-medium">Leave Type</th>
+                      </tr>
+                    </thead>
+                    <tbody className="overflow-scroll">
+                      {userLeaves.map((leave, index) => (
+                        <tr key={index} className="border-b border-border">
+                          <td className="py-3 px-4">
+                            {new Date(leave.leave_start_date).toLocaleDateString()} -{" "}
+                            {new Date(leave.leave_end_date).toLocaleDateString()}
+                          </td>
+                          <td className="py-3 px-4">{leave.leave_days}</td>
+                          <td className="py-3 px-4">
+                            <span
+                              className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${leave.leave_type === "Casual Leave"
+                                ? "bg-blue-100 text-blue-800"
+                                : leave.leave_type === "Sick Leave"
+                                  ? "bg-red-100 text-gray-800"
+                                  : leave.leave_type === "Unpaid Leave"
+                                    ? "bg-gray-100  text-red-800"
+                                    : leave.leave_type === "Annual Leave"
+                                      ? "bg-green-100 text-green-800"
+                                      : "bg-purple-100 text-purple-800"
+                                }`}
+                            >
+                              {leave.leave_type.charAt(0).toUpperCase() +
+                                leave.leave_type.slice(1)}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               ) : (
-                <div className="text-center py-8 text-muted-foreground">
-                  No recognition data available yet
-                </div>
+                <div className="flex items-center justify-center h-32 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">No Leave Data</div>
               )}
             </div>
+
+
+
+
+
+
           </div>
 
           <div className="neo-glass rounded-xl p-6 animate-fade-in" style={{ animationDelay: "0.6s" }}>
             <h2 className="text-xl font-medium mb-6">Assigned Projects</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {projectData.map((project) => (
+
+            {(stats.projects) ?
+              (<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">{Object.values(stats.projects).map((project) => (
                 <ProjectCard key={project.id} project={project} />
               ))}
-            </div>
+              </div>) :
+              (<div className="flex items-center justify-center h-32 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">
+                No Leave Data
+              </div>)
+
+            }
+
           </div>
 
         </div>
       </div>
-    </Layout>
+    </Layout >
   );
 };
 

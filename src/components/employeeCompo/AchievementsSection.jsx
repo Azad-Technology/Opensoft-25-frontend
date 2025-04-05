@@ -3,6 +3,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import { AchievementCard } from './AchievementCard';
+import { div } from 'framer-motion/client';
 
 // const achievements = [
 //   {
@@ -50,7 +51,7 @@ import { AchievementCard } from './AchievementCard';
 
 
 
-export const AchievementsSection = () => {
+export const AchievementsSection = ({awards}) => {
   const scrollContainerRef = useRef(null);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -89,7 +90,6 @@ export const AchievementsSection = () => {
     fetchDashboardData();
   }, [token, BASE_URL]);
 
-  const achievements = stats?.awards || [];
   const scroll = (direction) => {
     const container = scrollContainerRef.current;
     if (container) {
@@ -97,6 +97,7 @@ export const AchievementsSection = () => {
       container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
+
 
   return (
     <div className="relative">
@@ -109,17 +110,17 @@ export const AchievementsSection = () => {
         </button>
       </div>
 
-      <div className="relative group">
+      {(awards.length > 0)? <div className="relative group">
         <div
           ref={scrollContainerRef}
           className="flex space-x-6 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory"
           style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
-            WebkitOverflowScrolling: 'touch',
+            WebkitOverflowScrolling: 'touch', 
           }}
         >
-          {achievements.map((achievement, index) => (
+          {awards.map((achievement, index) => (
             <div key={index} className="snap-start">
               <AchievementCard achievement={achievement} />
             </div>
@@ -139,7 +140,7 @@ export const AchievementsSection = () => {
         >
           <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-300" />
         </button>
-      </div>
+      </div>:<div className="flex items-center justify-center h-32 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">No Achievements</div>}
     </div>
   );
 };

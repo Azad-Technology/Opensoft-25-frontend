@@ -54,6 +54,11 @@ const Sidebar = ({ expanded, onToggle }) => {
       icon: <Handshake size={20} />,
     },
     {
+      path: "/admin/schedule",
+      label: "Schedules",
+      icon:  <Calendar size={20} />,
+    },
+    {
       path: "/admin/inquiries",
       label: "Inquiries",
       icon: <AlertCircle size={20} />,
@@ -76,11 +81,6 @@ const Sidebar = ({ expanded, onToggle }) => {
       label: "My Reports",
       icon: <FileText size={20} />,
     },
-    // {
-    //   path: "/employee/activity",
-    //   label: "Activity",
-    //   icon: <Activity size={20} />,
-    // },
     {
       path: "/employee/schedule",
       label: "My Schedule",
@@ -91,11 +91,7 @@ const Sidebar = ({ expanded, onToggle }) => {
       label: "Help & Support",
       icon: <HelpCircle size={20} />,
     },
-    {
-      path: "/employee/settings",
-      label: "Settings",
-      icon: <Settings size={20} />,
-    },
+    
   ];
 
   const navItems = user?.role_type === "hr" ? adminNavItems : employeeNavItems;
