@@ -1,18 +1,41 @@
-import React, { useState } from "react";
-import { useAuth } from "../../contexts/AuthContext";
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Eye, EyeOff, Lock, Mail, User, ArrowRight, Layers } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
 import { toast } from "sonner";
-import { Lock, Mail, ArrowRight } from "lucide-react";
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const SliderContent = [
+  {
+    icon: Layers,
+    title: "Secure Authentication",
+    description: "Advanced security features to protect your account"
+  },
+  {
+    icon: User,
+    title: "Easy Access",
+    description: "Simple and intuitive user experience"
+  },
+  {
+    icon: Lock,
+    title: "Privacy First",
+    description: "Your data is always protected"
+  }
+];
+
+const AuthPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!email || !password) {
+    if (!formData.email || !formData.password) {
       toast.error("Please enter both email and password");
       return;
     }
@@ -27,7 +50,7 @@ const Login = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify(formData),
         },
       );
 
@@ -57,76 +80,170 @@ const Login = () => {
     }
   };
 
+  useEffect(() => {
+    const slideInterval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % SliderContent.length);
+    }, 3000);
+
+    return () => {
+      clearInterval(slideInterval);
+    };
+  }, []);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[rgba(17,24,39,0.9)] p-4">
-      <div className="neo-glass rounded-2xl w-full max-w-md py-8 px-6 sm:px-10 shadow-xl">
-        <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold text-gradient mb-2">VibeCatcher</h2>
-          <p className="text-gray-600 text-sm">
-            Monitor well-being, boost engagement
-          </p>
+    <div 
+      className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
+      style={{ 
+        background: "#051a12",
+      }}
+    >
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-[#00a85a]/20 blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-[#00a85a]/10 blur-3xl"></div>
+        
+        <div className="absolute inset-0 opacity-10" 
+          style={{
+            backgroundImage: `linear-gradient(to right, #00a85a 1px, transparent 1px), 
+                              linear-gradient(to bottom, #00a85a 1px, transparent 1px)`,
+            backgroundSize: '40px 40px',
+          }}>
+        </div>
+        
+        {[...Array(15)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-[#00a85a]/40 rounded-full"
+            initial={{ 
+              x: Math.random() * window.innerWidth, 
+              y: Math.random() * window.innerHeight,
+            }}
+            animate={{ 
+              y: [
+                Math.random() * window.innerHeight,
+                Math.random() * window.innerHeight - 100,
+                Math.random() * window.innerHeight
+              ],
+              opacity: [0.2, 0.5, 0.2]
+            }}
+            transition={{
+              duration: 10 + Math.random() * 20,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "easeInOut"
+            }}
+          />
+        ))}
+      </div>
+
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-4xl flex shadow-2xl rounded-2xl overflow-hidden bg-black/20 backdrop-blur-sm border border-[#00a85a]/20"
+      >
+        <div className="w-1/2 bg-black/30 backdrop-blur-lg p-8 flex flex-col justify-center items-center relative border-r border-[#00a85a]/30">
+          
+          <AnimatePresence mode="wait">
+            {SliderContent.map((slide, index) => (
+              index === currentSlide && (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -50 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-white text-center absolute"
+                >
+                  <slide.icon className="mx-auto mb-4 text-[#00a85a]" size={60} />
+                  <h3 className="text-2xl font-bold mb-4">{slide.title}</h3>
+                  <p className="text-white/80">{slide.description}</p>
+                </motion.div>
+              )
+            ))}
+          </AnimatePresence>
+
+          <div className="absolute bottom-4 flex space-x-2">
+            {SliderContent.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+                  index === currentSlide ? 'bg-[#00a85a]' : 'bg-white/50'
+                }`}
+              />
+            ))}
+          </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div className="space-y-1">
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email
-            </label>
+        <div className="w-1/2 bg-black/10 backdrop-blur-lg p-12 relative text-white">
+          <div className="absolute top-0 right-0 w-20 h-20">
+            <div className="absolute top-6 right-6 w-2 h-2 bg-[#00a85a] rounded-full"></div>
+            <div className="absolute top-12 right-12 w-1 h-1 bg-[#00a85a] rounded-full"></div>
+          </div>
+          
+          <motion.form 
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+            onSubmit={handleSubmit} 
+            className="space-y-6"
+          >
+            <h2 className="text-3xl font-bold text-center text-[#00a85a] mb-8">
+              Welcome Back
+            </h2>
+
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Mail size={18} className="text-gray-400" />
-              </div>
+              <Mail className="absolute left-0 top-1/2 -translate-y-1/2 text-[#00a85a] opacity-70" size={18} />
               <input
-                id="email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                placeholder="your.email@company.com"
+                name="email"
+                placeholder="Email Address"
+                className="w-full p-3 pl-7 border-b-2 border-[#00a85a]/50 focus:border-[#00a85a] focus:outline-none bg-transparent text-white placeholder-white/60 transition-all duration-300"
+                value={formData.email}
+                onChange={handleInputChange}
                 required
               />
             </div>
-          </div>
 
-          <div className="space-y-1">
-            <div className="flex items-center justify-between">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Password
-              </label>
-              <a
-                href="#"
-                className="text-xs text-green-600 hover:text-green-700"
-              >
-                Forgot password?
-              </a>
-            </div>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Lock size={18} className="text-gray-400" />
-              </div>
+              <Lock className="absolute left-0 top-1/2 -translate-y-1/2 text-[#00a85a] opacity-70" size={18} />
               <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                placeholder="••••••••"
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                className="w-full p-3 pl-7 border-b-2 border-[#00a85a]/50 focus:border-[#00a85a] focus:outline-none pr-10 bg-transparent text-white placeholder-white/60 transition-all duration-300"
+                value={formData.password}
+                onChange={handleInputChange}
                 required
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-0 top-1/2 -translate-y-1/2 text-[#00a85a] hover:text-[#00c86b] transition-colors duration-300"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
-          </div>
 
-          <div>
-            <button
+            <div className="flex justify-end">
+              <button type="button" className="text-sm text-[#00a85a] hover:text-[#00c86b] hover:underline transition-colors duration-300">
+                Forgot Password?
+              </button>
+            </div>
+
+            <motion.button
               type="submit"
-              disabled={isLoading}
-              className="w-full flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 button-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full bg-[#00a85a] text-white p-3 rounded-full hover:bg-[#00c86b] transition duration-300 flex items-center justify-center shadow-lg shadow-[#00a85a]/20 mt-8"
             >
               {isLoading ? (
                 <svg
@@ -155,18 +272,12 @@ const Login = () => {
                   <ArrowRight size={18} className="ml-2" />
                 </>
               )}
-            </button>
-          </div>
-        </form>
-
-        <div className="mt-8 pt-6 border-t border-gray-200 text-center text-xs text-gray-500">
-          <p>
-            &copy; {new Date().getFullYear()} VibeCatcher. All rights reserved.
-          </p>
+            </motion.button>
+          </motion.form>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
 
-export default Login;
+export default AuthPage;
