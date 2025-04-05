@@ -62,7 +62,7 @@ const AdminSupportPage = () => {
       
       setInquiries(transformedInquiries);
       setPagination(data.pagination);
-      toast.success('Tickets fetched successfully.');
+      // toast.success('Tickets fetched successfully.');
       
     } catch (err) {
       console.error('Error fetching tickets:', err);
