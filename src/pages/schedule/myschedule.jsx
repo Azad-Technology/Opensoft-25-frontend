@@ -19,7 +19,7 @@ import { cn } from "../../lib/utils";
 import { useTheme } from "../../contexts/ThemeContext";
 import {toast} from "sonner"
 
-export default function EmployeeSchedule() {
+export default function Schedule() {
   const { user, token } = useAuth();
   const { schedules = [] } = useData() || {};
   const { theme } = useTheme();
