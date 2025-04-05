@@ -125,38 +125,38 @@ const EmployeeDashboard = () => {
   if (isLoading) {
     return (
       <Layout>
-      <div className="flex flex-col items-center justify-center h-screen w-full">
-        <div className="flex flex-col items-center justify-center">
-          <div className="relative h-20 w-20">
-            {/* Pulse animation around the spinner */}
-            <span className="absolute inset-0 rounded-full animate-ping opacity-20 bg-emerald-500"></span>
+        <div className="flex flex-col items-center justify-center h-screen w-full">
+          <div className="flex flex-col items-center justify-center">
+            <div className="relative h-20 w-20">
+              {/* Pulse animation around the spinner */}
+              <span className="absolute inset-0 rounded-full animate-ping opacity-20 bg-emerald-500"></span>
 
-            {/* Main spinner with nice transition effect */}
-            <svg className="absolute inset-0 animate-spin" viewBox="0 0 50 50">
-              <circle
-                cx="25"
-                cy="25"
-                r="20"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-                className="text-emerald-500"
-                strokeDasharray="80"
-                strokeDashoffset="60"
-              />
-            </svg>
-          </div>
+              {/* Main spinner with nice transition effect */}
+              <svg className="absolute inset-0 animate-spin" viewBox="0 0 50 50">
+                <circle
+                  cx="25"
+                  cy="25"
+                  r="20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  className="text-emerald-500"
+                  strokeDasharray="80"
+                  strokeDashoffset="60"
+                />
+              </svg>
+            </div>
 
-          {/* Text with subtle fade-in animation */}
-          <div className="mt-6 text-xl font-medium text-gray-800 dark:text-gray-100 animate-fadeIn">
-            Loading
-          </div>
-          <div className="text-sm text-gray-500 dark:text-gray-400 animate-pulse">
-            Just a moment
+            {/* Text with subtle fade-in animation */}
+            <div className="mt-6 text-xl font-medium text-gray-800 dark:text-gray-100 animate-fadeIn">
+              Loading
+            </div>
+            <div className="text-sm text-gray-500 dark:text-gray-400 animate-pulse">
+              Just a moment
+            </div>
           </div>
         </div>
-      </div>
       </Layout>
     );
   }
@@ -184,6 +184,8 @@ const EmployeeDashboard = () => {
 
   // 9) Safely access stats (e.g. optional chaining)
   const awardsCount = stats?.awards?.length ?? 0;
+  const performance = stats.performance_rating || null;
+  console.log(stats);
 
   // 10) Render the page
   return (
@@ -195,7 +197,7 @@ const EmployeeDashboard = () => {
             <p className="text-muted-foreground">
               Track your well-being and stay connected with your team
             </p>
-            
+
           </div>
         </div>
         {stats.is_chat_required && <ChatAlert />}
@@ -273,7 +275,7 @@ const EmployeeDashboard = () => {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <MetricCard
                 title="Performance Rating"
-                value={stats?.performance_rating[0].Performance_Rating}
+                value={(performance.length > 0) ? performance[0].Performance_Rating : null}
                 icon={
                   <TrendingUp
                     size={24}
@@ -282,8 +284,8 @@ const EmployeeDashboard = () => {
                 }
               />
               <MetricCard
-                title="Leave Balance"
-                value={stats?.leave_balance}
+                title="Total Leaves"
+                value={stats?.total_leave}
                 icon={
                   <Clock
                     size={24}

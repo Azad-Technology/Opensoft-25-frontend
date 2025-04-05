@@ -105,9 +105,6 @@ export const AchievementsSection = ({awards}) => {
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
           Rewards & Achievements
         </h2>
-        <button className="px-4 py-2 text-sm font-medium text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg transition-colors">
-          View All
-        </button>
       </div>
 
       {(awards.length > 0)? <div className="relative group">
@@ -127,19 +124,19 @@ export const AchievementsSection = ({awards}) => {
           ))}
         </div>
 
-        <button
+        {(awards.length > 3) && <button
           onClick={() => scroll('left')}
           className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 opacity-0 group-hover:opacity-100 transition-opacity bg-white dark:bg-gray-800 p-2 rounded-full shadow-lg"
         >
           <ChevronRight className="w-5 h-5 transform rotate-180 text-gray-600 dark:text-gray-300" />
-        </button>
+        </button>}
 
-        <button
+        {(awards.length > 3) && <button
           onClick={() => scroll('right')}
           className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 opacity-0 group-hover:opacity-100 transition-opacity bg-white dark:bg-gray-800 p-2 rounded-full shadow-lg"
         >
           <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-        </button>
+        </button>}
       </div>:<div className="flex items-center justify-center h-32 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">No Achievements</div>}
     </div>
   );
