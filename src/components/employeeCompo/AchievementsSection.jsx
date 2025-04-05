@@ -90,7 +90,6 @@ export const AchievementsSection = ({awards}) => {
     fetchDashboardData();
   }, [token, BASE_URL]);
 
-  const achievements = stats?.awards || [];
   const scroll = (direction) => {
     const container = scrollContainerRef.current;
     if (container) {
@@ -111,14 +110,14 @@ export const AchievementsSection = ({awards}) => {
         </button>
       </div>
 
-      {(!awards)? <div className="relative group">
+      {(awards.length > 0)? <div className="relative group">
         <div
           ref={scrollContainerRef}
           className="flex space-x-6 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory"
           style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
-            WebkitOverflowScrolling: 'touch',
+            WebkitOverflowScrolling: 'touch', 
           }}
         >
           {awards.map((achievement, index) => (
