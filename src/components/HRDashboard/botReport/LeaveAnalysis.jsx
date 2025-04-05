@@ -73,8 +73,8 @@ const BotReports = ({ result }) => {
                 margin={{ top: 5, right: 0, left: 0, bottom: 5 }}
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="#90EE90" />
-                <XAxis dataKey="month" stroke="#90EE90" />
-                <YAxis stroke="#90EE90" />
+                <XAxis dataKey="month" stroke="#03C03C" />
+                <YAxis stroke="#03C03C" />
                 <Tooltip contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: '#fff', border: 'none' }} />
                 <Bar dataKey="sickLeave"  fill="#86d3ff" />
                 <Bar dataKey="personalLeave"  fill="#82ca9d" />
