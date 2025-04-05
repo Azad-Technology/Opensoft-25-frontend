@@ -7,6 +7,8 @@ import VibeStatusBadge from "../../components/employeeCompo/VibeStatusBadge";
 import { AchievementsSection } from '../../components/employeeCompo/AchievementsSection';
 import ProjectCard from "../../components/employeeCompo/ProjectCard";
 import ChatAlert from "../../components/employeeCompo/ChatAlert";
+import PerformanceCard from "../../components/employeeCompo/PerformanceCard";
+
 import {
   AreaChart,
   Area,
@@ -28,55 +30,11 @@ const EmployeeReports = () => {
   const [error, setError] = useState(null);
   const [stats, setStats] = useState(null);
 
+
   const BASE_URL = import.meta.env.VITE_REACT_APP_URL;
 
   const navigate = useNavigate();
   const [userActivities, setUserActivities] = useState([]);
-  // const [userRecognitions, setUserRecognitions] = useState([]);
-  // const [userPerformance, setUserPerformance] = useState(null);
-
-  const userPerformance = {
-    rating: 4.3,
-    managerFeedback: "Great work on project execution and team collaboration.",
-    strengths: ["Leadership", "Problem-Solving", "Time Management"],
-    improvements: ["Communication", "Technical Documentation"],
-  };
-
-  //     id: 1,
-  //     startDate: "2024-03-10",
-  //     endDate: "2024-03-12",
-  //     reason: "Medical leave due to illness",
-  //     status: "approved",
-  //   },
-  //   {
-  //     id: 2,
-  //     startDate: "2024-03-20",
-  //     endDate: "2024-03-22",
-  //     reason: "Family function",
-  //     status: "pending",
-  //   },
-  //   {
-  //     id: 3,
-  //     startDate: "2024-04-05",
-  //     endDate: "2024-04-06",
-  //     reason: "Personal work",
-  //     status: "rejected",
-  //   },
-  //   {
-  //     id: 4,
-  //     startDate: "2024-04-15",
-  //     endDate: "2024-04-18",
-  //     reason: "Vacation",
-  //     status: "approved",
-  //   },
-  //   {
-  //     id: 5,
-  //     startDate: "2024-05-01",
-  //     endDate: "2024-05-02",
-  //     reason: "Emergency leave",
-  //     status: "pending",
-  //   },
-  // ];
 
   useEffect(() => {
     if (!token) return;
@@ -176,6 +134,7 @@ const EmployeeReports = () => {
   const userLeaves = Object.values(stats.all_leaves);
   const activityData = Object.values(stats.activity_level);
   const awards = Object.values(stats.awards);
+  const performance = stats.performance_rating;
 
   // const projectData = Object.values(stats.projects);
 
@@ -317,33 +276,17 @@ const EmployeeReports = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Performance */}
             <div
-              className="neo-glass rounded-xl p-6 animate-fade-in"
+              className="neo-glass rounded-xl p-6 animate-fade-in "
               style={{ animationDelay: "0.4s" }}
             >
               <h2 className="text-xl font-medium mb-6">Performance</h2>
-
-              {userPerformance ? (
-                <div className="space-y-4">
-                  <div className="flex items-baseline justify-between">
-                    <div className="text-sm font-medium">Rating</div>
-                    <div className="flex items-center text-2xl font-medium">
-                      {stats.performance_rating[0].Performance_Rating}
-                      <span className="text-sm text-muted-foreground ml-1">
-                        /5.0
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="text-sm font-medium">Manager Feedback</div>
-                    <div className="text-sm p-3 bg-secondary rounded-lg">
-                      {stats.performance_rating[0].Manager_Feedback || "No feedback available"}
-                    </div>
-                  </div>
-
-                </div>
+              
+              {performance.length > 0 ? (<div className="min-h-40 max-h-80 overflow-auto p-3"> {
+                performance.map((review, index) => (
+                  <PerformanceCard review={review} key={index} />
+                ))}</div>
               ) : (
-                <div className="text-center py-8 text-muted-foreground">
+                <div className="flex items-center justify-center h-[70%] bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">
                   No performance data available yet
                 </div>
               )}
@@ -357,7 +300,7 @@ const EmployeeReports = () => {
               <h2 className="text-xl font-medium mb-6">Leave History</h2>
 
               {userLeaves.length > 0 ? (
-                <div className="overflow-auto">
+                <div className="max-h-72 overflow-auto">
                   <table className="w-full border-collapse">
                     <thead>
                       <tr className="text-left border-b border-border">
@@ -397,14 +340,9 @@ const EmployeeReports = () => {
                   </table>
                 </div>
               ) : (
-                <div className="flex items-center justify-center h-32 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">No Leave Data</div>
+                <div className="flex items-center justify-center h-[85%] bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">No Leave Data</div>
               )}
             </div>
-
-
-
-
-
 
           </div>
 
