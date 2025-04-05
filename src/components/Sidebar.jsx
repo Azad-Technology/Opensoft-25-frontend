@@ -116,7 +116,7 @@ const Sidebar = ({ expanded, onToggle }) => {
           <div className="flex items-center justify-between p-4 border-b border-green-100/50 dark:border-green-800/30">
             {expanded ? (
               <Link to="/" className="flex items-center">
-                <div className="text-xl font-semibold text-gradient">
+                <div className="text-xl font-semibold text-gradient mb-[0.55rem]">
                   Vibe<span className="font-bold">Catcher</span>
                 </div>
               </Link>
