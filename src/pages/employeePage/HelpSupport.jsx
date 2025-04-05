@@ -58,7 +58,7 @@ const HelpAndSupportPage = () => {
       });
 
       setInquiries(sortedInquiries);
-      toast.success("Tickets fetched successfully");
+      // toast.success("Tickets fetched successfully");
     } catch (error) {
       console.error("Error fetching tickets:", error);
       toast.error("Failed to fetch tickets");
