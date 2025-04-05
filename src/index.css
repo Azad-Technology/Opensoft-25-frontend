@@ -290,3 +290,35 @@
 .animate-delay-300 {
   animation-delay: 0.3s;
 }
+
+/* Global solution - place in your main CSS file */
+
+/* For all elements */
+html, body {
+  overscroll-behavior: none;
+  overflow-x: hidden; /* Prevents horizontal scrolling */
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* For specific containers that should not have overscroll */
+.no-overscroll {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch; /* For iOS */
+}
+
+/* Alternative approach for iOS and older browsers */
+body {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+/* For React components with scrollable content that should not propagate scroll */
+.scroll-container {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  max-height: 100vh;
+}
