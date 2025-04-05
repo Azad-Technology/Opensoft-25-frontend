@@ -273,7 +273,7 @@ const EmployeeDashboard = () => {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <MetricCard
                 title="Performance Rating"
-                value={stats?.performance_rating}
+                value={stats?.performance_rating[0].Performance_Rating}
                 icon={
                   <TrendingUp
                     size={24}
