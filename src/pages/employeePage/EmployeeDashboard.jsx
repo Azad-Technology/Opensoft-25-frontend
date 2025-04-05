@@ -185,6 +185,7 @@ const EmployeeDashboard = () => {
   // 9) Safely access stats (e.g. optional chaining)
   const awardsCount = stats?.awards?.length ?? 0;
   const performance = stats.performance_rating || null;
+  console.log(stats);
 
   // 10) Render the page
   return (
@@ -283,8 +284,8 @@ const EmployeeDashboard = () => {
                 }
               />
               <MetricCard
-                title="Leave Balance"
-                value={stats?.leave_balance}
+                title="Total Leaves"
+                value={stats?.total_leave}
                 icon={
                   <Clock
                     size={24}
