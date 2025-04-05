@@ -77,7 +77,7 @@ export default function EmployeeSchedule() {
     try {
       const formattedDate = formatDateForApi(currentDate);
       const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_URL}/employee/get_schedules?date=${currentDate.getFullYear()}-${currentDate.getMonth()+1<=9?"0":""}${currentDate.getMonth()+1}-01`, 
+        `${import.meta.env.VITE_REACT_APP_URL}/common/get_schedules?date=${currentDate.getFullYear()}-${currentDate.getMonth()+1<=9?"0":""}${currentDate.getMonth()+1}-01`,
         {
           method: "GET",
           headers: {
@@ -117,7 +117,7 @@ export default function EmployeeSchedule() {
     if (!token) return;
     
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_URL}/employee/delete_schedule/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_URL}/common/delete_schedule/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -224,7 +224,7 @@ export default function EmployeeSchedule() {
     try {
       const formattedDate = formatDateForApi(selectedDay);
       
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_URL}/employee/add_schedule`, {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_URL}/common/add_schedule`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
