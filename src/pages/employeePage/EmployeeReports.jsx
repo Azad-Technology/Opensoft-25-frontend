@@ -8,6 +8,8 @@ import { AchievementsSection } from '../../components/employeeCompo/Achievements
 import ProjectCard from "../../components/employeeCompo/ProjectCard";
 import ChatAlert from "../../components/employeeCompo/ChatAlert";
 import PerformanceCard from "../../components/employeeCompo/PerformanceCard";
+import { Info } from 'lucide-react';
+import Tooltips from "../../components/employeeCompo/Tooltip";
 
 import {
   AreaChart,
@@ -229,18 +231,33 @@ const EmployeeReports = () => {
               <div className="h-72">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
-                    data={activityData}
+                    data={activityData
+                      .map(item => ({
+                        ...item,
+                        formattedDate: new Date(item.date).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                          year: 'numeric'
+                        }),
+                        // Keep original date for sorting
+                        dateObj: new Date(item.date)
+                      }))
+                      // Sort in reverse chronological order (newest first)
+                      .sort((a, b) => a.dateObj - b.dateObj)
+                    }
                     margin={{ top: 20, right: 30, left: 20, bottom: 40 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis
-                      dataKey="date"
+                      dataKey="formattedDate"
                       tick={{ fontSize: 12 }}
                       interval="preserveStartEnd"
                     />
                     <YAxis tick={{ fontSize: 12 }} width={40} />
                     <Tooltip
+                      labelFormatter={(value) => `Date: ${value}`}
                       contentStyle={{
+                        color: "#333",
                         borderRadius: "8px",
                         boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
                         backgroundColor: "rgba(255, 255, 255, 0.9)",
@@ -280,7 +297,7 @@ const EmployeeReports = () => {
               style={{ animationDelay: "0.4s" }}
             >
               <h2 className="text-xl font-medium mb-6">Performance</h2>
-              
+
               {performance.length > 0 ? (<div className="min-h-40 max-h-80 overflow-auto p-3"> {
                 performance.map((review, index) => (
                   <PerformanceCard review={review} key={index} />
