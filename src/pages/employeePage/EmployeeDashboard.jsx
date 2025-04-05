@@ -31,9 +31,6 @@ const EmployeeDashboard = () => {
   const BASE_URL = import.meta.env.VITE_REACT_APP_URL;
 
   // Refresh auth token on mount
-  useEffect(() => {
-    refreshToken();
-  }, []);
 
   // 2) React Query Client (for invalidating queries on success)
 
