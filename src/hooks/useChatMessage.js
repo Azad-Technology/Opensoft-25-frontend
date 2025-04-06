@@ -35,7 +35,7 @@ const fetchHistoryAPI = async ({ token, sessionId }) => {
     throw new Error(error || "Failed to fetch session history");
   }
   const data = await res.json();
-  console.log("History data:", data);
+  // console.log("History data:", data);
   return data.history;
 };
 
@@ -124,7 +124,7 @@ export const useSendChatMessage = ({ onSessionCreated, token }) => {
       await queryClient.cancelQueries({ queryKey });
 
       const previousMessages = queryClient.getQueryData(queryKey) || [];
-      
+
       const optimisticMessage = {
         id: `temp-${Date.now()}`,
         role: "user",
@@ -132,8 +132,11 @@ export const useSendChatMessage = ({ onSessionCreated, token }) => {
         timestamp: new Date().toISOString(),
       };
 
-      queryClient.setQueryData(queryKey, [...previousMessages, optimisticMessage]);
-      
+      queryClient.setQueryData(queryKey, [
+        ...previousMessages,
+        optimisticMessage,
+      ]);
+
       return { previousMessages, sid, optimisticMessage };
     },
 
@@ -161,7 +164,7 @@ export const useSendChatMessage = ({ onSessionCreated, token }) => {
         message: variables.message,
         timestamp: new Date().toISOString(),
       };
-      
+
       const assistantMessage = {
         id: `${sid}-assistant-${Date.now()}`,
         role: "assistant",
