@@ -192,7 +192,7 @@ const HelpAndSupportPage = () => {
 
                 <button
                   type="submit"
-                  className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded focus:outline-none focus:ring-2 focus:ring-green-500 text-md mt-5"
+                  className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded focus:outline-none focus:ring-2 focus:ring-green-500 text-md "
                 >
                   Submit
                 </button>

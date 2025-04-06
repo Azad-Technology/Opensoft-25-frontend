@@ -5,6 +5,7 @@ import VibeChart from "../../components/employeeCompo/VibeChart";
 import VibeSelector from "../../components/employeeCompo/VibeSelector";
 import { MetricCard } from "../../components/employeeCompo/metricCard";
 import ChatAlert from "../../components/employeeCompo/ChatAlert";
+import Tooltips from "../../components/employeeCompo/Tooltip";
 import {
   Calendar,
   CheckCheck,
@@ -13,6 +14,7 @@ import {
   Smile,
   Hourglass,
   Trophy,
+  Info,
 } from "lucide-react";
 import { toast } from "sonner";
 import { queryClient } from "../../services/react-query-client"; // Import the query client
@@ -208,11 +210,11 @@ const EmployeeDashboard = () => {
               className="neo-glass rounded-xl p-6 animate-fade-in"
               style={{ animationDelay: "0.1s" }}
             >
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                <h2 className="text-xl font-medium">Your Vibe Trend</h2>
-                <div className="mt-2 md:mt-0 text-sm text-muted-foreground">
-                  Last 14 days
-                </div>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-medium">Vibe Trend</h2>
+                <Tooltips text={"Vibe trend shows the distribution of your vibes over 14 Days. It shows emotional well-being and identifies patterns."} placement="left">
+                  <Info className="text-muted-foreground" size={20} />
+                </Tooltips>
               </div>
 
               {/* Chart */}
@@ -282,16 +284,18 @@ const EmployeeDashboard = () => {
                     className="text-green-600 dark:text-green-400"
                   />
                 }
+                tooltip="Your overall performance rating based on key metrics and evaluations."
               />
               <MetricCard
                 title="Total Leaves"
-                value={stats?.total_leave}
+                value={(stats.all_leaves.length > 0) ? (stats?.all_leaves.reduce((total, leave) => total + leave.leave_days, 0)) : 0}
                 icon={
                   <Clock
                     size={24}
                     className="text-green-600 dark:text-green-400"
                   />
                 }
+                tooltip="The total number of leaves you took in the previous year."
               />
               <MetricCard
                 title="Total Meetings"
@@ -302,6 +306,7 @@ const EmployeeDashboard = () => {
                     className="text-green-600 dark:text-green-400"
                   />
                 }
+                tooltip="The total number of meetings attended in the last year."
               />
               <MetricCard
                 title="Current Vibe"
@@ -312,6 +317,7 @@ const EmployeeDashboard = () => {
                     className="text-green-600 dark:text-green-400"
                   />
                 }
+                tooltip="A reflection of your current mood or engagement level at work."
               />
               <MetricCard
                 title="Average Work hours"
@@ -322,6 +328,7 @@ const EmployeeDashboard = () => {
                     className="text-green-600 dark:text-green-400"
                   />
                 }
+                tooltip="Your average daily work hours calculated over the past year."
               />
               <MetricCard
                 title="Awards"
@@ -332,6 +339,7 @@ const EmployeeDashboard = () => {
                     className="text-green-600 dark:text-green-400"
                   />
                 }
+                tooltip="Recognition and accolades received for your contributions and achievements."
               />
             </div>
           </div>
