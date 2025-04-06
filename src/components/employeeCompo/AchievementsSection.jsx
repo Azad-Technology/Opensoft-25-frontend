@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import { AchievementCard } from './AchievementCard';
 import { div } from 'framer-motion/client';
+import { Info } from 'lucide-react';
+import Tooltips from './Tooltip';
 
 // const achievements = [
 //   {
@@ -51,7 +53,7 @@ import { div } from 'framer-motion/client';
 
 
 
-export const AchievementsSection = ({awards}) => {
+export const AchievementsSection = ({ awards }) => {
   const scrollContainerRef = useRef(null);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -102,19 +104,21 @@ export const AchievementsSection = ({awards}) => {
   return (
     <div className="relative">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-          Rewards & Achievements
-        </h2>
+        <h2 className="text-xl font-medium">Rewards & Achievements</h2>
+        <Tooltips text={"This section highlights the awards, certifications, and milestones that showcase your skills and dedication."} placement="left">
+          <Info className="text-muted-foreground" size={20} />
+        </Tooltips>
       </div>
 
-      {(awards.length > 0)? <div className="relative group">
+
+      {(awards.length > 0) ? <div className="relative group">
         <div
           ref={scrollContainerRef}
           className="flex space-x-6 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory"
           style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
-            WebkitOverflowScrolling: 'touch', 
+            WebkitOverflowScrolling: 'touch',
           }}
         >
           {awards.map((achievement, index) => (
@@ -137,7 +141,7 @@ export const AchievementsSection = ({awards}) => {
         >
           <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-300" />
         </button>}
-      </div>:<div className="flex items-center justify-center h-32 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">No Achievements</div>}
+      </div> : <div className="flex items-center justify-center h-32 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">No Achievements</div>}
     </div>
   );
 };

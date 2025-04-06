@@ -31,122 +31,21 @@ import {
   Moon,
   Sun,
 } from "lucide-react";
-import {useUserData } from "../../contexts/UserContext";
+import { useUserData } from "../../contexts/UserContext";
 import { useAuth } from "../../contexts/AuthContext";
+import { div } from "framer-motion/client";
 
 function Profile() {
   const [activeTab, setActiveTab] = useState("basic");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { profileData,fetchProfileData }=useUserData();
-  const {token}=useAuth()
+  const { profileData, fetchProfileData } = useUserData();
+  const { token } = useAuth()
 
   useEffect(() => {
     fetchProfileData();
   }, [token]);
 
   // Toggle dark mode
-
-
-  // const profileData = {
-  //   name: "John Doe",
-  //   profilePic:
-  //     "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
-  //   employeeId: "DEL123456",
-  //   jobTitle: "Senior Consultant",
-  //   department: "Technology Consulting",
-  //   doj: "2022-01-15",
-  //   location: "New York",
-  //   manager: "Jane Smith",
-  //   email: "john.doe@deloitte.com",
-  //   phone: "+1 (555) 123-4567",
-  //   extension: "4567",
-  //   backgroundDetails: {
-  //     employmentType: "Full-time",
-  //     skills: [
-  //       "Cloud Architecture",
-  //       "Digital Transformation",
-  //       "Project Management",
-  //       "Solution Design",
-  //     ],
-  //     certifications: [
-  //       "AWS Certified Solutions Architect",
-  //       "Certified Scrum Master",
-  //       "ITIL Foundation",
-  //       "PMP",
-  //     ],
-  //     experience: [
-  //       {
-  //         company: "Previous Tech Corp",
-  //         role: "Technology Consultant",
-  //         duration: "2019-2022",
-  //       },
-  //       {
-  //         company: "Start-up Solutions",
-  //         role: "Senior Developer",
-  //         duration: "2017-2019",
-  //       },
-  //     ],
-  //     education: [
-  //       {
-  //         degree: "Master of Science in Computer Science",
-  //         institution: "Stanford University",
-  //         year: "2017",
-  //       },
-  //       {
-  //         degree: "Bachelor of Engineering",
-  //         institution: "MIT",
-  //         year: "2015",
-  //       },
-  //     ],
-  //   },
-  //   // performance: {
-  //   //   currentRating: 4.5,
-  //   //   lastReviewDate: "2023-12-15",
-  //   //   achievements: [
-  //   //     "Led digital transformation for Fortune 500 client",
-  //   //     "Reduced system downtime by 35%",
-  //   //     "Mentored 5 junior consultants",
-  //   //   ],
-  //   //   ongoingProjects: [
-  //   //     {
-  //   //       name: "Cloud Migration Project",
-  //   //       role: "Technical Lead",
-  //   //       completion: 75,
-  //   //     },
-  //   //     {
-  //   //       name: "Digital Banking Platform",
-  //   //       role: "Solution Architect",
-  //   //       completion: 40,
-  //   //     },
-  //   //   ],
-  //   // },
-  //   documents: {
-  //     compliance: [
-  //       {
-  //         name: "Code of Conduct",
-  //         status: "Completed",
-  //         date: "2024-01-15",
-  //       },
-  //       {
-  //         name: "Data Privacy Training",
-  //         status: "Due",
-  //         date: "2024-03-30",
-  //       },
-  //     ],
-  //     hrDocs: [
-  //       {
-  //         name: "Offer Letter",
-  //         type: "PDF",
-  //         uploadDate: "2022-01-10",
-  //       },
-  //       {
-  //         name: "Latest Payslip",
-  //         type: "PDF",
-  //         uploadDate: "2024-02-28",
-  //       },
-  //     ],
-  //   },
-  // };
 
   const tabVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -168,7 +67,7 @@ function Profile() {
   const renderTabContent = () => {
     switch (activeTab) {
       case "basic":
-        return (
+        return (<div>
           <motion.div
             initial="hidden"
             animate="visible"
@@ -257,6 +156,7 @@ function Profile() {
               </div>
             </div>
           </motion.div>
+        </div>
         );
       case "background":
         return (
@@ -438,8 +338,8 @@ function Profile() {
                     </div>
                     <span
                       className={`px-2 py-1 rounded-full text-sm ${doc.status === "Completed"
-                          ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                          : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                        ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                        : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
                         }`}
                     >
                       {doc.status}
@@ -556,8 +456,8 @@ function Profile() {
                       key={tab}
                       onClick={() => setActiveTab(tab)}
                       className={`py-4 px-2 border-b-2 transition-colors  ${activeTab === tab
-                          ? "border-deloitte-green text-deloitte-green dark:text-green-300"
-                          : "border-transparent text-gray-500 dark:text-gray-400 hover:text-deloitte-green dark:hover:text-green-300"
+                        ? "border-deloitte-green text-deloitte-green dark:text-green-300"
+                        : "border-transparent text-gray-500 dark:text-gray-400 hover:text-deloitte-green dark:hover:text-green-300"
                         }`}
                     >
                       {tab.charAt(0).toUpperCase() + tab.slice(1)}

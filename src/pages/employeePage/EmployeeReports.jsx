@@ -166,7 +166,12 @@ const EmployeeReports = () => {
             className="neo-glass rounded-xl p-6 animate-fade-in"
             style={{ animationDelay: "0.1s" }}
           >
-            <h2 className="text-xl font-medium mb-6">Vibe Trend</h2>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-medium">Vibe Trend</h2>
+              <Tooltips text={"Vibe trend shows the distribution of your vibes over 14 Days. It shows emotional well-being and identifies patterns."} placement="left">
+                <Info className="text-muted-foreground" size={20} />
+              </Tooltips>
+            </div>
 
             {userVibes.length > 0 ? (
               <div className="space-y-6">
@@ -225,8 +230,12 @@ const EmployeeReports = () => {
             className="neo-glass rounded-xl p-6 animate-fade-in"
             style={{ animationDelay: "0.2s" }}
           >
-            <h2 className="text-xl font-medium mb-6">Activity Levels</h2>
-
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-medium">Activity Levels</h2>
+              <Tooltips text={"This section displays your activity levels over the last 30 days, including Team Messages, Emails, and Meetings taken during this period."} placement="left">
+                <Info className="text-muted-foreground" size={20} />
+              </Tooltips>
+            </div>
             {(activityData.length > 0) ? (
               <div className="h-72">
                 <ResponsiveContainer width="100%" height="100%">
@@ -296,7 +305,12 @@ const EmployeeReports = () => {
               className="neo-glass rounded-xl p-6 animate-fade-in "
               style={{ animationDelay: "0.4s" }}
             >
-              <h2 className="text-xl font-medium mb-6">Performance</h2>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-medium">Performance</h2>
+                <Tooltips text={"This section displays the performance rating, review period and Manager Feedback"} placement="left">
+                  <Info className="text-muted-foreground" size={20} />
+                </Tooltips>
+              </div>
 
               {performance.length > 0 ? (<div className="min-h-40 max-h-80 overflow-auto p-3"> {
                 performance.map((review, index) => (
@@ -314,7 +328,12 @@ const EmployeeReports = () => {
               className="neo-glass rounded-xl p-6 animate-fade-in"
               style={{ animationDelay: "0.3s" }}
             >
-              <h2 className="text-xl font-medium mb-6">Leave History</h2>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-medium">Leave History</h2>
+                <Tooltips text={"This section displays the leaves taken in the past year"} placement="left">
+                  <Info className="text-muted-foreground" size={20} />
+                </Tooltips>
+              </div>
 
               {userLeaves.length > 0 ? (
                 <div className="max-h-72 overflow-auto">
@@ -364,7 +383,12 @@ const EmployeeReports = () => {
           </div>
 
           <div className="neo-glass rounded-xl p-6 animate-fade-in" style={{ animationDelay: "0.6s" }}>
-            <h2 className="text-xl font-medium mb-6">Assigned Projects</h2>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-medium">Assigned Projects</h2>
+              <Tooltips text={"This section displays the active projects of the employee"} placement="left">
+                <Info className="text-muted-foreground" size={20} />
+              </Tooltips>
+            </div>
 
             {(stats.projects) ?
               (<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">{Object.values(stats.projects).map((project) => (
