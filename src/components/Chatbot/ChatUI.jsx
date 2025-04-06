@@ -275,7 +275,7 @@ const ChatUI = ({ className = "" }) => {
               <>
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#22C55E] mb-4"></div>
                 <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-3">
-                  Creating new chat...
+                  Analyzing your data...
                 </h3>
                 <p className="max-w-md text-gray-600 dark:text-gray-400">
                   Please wait while we connect you to the assistant.

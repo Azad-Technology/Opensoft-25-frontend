@@ -11,7 +11,7 @@ const ContactSection = () => {
     message: ""
   });
 
-  const handleChange = (employee) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
@@ -40,7 +40,7 @@ const ContactSection = () => {
         
         <div className="contact-grid">
           <div className="animate-fade-right">
-            <div className="contact-info-card glass-card">
+            <div className="contact-info-card glass-card h-[100%]">
               <h3 className="form-heading">Get in Touch</h3>
               
               <div className="contact-methods">
@@ -79,7 +79,7 @@ const ContactSection = () => {
                     <div className="contact-method-icon-container">
                       <MapPin className="contact-method-icon" />
                     </div>
-                    <div className="contact-method-content">
+                    <div className="contact-method-content mb-6">
                       <h4>Visit Us</h4>
                       <p className="contact-method-description">
                         Deloitte Wellness Hub<br />
@@ -94,7 +94,7 @@ const ContactSection = () => {
           </div>
           
           <div className="animate-fade-left">
-            <div className="contact-form-card glass-card">
+            <div className="contact-form-card glass-card p-[1px]">
               <h3 className="form-heading">Send a Message</h3>
               
               <form onSubmit={handleSubmit} className="contact-form">
@@ -109,8 +109,9 @@ const ContactSection = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      className="form-input"
+                      className="form-input h-10"
                       required
+    
                     />
                   </div>
                   
@@ -124,7 +125,7 @@ const ContactSection = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className="form-input"
+                      className="form-input h-10"
                       required
                     />
                   </div>
@@ -140,7 +141,7 @@ const ContactSection = () => {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    className="form-input"
+                    className="form-input h-10"
                     required
                   />
                 </div>
@@ -155,7 +156,7 @@ const ContactSection = () => {
                     value={formData.message}
                     onChange={handleChange}
                     rows={1}
-                    className="form-textarea"
+                    className="form-textarea "
                     required
                   ></textarea>
                 </div>

@@ -536,7 +536,7 @@ export default function Schedule() {
         )}
 
         {/* Calendar header - days of week */}
-        <div className="grid grid-cols-7 border-b border-gray-700">
+        <div className="grid grid-cols-7 border-b border-green-800">
           {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map((day) => (
             <div
               key={day}
@@ -548,7 +548,7 @@ export default function Schedule() {
         </div>
 
         {/* Calendar grid */}
-        <div className="grid grid-cols-7 border-l border-gray-700">
+        <div className="grid grid-cols-7 border-l border-green-800">
           {renderCalendar()}
         </div>
 

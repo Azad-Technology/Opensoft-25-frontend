@@ -209,7 +209,7 @@ const Layout = ({ children }) => {
                     onClick={toggleUserDropdown}
                     aria-label="User menu"
                   >
-                    <div className="hidden md:block text-right">
+                    <div className="hidden md:block text-right px-5">
                       <p className="text-sm font-medium text-gray-700 dark:text-gray-200">
                         {user?.name}
                       </p>
@@ -259,13 +259,6 @@ const Layout = ({ children }) => {
                         >
                           <User size={16} className="mr-2" />
                           View Profile
-                        </Link>
-                        <Link
-                          to="/settings"
-                          className="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-green-50 dark:hover:bg-green-900/30 hover:text-green-700 dark:hover:text-green-400 rounded-md transition-colors"
-                        >
-                          <Settings size={16} className="mr-2" />
-                          Settings
                         </Link>
                       </div>
                       <div className="p-2 border-t border-green-100/50 dark:border-green-900/50">
