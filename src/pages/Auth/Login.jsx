@@ -1,35 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Eye, EyeOff, Lock, Mail, User, ArrowRight, Layers } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
+import React, { useState, useEffect} from "react";
+import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Eye,
+  EyeOff,
+  Lock,
+  Mail,
+  User,
+  ArrowRight,
+  Layers,
+} from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
 import { toast } from "sonner";
+import { ArrowLeft } from "lucide-react";
 
 const SliderContent = [
   {
     icon: Layers,
     title: "Secure Authentication",
-    description: "Advanced security features to protect your account"
+    description: "Advanced security features to protect your account",
   },
   {
     icon: User,
     title: "Easy Access",
-    description: "Simple and intuitive user experience"
+    description: "Simple and intuitive user experience",
   },
   {
     icon: Lock,
     title: "Privacy First",
-    description: "Your data is always protected"
-  }
+    description: "Your data is always protected",
+  },
 ];
 
 const AuthPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
 
   const handleSubmit = async (e) => {
@@ -92,82 +103,89 @@ const AuthPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   return (
-    <div 
+    <div
       className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
-      style={{ 
+      style={{
         background: "#051a12",
       }}
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-[#00a85a]/20 blur-3xl"></div>
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-[#00a85a]/10 blur-3xl"></div>
-        
-        <div className="absolute inset-0 opacity-10" 
+
+        <div
+          className="absolute inset-0 opacity-10"
           style={{
             backgroundImage: `linear-gradient(to right, #00a85a 1px, transparent 1px), 
                               linear-gradient(to bottom, #00a85a 1px, transparent 1px)`,
-            backgroundSize: '40px 40px',
-          }}>
-        </div>
-        
+            backgroundSize: "40px 40px",
+          }}
+        ></div>
+
         {[...Array(15)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-1 h-1 bg-[#00a85a]/40 rounded-full"
-            initial={{ 
-              x: Math.random() * window.innerWidth, 
+            initial={{
+              x: Math.random() * window.innerWidth,
               y: Math.random() * window.innerHeight,
             }}
-            animate={{ 
+            animate={{
               y: [
                 Math.random() * window.innerHeight,
                 Math.random() * window.innerHeight - 100,
-                Math.random() * window.innerHeight
+                Math.random() * window.innerHeight,
               ],
-              opacity: [0.2, 0.5, 0.2]
+              opacity: [0.2, 0.5, 0.2],
             }}
             transition={{
               duration: 10 + Math.random() * 20,
               repeat: Infinity,
               repeatType: "reverse",
-              ease: "easeInOut"
+              ease: "easeInOut",
             }}
           />
         ))}
       </div>
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
         className="w-full max-w-4xl flex shadow-2xl rounded-2xl overflow-hidden bg-black/20 backdrop-blur-sm border border-[#00a85a]/20"
       >
-        <div className="w-1/2 bg-black/30 backdrop-blur-lg p-8 flex flex-col justify-center items-center relative border-r border-[#00a85a]/30">
-          
+        <div className="hidden sm:flex w-1/2 bg-black/30 backdrop-blur-lg p-8 flex-col justify-center items-center relative border-r border-[#00a85a]/30 sm: display-none">
+          <span className="text-white absolute left-0 top-0 text-4xl mx-2 my-2 px-2 py-2 cursor-pointer hover:bg-[#00a85a]/30 rounded-full transition-colors duration-300" onClick={() => navigate('/')}>
+            <ArrowLeft />
+          </span>
           <AnimatePresence mode="wait">
-            {SliderContent.map((slide, index) => (
-              index === currentSlide && (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -50 }}
-                  transition={{ duration: 0.5 }}
-                  className="text-white text-center absolute"
-                >
-                  <slide.icon className="mx-auto mb-4 text-[#00a85a]" size={60} />
-                  <h3 className="text-2xl font-bold mb-4">{slide.title}</h3>
-                  <p className="text-white/80">{slide.description}</p>
-                </motion.div>
-              )
-            ))}
+            {SliderContent.map(
+              (slide, index) =>
+                index === currentSlide && (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -50 }}
+                    transition={{ duration: 0.5 }}
+                    className="text-white text-center absolute"
+                  >
+                    <slide.icon
+                      className="mx-auto mb-4 text-[#00a85a]"
+                      size={60}
+                    />
+                    <h3 className="text-2xl font-bold mb-4">{slide.title}</h3>
+                    <p className="text-white/80">{slide.description}</p>
+                  </motion.div>
+                ),
+            )}
           </AnimatePresence>
 
           <div className="absolute bottom-4 flex space-x-2">
@@ -176,24 +194,27 @@ const AuthPage = () => {
                 key={index}
                 onClick={() => setCurrentSlide(index)}
                 className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                  index === currentSlide ? 'bg-[#00a85a]' : 'bg-white/50'
+                  index === currentSlide ? "bg-[#00a85a]" : "bg-white/50"
                 }`}
               />
             ))}
           </div>
         </div>
 
-        <div className="w-1/2 bg-black/10 backdrop-blur-lg p-12 relative text-white">
+        <div className="flex-1 sm:flex-none w-1/2 bg-black/10 backdrop-blur-lg p-12 relative text-white ">
+        <span className="sm:hidden text-white absolute left-0 top-0 text-4xl mx-2 my-2 px-2 py-2 cursor-pointer hover:bg-[#00a85a]/30 rounded-full transition-colors duration-300" onClick={() => navigate('/')}>
+            <ArrowLeft />
+          </span>
           <div className="absolute top-0 right-0 w-20 h-20">
             <div className="absolute top-6 right-6 w-2 h-2 bg-[#00a85a] rounded-full"></div>
             <div className="absolute top-12 right-12 w-1 h-1 bg-[#00a85a] rounded-full"></div>
           </div>
-          
-          <motion.form 
+
+          <motion.form
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3 }}
-            onSubmit={handleSubmit} 
+            onSubmit={handleSubmit}
             className="space-y-6"
           >
             <h2 className="text-3xl font-bold text-center text-[#00a85a] mb-8">
@@ -201,7 +222,10 @@ const AuthPage = () => {
             </h2>
 
             <div className="relative">
-              <Mail className="absolute left-0 top-1/2 -translate-y-1/2 text-[#00a85a] opacity-70" size={18} />
+              <Mail
+                className="absolute left-0 top-1/2 -translate-y-1/2 text-[#00a85a] opacity-70"
+                size={18}
+              />
               <input
                 type="email"
                 name="email"
@@ -214,7 +238,10 @@ const AuthPage = () => {
             </div>
 
             <div className="relative">
-              <Lock className="absolute left-0 top-1/2 -translate-y-1/2 text-[#00a85a] opacity-70" size={18} />
+              <Lock
+                className="absolute left-0 top-1/2 -translate-y-1/2 text-[#00a85a] opacity-70"
+                size={18}
+              />
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
@@ -233,11 +260,14 @@ const AuthPage = () => {
               </button>
             </div>
 
-            <div className="flex justify-end">
-              <button type="button" className="text-sm text-[#00a85a] hover:text-[#00c86b] hover:underline transition-colors duration-300">
+            {/* <div className="flex justify-end">
+              <button
+                type="button"
+                className="text-sm text-[#00a85a] hover:text-[#00c86b] hover:underline transition-colors duration-300"
+              >
                 Forgot Password?
               </button>
-            </div>
+            </div> */}
 
             <motion.button
               type="submit"

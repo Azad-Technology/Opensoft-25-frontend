@@ -272,6 +272,17 @@ function EmployeeOnboarding() {
     }));
   };
 
+  const handleCancel = () => {
+    setFormData({
+      name: "",
+      role: "",
+      employeeId: "",
+      email: "",
+      password: "",
+    });
+    setUserType("employee"); 
+    setIsSubmitting(false);
+  }
   return (
     <Layout>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
@@ -423,7 +434,9 @@ function EmployeeOnboarding() {
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: 0.1 }}
                             >
-                              <Label htmlFor="name">Full Name</Label>
+                              <Label htmlFor="name">
+                              Full Name <span className="text-red-500">*</span>
+                              </Label>
                               <Input
                                 id="name"
                                 placeholder="John Doe"
@@ -440,7 +453,7 @@ function EmployeeOnboarding() {
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: 0.2 }}
                             >
-                              <Label htmlFor="role">Role</Label>
+                              <Label htmlFor="role">Role <span className="text-red-500">*</span></Label>
                               <Input
                                 id="role"
                                 placeholder={userType === "hr" ? "HR Manager" : "Software Engineer"}
@@ -470,7 +483,7 @@ function EmployeeOnboarding() {
                           transition={{ delay: 0.3 }}
                         >
                           <div className="flex justify-between">
-                            <Label htmlFor="employeeId">{userType === "hr" ? "HR ID" : "Employee ID"}</Label>
+                            <Label htmlFor="employeeId">{userType === "hr" ? "HR ID" : "Employee ID"} Role <span className="text-red-500">*</span></Label>
                             <span className="text-xs text-green-600 dark:text-green-400">Auto-generated</span>
                           </div>
                           <div className="flex gap-2">
@@ -501,7 +514,7 @@ function EmployeeOnboarding() {
                           transition={{ delay: 0.4 }}
                         >
                           <div className="flex justify-between">
-                            <Label htmlFor="email">Email Address</Label>
+                            <Label htmlFor="email">Email Address Role <span className="text-red-500">*</span></Label>
                             <span className="text-xs text-green-600 dark:text-green-400">Based on name</span>
                           </div>
                           <Input
@@ -522,7 +535,7 @@ function EmployeeOnboarding() {
                           transition={{ delay: 0.5 }}
                         >
                           <div className="flex justify-between">
-                            <Label htmlFor="password">Initial Password</Label>
+                            <Label htmlFor="password">Initial Password Role <span className="text-red-500">*</span></Label>
                             <span className="text-xs text-green-600 dark:text-green-400">Auto-generated</span>
                           </div>
                           <div className="flex gap-2">
@@ -558,6 +571,7 @@ function EmployeeOnboarding() {
                       variant="outline"
                       type="button"
                       className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                      onClick={handleCancel}
                     >
                       Cancel
                     </Button>

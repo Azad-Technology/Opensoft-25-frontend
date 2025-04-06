@@ -15,9 +15,12 @@ import {
 } from "../../hooks/useChatMessage";
 import { useAuth } from "../../contexts/AuthContext";
 import ReactMarkdown from "react-markdown";
+import { useQueryClient } from "@tanstack/react-query";
 
 const ChatUI = ({ className = "" }) => {
   const { token } = useAuth();
+  // Add at the top of your component
+  const queryClient = useQueryClient(); // Import useQueryClient from react-query
 
   const [sessionId, setSessionId] = useState(null);
   const [isTyping, setIsTyping] = useState(false);
@@ -33,6 +36,15 @@ const ChatUI = ({ className = "" }) => {
     token,
     onSessionCreated: (newId) => setSessionId(newId),
   });
+
+  const handleSessionSelect = (session) => {
+    setSessionId(session.session_id);
+    setShowSidebar(true);
+    // Pre-populate history cache if not already present
+    if (!sessionHistory.length) {
+      queryClient.setQueryData(["chatHistory", session.session_id], []);
+    }
+  };
 
   const messageEndRef = useRef(null);
   useEffect(() => {
@@ -74,7 +86,7 @@ const ChatUI = ({ className = "" }) => {
       {
         onSuccess: () => {
           setNewMessage("");
-          setTimeout(() => setIsTyping(false), 1000);
+          setIsTyping(false);
         },
         onError: () => {
           setIsTyping(false);
@@ -120,9 +132,8 @@ const ChatUI = ({ className = "" }) => {
 
       {/* SIDEBAR */}
       <div
-        className={`${
-          showSidebar ? "w-72" : "w-0"
-        } md:flex h-full border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-y-auto transition-all duration-300 ease-in-out shadow-lg md:shadow-none`}
+        className={`${showSidebar ? "w-72" : "w-0"
+          } md:flex h-full border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-y-auto transition-all duration-300 ease-in-out shadow-lg md:shadow-none`}
       >
         <div className="p-4 space-y-6 w-72">
           <div className="flex items-center justify-between mb-2">
@@ -140,7 +151,10 @@ const ChatUI = ({ className = "" }) => {
             </button>
           </div>
           <button
-            onClick={handleNewChat}
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent event from bubbling up
+              handleNewChat();
+            }}
             className="w-full px-4 py-3 bg-[#22C55E] hover:bg-[#1EA34F] text-white font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
           >
             <MessageSquare size={18} />
@@ -166,15 +180,11 @@ const ChatUI = ({ className = "" }) => {
                 {conversations.map((session) => (
                   <button
                     key={session.session_id}
-                    onClick={() => {
-                      setSessionId(session.session_id);
-                      setShowSidebar(true);
-                    }}
-                    className={`w-full text-left p-3 rounded-lg transition-all duration-200 ${
-                      sessionId === session.session_id
-                        ? "bg-[#DCFCE7] dark:bg-[#0F4021] text-gray-900 dark:text-gray-100"
-                        : "hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-                    }`}
+                    onClick={() => handleSessionSelect(session)}
+                    className={`w-full text-left p-3 rounded-lg transition-all duration-200 ${sessionId === session.session_id
+                      ? "bg-[#DCFCE7] dark:bg-[#0F4021] text-gray-900 dark:text-gray-100"
+                      : "hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                      }`}
                   >
                     <div className="font-medium text-sm truncate flex items-center gap-2">
                       <MessageSquare
@@ -185,7 +195,7 @@ const ChatUI = ({ className = "" }) => {
                             : "text-gray-400"
                         }
                       />
-                      {`Session ${session.session_id.substring(0, 8)}...`}
+                      {session.chat_name || `Session ${session.session_id.substring(0, 8)}...`}
                     </div>
                     <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                       {new Date(session.timestamp).toLocaleDateString()}
@@ -234,7 +244,9 @@ const ChatUI = ({ className = "" }) => {
             </button>
             <div>
               <h2 className="font-semibold text-gray-800 dark:text-gray-200">
-                {sessionId ? "Active Conversation" : "Chat Interface"}
+                {sessionId
+                  ? (conversations.find(s => s.session_id === sessionId)?.chat_name || "Active Conversation")
+                  : "Chat Interface"}
               </h2>
               <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
                 {sessionId
@@ -275,7 +287,7 @@ const ChatUI = ({ className = "" }) => {
               <>
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#22C55E] mb-4"></div>
                 <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-3">
-                  Analyzing your data...
+                  Analyzing your Profile...
                 </h3>
                 <p className="max-w-md text-gray-600 dark:text-gray-400">
                   Please wait while we connect you to the assistant.
@@ -333,11 +345,10 @@ const ChatUI = ({ className = "" }) => {
                       </div>
                     )}
                     <div
-                      className={`max-w-[80%] rounded-lg p-3 ${
-                        m.role === "user"
-                          ? "bg-[#22C55E] text-white shadow-md rounded-tr-none"
-                          : "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 shadow-sm rounded-tl-none border border-gray-100 dark:border-gray-700"
-                      }`}
+                      className={`max-w-[80%] rounded-lg p-3 ${m.role === "user"
+                        ? "bg-[#22C55E] text-white shadow-md rounded-tr-none"
+                        : "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 shadow-sm rounded-tl-none border border-gray-100 dark:border-gray-700"
+                        }`}
                     >
                       <div className="text-sm prose prose-sm dark:prose-invert max-w-none break-words">
                         <ReactMarkdown
@@ -369,9 +380,8 @@ const ChatUI = ({ className = "" }) => {
                         </ReactMarkdown>
                       </div>
                       <div
-                        className={`text-right mt-1 ${
-                          m.role === "user" ? "text-green-100" : "text-gray-400"
-                        }`}
+                        className={`text-right mt-1 ${m.role === "user" ? "text-green-100" : "text-gray-400"
+                          }`}
                       >
                         <span className="text-xs font-light">
                           {formatTime(m.timestamp)}
@@ -418,11 +428,10 @@ const ChatUI = ({ className = "" }) => {
                 <button
                   onClick={handleSendMessage}
                   disabled={!newMessage.trim()}
-                  className={`p-3 rounded-full ${
-                    newMessage.trim()
-                      ? "bg-[#22C55E] text-white hover:bg-[#1EA34F] shadow-md"
-                      : "bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500"
-                  } transition-all duration-200`}
+                  className={`p-3 rounded-full ${newMessage.trim()
+                    ? "bg-[#22C55E] text-white hover:bg-[#1EA34F] shadow-md"
+                    : "bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500"
+                    } transition-all duration-200`}
                   title="Send message"
                 >
                   <Send size={20} />
@@ -432,6 +441,14 @@ const ChatUI = ({ className = "" }) => {
           </>
         )}
       </div>
+      {/* <div className="md:hidden fixed bottom-36 right-4 z-30">
+        <button
+          onClick={handleNewChat}
+          className="p-4 rounded-full bg-[#22C55E] text-white shadow-lg"
+        >
+          <MessageSquare size={24} />
+        </button>
+      </div> */}
     </div>
   );
 };

@@ -33,12 +33,14 @@ import {
 } from "lucide-react";
 import { useUserData } from "../../contexts/UserContext";
 import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 import { div } from "framer-motion/client";
 
 function Profile() {
   const [activeTab, setActiveTab] = useState("basic");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { profileData, fetchProfileData } = useUserData();
+  const navigate = useNavigate();
   const { token } = useAuth()
 
   useEffect(() => {
@@ -52,9 +54,6 @@ function Profile() {
     visible: { opacity: 1, y: 0 },
   };
 
-  const handleDownload = (docName) => {
-    alert(`Downloading ${docName}...`);
-  };
 
   const handleLeaveRequest = () => {
     alert("Opening leave request form...");
@@ -369,12 +368,13 @@ function Profile() {
                         </p>
                       </div>
                     </div>
-                    <button
-                      onClick={() => handleDownload(doc.name)}
-                      className="px-3 py-1 text-sm border border-deloitte-green text-deloitte-green dark:text-green-300 rounded-lg hover:bg-deloitte-green/10 dark:hover:bg-deloitte-green/20 transition-colors"
+                    <a
+                      href={`${doc.url}`}
+                      target="_blank"
+                      className=" text-none px-3 py-1 text-sm border border-deloitte-green text-deloitte-green dark:text-green-300 rounded-lg hover:bg-deloitte-green/10 dark:hover:bg-deloitte-green/20 transition-colors"
                     >
                       Download
-                    </button>
+                    </a>
                   </div>
                 ))}
               </div>
@@ -421,7 +421,7 @@ function Profile() {
                     transition={{ delay: 0.1 }}
                     className="text-deloitte-darkGray dark:text-gray-300 transition-colors "
                   >
-                    {profileData?.jobTitle}
+                    {profileData?.jobTitle === "hr" ? "Hiring Manager" : "Employee"}
                   </motion.p>
                   <motion.p
                     initial={{ y: -10, opacity: 0 }}
