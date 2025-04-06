@@ -10,6 +10,8 @@ import { queryClient } from "./services/react-query-client";
 // Pages
 import Login from "./pages/Auth/Login";
 import Signup from "./pages/Auth/Signup";
+import BlogPage from "./pages/blogPage/BlogPage";
+import BlogDetail from "./pages/blogPage/BlogDetail"
 import EmployeeDashboard from "./pages/employeePage/EmployeeDashboard";
 import EmployeeChat from "./pages/employeePage/EmployeeChat";
 import EmployeeReports from "./pages/employeePage/EmployeeReports";
@@ -78,6 +80,8 @@ const App = () => (
               <Routes>
                 {/* Public routes */}
                 <Route path="/login" element={<Login />} />
+                <Route path="/blog" element={<BlogPage />} />
+                <Route path="/blog/:blogId" element={<BlogDetail />} />
                 {/* <Route path="/signup" element={<Signup />} /> */}
                 <Route path="/" element={<Home />} />
 

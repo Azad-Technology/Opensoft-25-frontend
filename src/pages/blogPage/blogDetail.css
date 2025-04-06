@@ -1,0 +1,96 @@
+:root {
+  --accent-green: #10b981;
+  --text-primary: black;
+  --text-secondary: #94a3b8;
+  --border-color: #334155;
+}
+
+a {
+  color: var(--accent-green);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.blog-article {
+  margin: 0 auto;
+  padding-bottom: 14px;
+  padding-top: 60px;
+}
+
+.blog-article h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+  color: var(--accent-green);
+}
+
+.blog-article h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.blog-article h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+.blog-article p {
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+}
+
+.blog-article ul,
+.blog-article ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.blog-article li {
+  margin-bottom: 0.5rem;
+}
+
+.key-takeaways {
+  background-color: rgba(16, 185, 129, 0.1);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.key-takeaways h3 {
+  color: var(--accent-green);
+  margin-top: 0;
+}
+
+.reflection-questions,
+.action-steps,
+.resources {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+.reflection-questions h3,
+.action-steps h3,
+.resources h3 {
+  color: var(--accent-green);
+  margin-top: 0;
+}
+
+.resource-description {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}

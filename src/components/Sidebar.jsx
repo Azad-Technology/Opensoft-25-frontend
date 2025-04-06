@@ -17,6 +17,7 @@ import {
   AlertCircle,
   Handshake,
 } from "lucide-react";
+import { label } from "framer-motion/client";
 
 const Sidebar = ({ expanded, onToggle }) => {
   const { user } = useAuth();
@@ -62,6 +63,11 @@ const Sidebar = ({ expanded, onToggle }) => {
       label: "Inquiries",
       icon: <AlertCircle size={20} />,
     },
+    {
+      path: "/blog",
+      label: "Blogs",
+      icon: <FileText size={20} />,
+    },
   ];
 
   const employeeNavItems = [
@@ -90,6 +96,11 @@ const Sidebar = ({ expanded, onToggle }) => {
       label: "Help & Support",
       icon: <HelpCircle size={20} />,
     },
+    {
+      path: "/blog",
+      label: "Blogs",
+      icon: <FileText size={20} />,
+    },   
   ];
 
   const navItems = user?.role_type === "hr" ? adminNavItems : employeeNavItems;
