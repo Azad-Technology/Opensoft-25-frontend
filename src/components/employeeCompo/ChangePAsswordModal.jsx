@@ -46,7 +46,7 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
     }
     
     try {
-      const response = await fetch(`${BASE_URL}/employee/reset_password`, {
+      const response = await fetch(`${BASE_URL}/common/reset_password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
