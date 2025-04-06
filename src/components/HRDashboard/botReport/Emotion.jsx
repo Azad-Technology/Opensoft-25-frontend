@@ -1,6 +1,5 @@
 
-
-import React from "react";
+import React, { useRef } from "react";
 import {
   RadarChart,
   Radar,
@@ -10,9 +9,62 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
+import FileSaver from 'file-saver';
 
 const Emotion = ({ result }) => {
   const dataToAnalyze = result?.chat_analysis?.wellbeing_analysis?.component_breakdown || {};
+  const chartRef = useRef(null)
+
+  const rechartToSvg = async (chartRef) => {
+    try {
+      // Get the chart container element
+      const chartContainer = chartRef.current;
+
+      if (!chartContainer) {
+        throw new Error("Chart reference is not available");
+      }
+
+      // Find the SVG element within the Recharts component
+      const chartSvg = chartContainer.querySelector('svg');
+
+      if (!chartSvg) {
+        throw new Error("SVG element not found in the chart");
+      }
+
+      // Clone the SVG to avoid modifying the original
+      const svgClone = chartSvg.cloneNode(true);
+
+      // Serialize the SVG to a string
+      const serializer = new XMLSerializer();
+      const svgString = serializer.serializeToString(svgClone);
+
+      // Create a Blob from the SVG string
+      const svgBlob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
+
+      // Create a URL for the Blob
+      const svgUrl = URL.createObjectURL(svgBlob);
+
+      return {
+        svgElement: svgClone,
+        svgString: svgString,
+        svgBlob: svgBlob,
+        svgUrl: svgUrl
+      };
+    } catch (error) {
+      console.error("Error converting Recharts to SVG:", error);
+      return null;
+    }
+  };
+
+  const handleSvgExport = async () => {
+    const svgData = await rechartToSvg(chartRef);
+
+    if (svgData) {
+      // Download the SVG file
+      FileSaver.saveAs(svgData.svgBlob, "chart.svg");
+    }
+  };
+
 
   const getMainWord = (word) => {
     if (!word) return "Unknown";
@@ -61,11 +113,14 @@ const Emotion = ({ result }) => {
 
           {wellbeingData.length > 0 ? (
             <>
-              <div className="h-96 w-full flex items-center justify-center">
+              <div className="h-96 w-full flex items-center justify-center" ref={chartRef}>
                 <ResponsiveContainer width="100%" height="100%">
                   <RadarChart cx="50%" cy="50%" outerRadius="85%" data={wellbeingData}>
                     <PolarGrid stroke="#03C03C" />
-                    <PolarAngleAxis dataKey="dimension" stroke="#03C03C" tick={{ fontSize: 15}} />
+                    <PolarAngleAxis
+                      dataKey="dimension"
+                      tick={{ fontSize: 12, fill: "#03C03C" }}
+                    />
                     <PolarRadiusAxis
                       angle={90}
                       domain={[0, 30]}

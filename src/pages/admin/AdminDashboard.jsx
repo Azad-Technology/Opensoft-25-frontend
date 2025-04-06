@@ -118,12 +118,39 @@ const AdminDashboard = () => {
     fetchDashboardData();
   }, [token, BASE_URL]);
 
-  if (loading || !user || !data) {
+  if (loading) {
     return (
       <Layout>
-        <div className="flex items-center justify-center h-80">
-          <div className="text-gray-600 dark:text-white">
-            {loading ? "Loading..." : "User not found or data unavailable. Please log in."}
+        <div className="flex flex-col items-center justify-center h-screen w-full">
+          <div className="flex flex-col items-center justify-center">
+            <div className="relative h-20 w-20">
+              {/* Pulse animation around the spinner */}
+              <span className="absolute inset-0 rounded-full animate-ping opacity-20 bg-emerald-500"></span>
+
+              {/* Main spinner with nice transition effect */}
+              <svg className="absolute inset-0 animate-spin" viewBox="0 0 50 50">
+                <circle
+                  cx="25"
+                  cy="25"
+                  r="20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  className="text-emerald-500"
+                  strokeDasharray="80"
+                  strokeDashoffset="60"
+                />
+              </svg>
+            </div>
+
+            {/* Text with subtle fade-in animation */}
+            <div className="mt-6 text-xl font-medium text-gray-800 dark:text-gray-100 animate-fadeIn">
+              Loading
+            </div>
+            <div className="text-sm text-gray-500 dark:text-gray-400 animate-pulse">
+              Just a moment
+            </div>
           </div>
         </div>
       </Layout>
