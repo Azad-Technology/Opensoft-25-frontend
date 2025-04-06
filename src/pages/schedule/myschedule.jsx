@@ -17,7 +17,7 @@ import { useData } from "../../contexts/DataContext";
 import Layout from "../../components/employeeCompo/Layout";
 import { cn } from "../../lib/utils";
 import { useTheme } from "../../contexts/ThemeContext";
-import {toast} from "sonner"
+import { toast } from "sonner"
 
 export default function Schedule() {
   const { user, token } = useAuth();
@@ -41,6 +41,18 @@ export default function Schedule() {
 
   // State for delete button visibility on events
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [isVisible, setIsVisible] = useState(!!apiError);
+
+  useEffect(() => {
+    if (apiError) {
+      setIsVisible(true);
+      const timer = setTimeout(() => {
+        setIsVisible(false);
+      }, 5000); // Disappear after 5 seconds
+
+      return () => clearTimeout(timer); // Cleanup timeout on component unmount or re-render
+    }
+  }, [apiError]);
 
   // Improved token retrieval
   const getToken = () => {
@@ -65,19 +77,19 @@ export default function Schedule() {
 
   async function fetchSchedules() {
     if (!currentDate) return; // Don't fetch if no date is selected
-    
+
     const token = getToken();
     if (!token) {
       return;
     }
-    
+
     setLoading(true);
     setApiError(null);
     console.log(currentDate.getMonth())
     try {
       const formattedDate = formatDateForApi(currentDate);
       const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_URL}/common/get_schedules?date=${currentDate.getFullYear()}-${currentDate.getMonth()+1<=9?"0":""}${currentDate.getMonth()+1}-01`,
+        `${import.meta.env.VITE_REACT_APP_URL}/common/get_schedules?date=${currentDate.getFullYear()}-${currentDate.getMonth() + 1 <= 9 ? "0" : ""}${currentDate.getMonth() + 1}-01`,
         {
           method: "GET",
           headers: {
@@ -86,13 +98,13 @@ export default function Schedule() {
           }
         }
       );
-      
+
       if (!response.ok) {
         throw new Error(`Failed to fetch schedules: ${response.status} ${response.statusText}`);
       }
-      
+
       const data = await response.json();
-      
+
       // Check if data has the expected structure
       if (!data || !Array.isArray(data.schedules)) {
         console.warn("API returned unexpected data structure:", data);
@@ -113,7 +125,7 @@ export default function Schedule() {
   const deleteEvent = async (id) => {
     console.log(id)
     if (!id) return;
-    
+
     const token = getToken();
     console.log(token)
     if (!token) return;
@@ -126,19 +138,19 @@ export default function Schedule() {
           "Authorization": `Bearer ${token}`
         }
       });
-      
+
       if (!response.ok) {
         throw new Error(`Failed to delete schedule: ${response.status} ${response.statusText}`);
       }
-      
+
       // Remove from local state
       setEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
-      
+
       // Clear delete button visibility if the deleted event was active
       if (selectedEvent && selectedEvent.id === id) {
         setSelectedEvent(null);
       }
-      
+
       // Show success message
       toast.success("Event deleted successfully");
       fetchSchedules();
@@ -212,7 +224,7 @@ export default function Schedule() {
       toast.warning("Please enter an event title");
       return;
     }
-    
+
     setIsAddingEvent(true);
     await addSchedule();
     setNewEvent({ title: "", note: "" });
@@ -223,10 +235,10 @@ export default function Schedule() {
   async function addSchedule() {
     const token = getToken();
     if (!token) return;
-    
+
     try {
       const formattedDate = formatDateForApi(selectedDay);
-      
+
       const response = await fetch(`${import.meta.env.VITE_REACT_APP_URL}/common/add_schedule`, {
         method: 'POST',
         headers: {
@@ -234,7 +246,7 @@ export default function Schedule() {
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          "date": `${selectedDay.getFullYear()}-${selectedDay.getMonth()+1<=9?"0":""}${selectedDay.getMonth()+1}-${selectedDay.getDate()<=9 ?"0":""}${selectedDay.getDate()}`,
+          "date": `${selectedDay.getFullYear()}-${selectedDay.getMonth() + 1 <= 9 ? "0" : ""}${selectedDay.getMonth() + 1}-${selectedDay.getDate() <= 9 ? "0" : ""}${selectedDay.getDate()}`,
           "title": newEvent.title,
           "note": newEvent.note || "" // Ensure note is never undefined
         })
@@ -248,7 +260,7 @@ export default function Schedule() {
       const result = await response.json();
       console.log('Schedule added successfully:', result);
       toast.success('Schedule added successfully')
-      
+
       // Refresh the events after adding a new one
       await fetchSchedules();
     } catch (error) {
@@ -260,10 +272,10 @@ export default function Schedule() {
   // Get events for a specific day - FIXED FUNCTION
   const getEventsForDay = (day, month, year) => {
     if (!events || !Array.isArray(events)) return [];
-    
+
     return events.filter((event) => {
       if (!event.date) return false;
-      
+
       const eventDate = new Date(event.date);
       return (
         eventDate.getDate() === day &&
@@ -409,41 +421,26 @@ export default function Schedule() {
         <div
           key={`day-${index}`}
           className={cn(
-            "min-h-[100px] relative border-t-0 border-l-0 border-r border-b border-green-900 transition-colors",
+            "min-h-[100px] relative border-t-0 border-l-0 border-r border-b border-gray-500/70 transition-colors",
             isDarkMode
               ? "bg-[#111827] hover:bg-[#1a2435]"
               : "bg-white hover:bg-gray-50",
             isOtherMonth && (isDarkMode ? "text-gray-600" : "text-gray-400"),
             !isOtherMonth && (isDarkMode ? "text-white" : "text-black"),
           )}
+          onClick={(e) => handleAddEventClick(day, e)}
         >
           {/* Day number and add button */}
-          <div className="p-1 flex justify-between items-center">
+          <div className="p-1 flex justify-center items-center">
             <span
               className={cn(
                 "inline-block w-7 h-7 text-center leading-7",
-                isTodayCell && "rounded-full bg-blue-600 text-white",
+                isTodayCell && "rounded-full bg-green-500 text-white",
                 isOtherMonth && "text-gray-500",
               )}
             >
               {isOtherMonth ? `${displayMonth} ${day}` : day}
             </span>
-
-              {/* Add schedule button */}
-              {!isOtherMonth && (
-              <button
-                id="plusButton"
-                onClick={(e) => handleAddEventClick(day, e)}
-                className={cn(
-                  "w-6 h-6 rounded-full flex items-center justify-center text-white transition-colors",
-                  isDarkMode
-                    ? "bg-gray-700 hover:bg-green-600"
-                    : "bg-gray-400 hover:bg-green-700",
-                )}
-              >
-                <Plus className="h-4 w-4" />
-              </button>
-              )}
           </div>
 
           {/* Events */}
@@ -479,7 +476,7 @@ export default function Schedule() {
       </Layout>
     );
   }
-  
+
   return (
     <Layout>
       <div
@@ -516,11 +513,11 @@ export default function Schedule() {
         </div>
 
         {/* API Error Banner */}
-        {apiError && (
+        {isVisible && apiError && (
           <div className="bg-red-500 text-white p-2 text-center">
             {apiError}
-            <button 
-              onClick={() => fetchSchedules()} 
+            <button
+              onClick={() => fetchSchedules()}
               className="ml-2 underline"
             >
               Retry
@@ -536,7 +533,7 @@ export default function Schedule() {
         )}
 
         {/* Calendar header - days of week */}
-        <div className="grid grid-cols-7 border-b border-green-800">
+        <div className="grid grid-cols-7 border-b-2 border-gray-500/70">
           {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map((day) => (
             <div
               key={day}
@@ -548,23 +545,20 @@ export default function Schedule() {
         </div>
 
         {/* Calendar grid */}
-        <div className="grid grid-cols-7 border-l border-green-800">
+        <div className="grid grid-cols-7 border-l-2 border-gray-500/70 ">
           {renderCalendar()}
         </div>
 
         {/* Custom dialog for adding new events */}
         {isDialogOpen && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div
               className={cn(
-                "rounded-lg p-6 w-full max-w-md",
-                isDarkMode
-                  ? "bg-gray-800 text-white"
-                  : "bg-white text-gray-900",
+                "rounded-xl shadow-2xl w-full max-w-md transition-all duration-200 ease-in-out transform neo-glass",             
               )}
             >
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-medium">
+              <div className="flex justify-between items-center p-5 m-3 border-b border-opacity-20 border-current">
+                <h3 className="text-lg font-semibold">
                   Add Event for{" "}
                   {selectedDay?.toLocaleDateString("en-US", {
                     month: "long",
@@ -574,12 +568,19 @@ export default function Schedule() {
                 </h3>
                 <button
                   onClick={() => setIsDialogOpen(false)}
-                  className="p-1 rounded-full hover:bg-gray-700"
+                  className={cn(
+                    "rounded-full p-2 transition-colors",
+                    isDarkMode
+                      ? "hover:bg-gray-800"
+                      : "hover:bg-gray-100"
+                  )}
+                  aria-label="Close dialog"
                 >
                   <X className="h-5 w-5" />
                 </button>
               </div>
-              <div className="space-y-4">
+
+              <div className="p-5 space-y-5">
                 <div className="space-y-2">
                   <label htmlFor="title" className="block text-sm font-medium">
                     Event Title
@@ -592,13 +593,14 @@ export default function Schedule() {
                       setNewEvent({ ...newEvent, title: e.target.value })
                     }
                     className={cn(
-                      "w-full p-2 border rounded-lg",
+                      "w-full p-3 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none transition-all",
                       isDarkMode
-                        ? "bg-gray-700 text-white border-gray-600"
-                        : "bg-white text-black border-gray-300",
+                        ? "bg-gray-800 border-gray-700 text-white"
+                        : "bg-gray-50 border-gray-200 text-gray-900"
                     )}
                   />
                 </div>
+
                 <div className="space-y-2">
                   <label htmlFor="note" className="block text-sm font-medium">
                     Note (Optional)
@@ -612,37 +614,48 @@ export default function Schedule() {
                     }
                     rows={3}
                     className={cn(
-                      "w-full p-2 border rounded-lg",
+                      "w-full p-3 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none resize-none transition-all",
                       isDarkMode
-                        ? "bg-gray-700 text-white border-gray-600"
-                        : "bg-white text-black border-gray-300",
+                        ? "bg-gray-800 border-gray-700 text-white"
+                        : "bg-gray-50 border-gray-200 text-gray-900"
                     )}
                   />
                 </div>
-                <div className="flex justify-end gap-2">
-                  <button
-                    className={cn(
-                      "px-4 py-2 border rounded-lg transition-colors",
-                      isDarkMode
-                        ? "border-gray-600 hover:bg-gray-700"
-                        : "border-gray-300 hover:bg-gray-100",
-                    )}
-                    onClick={() => setIsDialogOpen(false)}
-                    disabled={isAddingEvent}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className={cn(
-                      "px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors",
-                      isAddingEvent && "opacity-70 cursor-not-allowed"
-                    )}
-                    onClick={handleAddEvent}
-                    disabled={isAddingEvent}
-                  >
-                    {isAddingEvent ? "Adding..." : "Add Event"}
-                  </button>
-                </div>
+              </div>
+
+              <div className="p-5 pt-2 flex justify-end gap-3">
+                <button
+                  className={cn(
+                    "px-4 py-2 rounded-lg font-medium transition-all duration-200",
+                    isDarkMode
+                      ? "text-gray-300 hover:bg-gray-800"
+                      : "text-gray-600 hover:bg-gray-100"
+                  )}
+                  onClick={() => setIsDialogOpen(false)}
+                  disabled={isAddingEvent}
+                >
+                  Cancel
+                </button>
+                <button
+                  className={cn(
+                    "px-5 py-2 bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 text-white rounded-lg font-medium shadow-sm hover:bg-green-800 transition-all duration-200",
+                    isAddingEvent ? "opacity-70 cursor-not-allowed" : "hover:shadow-md"
+                  )}
+                  onClick={handleAddEvent}
+                  disabled={isAddingEvent}
+                >
+                  {isAddingEvent ? (
+                    <span className="flex items-center">
+                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Adding...
+                    </span>
+                  ) : (
+                    "Add Event"
+                  )}
+                </button>
               </div>
             </div>
           </div>
