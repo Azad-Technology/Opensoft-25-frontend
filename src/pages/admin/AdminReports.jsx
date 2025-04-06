@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+
+
+import React, { useState, useEffect, useCallback } from "react";
 import Layout from "../../components/employeeCompo/Layout";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
@@ -9,8 +11,10 @@ import {
   ChevronRight,
   ArrowRight,
   AlertCircle,
-  ChevronDown
+  ChevronDown,
+  X
 } from "lucide-react";
+import debounce from "lodash/debounce";
 
 const AdminReports = () => {
   const VITE_REACT_APP_URL = import.meta.env.VITE_REACT_APP_URL;
@@ -58,14 +62,43 @@ const AdminReports = () => {
   };
 
   const getRisk = (riskScore) => {
-    const risks = {
-      1: { name: "Very Low", color: "bg-emerald-500" },
-      2: { name: "Low", color: "bg-green-500" },
-      3: { name: "Moderate", color: "bg-yellow-500" },
-      4: { name: "High", color: "bg-orange-500" },
-      5: { name: "Urgent", color: "bg-red-500" }
-    };
-    return risks[riskScore] || { name: "Unknown", color: "bg-gray-400" };
+    if(riskScore === 1){
+      return "Very Low";
+    }
+    else if(riskScore === 2){
+      return "Low";
+    }
+    else if(riskScore === 3){
+      return "Medium";
+    }
+    else if(riskScore === 4){
+      return "High";
+    }
+    else{
+      return "Urgent";
+    }
+  };
+
+  
+  const debouncedSearch = useCallback(
+    debounce((term) => {
+      setSearchTerm(term);
+    }, 300),
+    []
+  );
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    e.target.value = value;
+    debouncedSearch(value);
+  };
+
+  const clearSearch = () => {
+    setSearchTerm("");
+    const searchInput = document.getElementById("employee-search");
+    if (searchInput) {
+      searchInput.value = "";
+    }
   };
 
   useEffect(() => {
@@ -77,10 +110,10 @@ const AdminReports = () => {
         (employee.department && employee.department.toLowerCase().includes(searchTerm.toLowerCase()));
 
       const matchesVibe =
-        vibeFilter === "all" || (getVibe(employee.current_vibe.score).name === vibeFilter);
+        vibeFilter === "all" || (employee.current_vibe && getVibe(employee.current_vibe.score).name === vibeFilter);
 
       const matchesRisk =
-        riskFilter === "all" || (getRisk(employee.risk_assessment).name === riskFilter);
+        riskFilter === "all" || (getRisk(employee.risk_assessment) === riskFilter);
 
       return matchesSearch && matchesVibe && matchesRisk;
     });
@@ -113,7 +146,6 @@ const AdminReports = () => {
     }
   };
 
-  // Format date function
   const formatDate = (dateString) => {
     if (!dateString) return "Never";
     const date = new Date(dateString);
@@ -133,13 +165,35 @@ const AdminReports = () => {
             View and analyze detailed reports for all employees
           </p>
         </div>
-
         <div
-          className="neo-glass rounded-xl p-6 mb-8 animate-fade-in shadow-sm"
-          style={{ animationDelay: "0.1s" }}
-        >
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+  className="neo-glass rounded-xl p-6 mb-8 animate-fade-in shadow-sm"
+  style={{ animationDelay: "0.1s" }}
+>
+  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
 
+    <div className="relative flex-grow">
+      <div className="relative flex items-center">
+        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+          <Search className="h-4 w-4" />
+        </div>
+        <input
+          id="employee-search"
+          type="text"
+          placeholder="Search by name or employee ID..."
+          className="pl-10 pr-10 py-2 w-full border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 transition-all bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+          onChange={handleSearchChange}
+          defaultValue={searchTerm}
+        />
+        {searchTerm && (
+          <button 
+            onClick={clearSearch}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+    </div>
             <div className="flex flex-wrap gap-3">
               <div className="relative">
                 <select
@@ -168,7 +222,7 @@ const AdminReports = () => {
                   <option value="all">All Risk</option>
                   <option value="Very Low">Very Low</option>
                   <option value="Low">Low</option>
-                  <option value="Moderate">Moderate</option>
+                  <option value="Medium">Medium</option>
                   <option value="High">High</option>
                   <option value="Urgent">Urgent</option>
                 </select>
@@ -243,13 +297,11 @@ const AdminReports = () => {
                           </span>
                         )}
                       </td>
-                      <td className="p-4">
+                      <td className="p-4 whitespace-nowrap">
                         {employee.risk_assessment ? (
-                          <span className={`px-3 py-1 rounded-full text-xs font-medium text-white ${getRisk(employee.risk_assessment).color}`}>
-                            {getRisk(employee.risk_assessment).name}
-                            {employee.risk_assessment >= 4 && (
-                              <AlertCircle className="inline ml-1 h-3 w-3" />
-                            )}
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium text-black dark:text-gray-50
+                          }`}>
+                            {getRisk(employee.risk_assessment)}
                           </span>
                         ) : (
                           <span className="text-xs bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 py-1 px-2 rounded-full">

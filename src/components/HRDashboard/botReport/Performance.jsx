@@ -37,12 +37,24 @@ const PerformanceReports = ({ result }) => {
 
           <div className="flex justify-center space-x-4 mt-2">
             <div className="flex items-center space-x-1">
-              <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-              <span className="text-xs text-gray-600 dark:text-gray-300">Tasks</span>
+              <div className="w-3 h-3 bg-violet-600 rounded-full"></div>
+              <span className="text-xs text-gray-600 dark:text-gray-300">Excited</span>
             </div>
             <div className="flex items-center space-x-1">
               <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              <span className="text-xs text-gray-600 dark:text-gray-300">Productivity</span>
+              <span className="text-xs text-gray-600 dark:text-gray-300">Happy</span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <div className="w-3 h-3 bg-orange-400 rounded-full"></div>
+              <span className="text-xs text-gray-600 dark:text-gray-300">Okay</span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <div className="w-3 h-3 bg-sky-500 rounded-full"></div>
+              <span className="text-xs text-gray-600 dark:text-gray-300">Sad</span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <div className="w-3 h-3 bg-red-400 rounded-full"></div>
+              <span className="text-xs text-gray-600 dark:text-gray-300">Frustrated</span>
             </div>
           </div>
         </div>
@@ -84,7 +96,11 @@ const PerformanceReports = ({ result }) => {
                 <div className="w-5 h-5 bg-blue-500 rounded-full"></div>
                 <span className="text-gray-700 dark:text-gray-300">Working Hours</span>
               </div>
-              <span className="font-bold text-blue-600 dark:text-blue-400">{result?.communication_activity?.weekly_averages?.work_hours} / week</span>
+              <span className="font-bold text-blue-600 dark:text-blue-400">
+            {result?.communication_activity?.weekly_averages?.work_hours
+            ? `${result.communication_activity.weekly_averages.work_hours} / week`
+            : "NA"}
+          </span>
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
               <div

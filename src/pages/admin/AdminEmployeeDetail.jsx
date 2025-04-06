@@ -49,7 +49,6 @@ const AdminEmployeeDetail = () => {
   const [employeePerformance, setEmployeePerformance] = useState(null);
   const [employeeOnboarding, setEmployeeOnboarding] = useState(null);
   const [employeeChatSessions, setEmployeeChatSessions] = useState([]);
-  console.log("token" , token);
   const employeeData = async () => {
     try {
       const response = await fetch(`${VITE_REACT_APP_URL}/admin/${employeeId}/summary` ,
@@ -63,7 +62,6 @@ const AdminEmployeeDetail = () => {
       }
 
       const resultData = await response.json();
-      console.log("result", resultData);
       setResult(resultData);
 
         if (resultData?.employee_info?.employee_id) {
@@ -278,25 +276,6 @@ const AdminEmployeeDetail = () => {
                 )}
               </div>
 
-               {/* <div className="space-y-2">
-                <div className="text-sm text-muted-foreground">
-                  Activity Level
-                </div>
-                <div>
-                  <span
-                    className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
-                      activityLevel === "high"
-                        ? "bg-yellow-100 text-yellow-800"
-                        : activityLevel === "low"
-                          ? "bg-red-100 text-red-800"
-                          : "bg-green-100 text-green-800"
-                    }`}
-                  >
-                    {activityLevel.charAt(0).toUpperCase() +
-                      activityLevel.slice(1)}
-                  </span>
-                </div>
-              </div> */}
 
               <div className="space-y-2">
                 <div className="text-sm text-muted-foreground">
