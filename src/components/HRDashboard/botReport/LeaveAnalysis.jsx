@@ -11,48 +11,61 @@ import {
 } from "recharts";
 
 const BotReports = ({ result }) => {
-  const [viewLeaveModal , setViewLeaveModal] = useState(false);
-  // const [selectedEmployee, setSelectedEmployee] = useState("John Doe");
-  // const leaveData = [
-  //   { month: "Jan", sickLeave: 1, personalLeave: 0, vacation: 0 },
-  //   { month: "Feb", sickLeave: 0, personalLeave: 1, vacation: 0 },
-  //   { month: "Mar", sickLeave: 2, personalLeave: 0, vacation: 1 },
-  // ];
-  // const leaveReasons = [
-  //   { reason: "Medical appointment", days: 2 },
-  //   { reason: "Family emergency", days: 1 },
-  //   { reason: "Illness", days: 1 },
-  // ];
 
-  // "leaves": {
-  //       "sick": 0,
-  //       "casual": 0,
-  //       "annual": 0,
-  //       "unpaid": 0,
-  //       "other": 0,
-  //       "per_month": {}
-  //   },
+  // const leaveReasons = [];
+  // const leaveData = [];
+  // Object.entries(result?.leaves_analysis?.monthly_breakdown).forEach(([key , value]) => {
+  //   if(key !== 'per_month'){
+  //     leaveReasons.push({
+  //       reason:key,
+  //       days:result.leaves[key]
+  //     })
+  //   }
+  //   else{
+  //     Object.entries(value).forEach(([month, leaveTypes]) => {
+  //       leaveData.push({
+  //         month,
+  //         sickLeave: leaveTypes.sick || 0,
+  //         personalLeave: leaveTypes.casual || 0,
+  //         vacation: leaveTypes.annual || 0
+  //       });
+  //     });
+  //   }
+  // })
 
-  const leaveReasons = [];
-  const leaveData = [];
-  Object.entries(result?.leaves).forEach(([key , value]) => {
-    if(key !== 'per_month'){
-      leaveReasons.push({
-        reason:key,
-        days:result.leaves[key]
-      })
-    }
-    else{
-      Object.entries(value).forEach(([month, leaveTypes]) => {
-        leaveData.push({
-          month,
-          sickLeave: leaveTypes.sick || 0,
-          personalLeave: leaveTypes.casual || 0,
-          vacation: leaveTypes.annual || 0
-        });
-      });
-    }
-  })
+const leaveData = [];
+const leaveReasonsMap = { sick: 0, casual: 0, annual: 0 };
+
+const monthlyBreakdown = result?.leaves_analysis?.monthly_breakdown || {};
+
+
+const sortedMonths = Object.keys(monthlyBreakdown)
+  .sort((a, b) => new Date(a) - new Date(b))  
+  .slice(-12); 
+
+
+sortedMonths.forEach((month) => {
+  const leaves = monthlyBreakdown[month];
+
+ 
+  leaveData.push({
+    month,
+    sickLeave: leaves.sick || 0,
+    personalLeave: leaves.casual || 0,
+    vacation: leaves.annual || 0,
+  });
+
+
+  leaveReasonsMap.sick += leaves.sick || 0;
+  leaveReasonsMap.casual += leaves.casual || 0;
+  leaveReasonsMap.annual += leaves.annual || 0;
+});
+
+
+const leaveReasons = Object.entries(leaveReasonsMap).map(([key, value]) => ({
+  reason: key,
+  days: value,
+}));
 
   console.log("leaveReasons" , leaveReasons);
   console.log("leaveData" , leaveData);
@@ -65,7 +78,6 @@ const BotReports = ({ result }) => {
         
         <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-5 border border-gray-100 dark:border-gray-700">
           <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Leave Density</h2>
-          <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">3 days this month</div>
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
@@ -93,8 +105,6 @@ const BotReports = ({ result }) => {
 
           <div className="flex justify-between">
           <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Leave Analysis</h2>
-          <p className="text-sm hover:cursor-pointer hover:underline hover:text-green-400"
-          onClick={() => setViewLeaveModal(true)}>view more</p>
           </div>
 
           
@@ -132,7 +142,6 @@ const BotReports = ({ result }) => {
         </div>
       </div>
     </div>
-    {viewLeaveModal && <ViewLeaveModal setViewLeaveModal={setViewLeaveModal}/>}
     </>
   );
 };

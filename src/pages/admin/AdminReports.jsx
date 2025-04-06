@@ -106,7 +106,7 @@ useEffect(() => {
     return matchesSearch && matchesVibe && matchesRisk;
   });
 
-  // console.log("filtered" , filtered);
+  console.log("filtered" , filtered);
   setFilteredEmployees(filtered);
   setCurrentPage(1);
 }, [searchTerm, vibeFilter, employees , riskFilter]);
@@ -122,7 +122,7 @@ useEffect(() => {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = filteredEmployees.slice(indexOfFirstPost, indexOfLastPost);
 
-  // console.log("Current Posts" , currentPosts);
+  console.log("Current Posts" , currentPosts);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -221,7 +221,7 @@ useEffect(() => {
                     Risk
                   </th>
                   <th className="p-4 font-medium">
-                    Leaves
+                    Performance Rating
                   </th>
                   <th className="p-4 font-medium">
                     Last Check-in
@@ -238,7 +238,7 @@ useEffect(() => {
                   </tr>
                 ) : currentPosts.length > 0 ? (
                   currentPosts.map((employee) => (
-                    <tr key={Date.now()} className="border-b border-border">
+                    <tr key={employee.employee_id} className="border-b border-border">
                       <td className="p-4">
                         <div className="flex items-center space-x-3">
                           {employee?.avatar ? (
@@ -274,7 +274,7 @@ useEffect(() => {
                             ? getRisk(employee.risk_assessment)
                             : "Not Available"}
                       </td>
-                      <td className="p-4">{employee?.monthlyLeaves || 0}</td>
+                      <td className="p-4">{(employee?.performance?.rating) ? employee?.performance?.rating :'Not available'}</td>
                       <td className="p-4">
                         {employee.current_vibe.last_check_in
                           ? new Date(employee.current_vibe.last_check_in).toLocaleDateString()
