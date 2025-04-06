@@ -66,8 +66,8 @@ const AdminEmployeeDetail = () => {
       console.log("result", resultData);
       setResult(resultData);
 
-        if (resultData.employee_id) {
-               setEmployee(resultData.employee_id);
+        if (resultData?.employee_info?.employee_id) {
+               setEmployee(resultData?.employee_info?.employee_id);
                 if(resultData.mental_states){
                   const filteredVibes = Object.entries(resultData.mental_states).map(([state, count]) => ({
                     state,
@@ -143,118 +143,55 @@ const AdminEmployeeDetail = () => {
         <div className="page-container py-8">
           <div className="text-center py-16">
             <p className="text-muted-foreground">
-              Employee not found. Please check the ID and try again.
+              Loading...
             </p>
-            <Link
-              to="/admin/reports"
-              className="mt-4 inline-flex items-center text-primary hover:underline"
-            >
-              <ArrowLeft size={16} className="mr-1" />
-              Back to Reports
-            </Link>
           </div>
-          {/* <Emotion /> */}
         </div>
       </Layout>
     );
   }
 
-  const latestVibe =
-    employeeVibes.length > 0
-      ? employeeVibes[employeeVibes.length - 1].vibe
-      : null;
 
-  const activityLevel =
-    employeeActivities.length > 0
-      ? (() => {
-          const avgActivity =
-            employeeActivities.reduce(
-              (sum, a) => sum + a.teamsMessages + a.emails + a.meetings,
-              0,
-            ) / employeeActivities.length;
-
-          return avgActivity < 10
-            ? "low"
-            : avgActivity > 30
-              ? "high"
-              : "normal";
-        })()
-      : "normal";
-
-  const currentMonthCheckIn = (() => {
-    const now = new Date();
-    const currentMonth = now.getMonth();
-    const currentYear = now.getFullYear();
-
-    return employeeChatSessions.some((session) => {
-      const sessionDate = new Date(session.startTime);
-      return (
-        session.completed &&
-        sessionDate.getMonth() === currentMonth &&
-        sessionDate.getFullYear() === currentYear
-      );
-    });
-  })();
-
-  const getEmployeeRisk = () => {
-    if (!latestVibe) return "unknown";
-
-    if (latestVibe === "frustrated" || latestVibe === "sad") {
-      
-      const recentVibes = employeeVibes.slice(-3);
-      const negativeCount = recentVibes.filter(
-        (v) => v.vibe === "frustrated" || v.vibe === "sad",
-      ).length;
-
-      if (negativeCount >= 2) return "high";
-      return "medium";
+  let getVibe = (vibeScore) => {
+    if(vibeScore === 1){
+      return "Frustrated";
     }
-
-    if (latestVibe === "okay") return "low";
-    return "none";
-  };
-
-  const riskLevel = getEmployeeRisk();
-
-  const getRiskBadge = () => {
-    switch (riskLevel) {
-      case "high":
-        return (
-          <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-medium">
-            High Risk
-          </span>
-        );
-      case "medium":
-        return (
-          <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-medium">
-            Medium Risk
-          </span>
-        );
-      case "low":
-        return (
-          <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">
-            Low Risk
-          </span>
-        );
-      case "none":
-        return (
-          <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">
-            No Risk
-          </span>
-        );
-      default:
-        return (
-          <span className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs font-medium">
-            Unknown
-          </span>
-        );
+    else if(vibeScore === 2){
+      return "Sad";
     }
-  };
+    else if(vibeScore === 3){
+      return "Okay";
+    }
+    else if(vibeScore === 4){
+      return "Happy";
+    }
+    else{
+      return "Excited";
+    }
+  }
+
+  let getRisk = (riskScore) => {
+    if(riskScore === 1){
+      return "Very Low";
+    }
+    else if(riskScore === 2){
+      return "Low";
+    }
+    else if(riskScore === 3){
+      return "Moderate";
+    }
+    else if(riskScore === 4){
+      return "High";
+    }
+    else{
+      return "Urgent";
+    }
+  }
 
 
   return (
     <Layout>
-      <div className="page-container py-8">
+      <div className="page-container py-8 bg-white rounded-lg m-5 w-full shadow-2xl">
         <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between animate-fade-in">
           <div>
             <Link
@@ -264,17 +201,11 @@ const AdminEmployeeDetail = () => {
               <ArrowLeft size={16} className="mr-1" />
               Back to Reports
             </Link>
-            <h1 className="page-header mb-2">{result.name}</h1>
+            <h1 className="page-header mb-2">{result?.employee_info?.name}</h1>
             <div className="flex flex-wrap items-center gap-2">
-              <p className="text-muted-foreground">ID: {result.employee_id}</p>
-              {getRiskBadge()}
+              <p className="text-muted-foreground">ID: {result?.employee_info?.employee_id}</p>
+              <span>{getRisk(result?.current_state?.risk_assessment)}</span>
             </div>
-          </div>
-
-          <div className="mt-4 md:mt-0 flex items-center">
-            <button className="px-4 py-2 bg-primary dark:text-white text-black rounded-lg hover:bg-primary/90 transition-colors button-hover">
-              Schedule Check-in
-            </button>
           </div>
         </div>
 
@@ -286,7 +217,7 @@ const AdminEmployeeDetail = () => {
             <h2 className="text-xl font-medium mb-6">Employee Information</h2>
 
             <div className="flex flex-col items-center mb-6">
-              {employee.avatar ? (
+              {result?.employee_info?.name.avatar ? (
                 <img
                   src={employee.avatar}
                   alt={result.name}
@@ -295,11 +226,11 @@ const AdminEmployeeDetail = () => {
               ) : (
                 <div className="h-20 w-20 bg-secondary rounded-full flex items-center justify-center mb-3">
                   <span className="text-2xl font-medium text-secondary-foreground">
-                    {result.name.charAt(0)}
+                    {result?.employee_info?.name.charAt(0)}
                   </span>
                 </div>
               )}
-              <h3 className="text-lg font-medium">{result.name}</h3>
+              <h3 className="text-lg font-medium">{result?.employee_info?.name}</h3>
             </div>
 
             <div className="space-y-3">
@@ -309,7 +240,7 @@ const AdminEmployeeDetail = () => {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Employee ID</p>
-                  <p className="text-sm">{result.employee_id}</p>
+                  <p className="text-sm">{result?.employee_info?.employee_id}</p>
                 </div>
               </div>
 
@@ -319,7 +250,7 @@ const AdminEmployeeDetail = () => {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Email</p>
-                  <p className="text-sm">{result.email}</p>
+                  <p className="text-sm">{result?.employee_info?.email}</p>
                 </div>
               </div>
               </div>
@@ -336,15 +267,10 @@ const AdminEmployeeDetail = () => {
                 <div className="text-sm text-muted-foreground">
                   Current Vibe
                 </div>
-                {latestVibe ? (
+                {result?.current_state?.vibe_score ? (
                   <div className="flex items-center space-x-2">
-                    <VibeStatusBadge vibe={latestVibe} size="lg" />
                     <span className="text-sm">
-                      {employeeVibes.length > 0
-                        ? new Date(
-                            employeeVibes[employeeVibes.length - 1].date,
-                          ).toLocaleDateString()
-                        : ""}
+                      {getVibe(result?.current_state?.vibe_score)}
                     </span>
                   </div>
                 ) : (
@@ -352,7 +278,7 @@ const AdminEmployeeDetail = () => {
                 )}
               </div>
 
-               <div className="space-y-2">
+               {/* <div className="space-y-2">
                 <div className="text-sm text-muted-foreground">
                   Activity Level
                 </div>
@@ -370,13 +296,13 @@ const AdminEmployeeDetail = () => {
                       activityLevel.slice(1)}
                   </span>
                 </div>
-              </div>
+              </div> */}
 
               <div className="space-y-2">
                 <div className="text-sm text-muted-foreground">
                   Risk Assessment
                 </div>
-                <div>{getRiskBadge()}</div>
+                <div>{getRisk(result?.current_state?.risk_assessment)}</div>
               </div>
 
               <div className="space-y-2">
@@ -384,23 +310,21 @@ const AdminEmployeeDetail = () => {
                   Last Check-in
                 </div>
                 <div className="text-sm">
-                  {employeeChatSessions.length > 0
-                    ? new Date(
-                        employeeChatSessions[0].startTime,
-                      ).toLocaleDateString()
+                  {result?.current_state?.last_check_in
+                    ? new Date(result.current_state.last_check_in).toLocaleDateString()
                     : "Never"}
                 </div>
               </div>
             </div>
 
-            {employeePerformance && (
+            {result?.performance?.current?.rating && (
               <div className="mt-6 pt-6 border-t border-border">
                 <div className="text-sm text-muted-foreground mb-2">
                   Performance Rating
                 </div>
                 <div className="flex items-baseline">
                   <span className="text-2xl font-medium">
-                    {employeePerformance.performanceRating.toFixed(1)}
+                    {result?.performance?.current?.rating.toFixed(1)}
                   </span>
                   <span className="text-sm text-muted-foreground ml-1">
                     /5.0
@@ -415,11 +339,11 @@ const AdminEmployeeDetail = () => {
       {result &&
       <>
       <Emotion  result={result} />
-      <IntentReport result={result} />
+       <IntentReport result={result} />
       <InteractionReports  result={result} />
-      <Performance token={token} employeeId={employeeId} result={result} />
+      {/* <Performance result={result} /> */}
       <LeaveAnalysis result={result} />
-      <Experience  result={result} />
+      {/* <Experience  result={result} /> */}
       </>
 }
     </Layout>

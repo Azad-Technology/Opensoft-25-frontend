@@ -10,35 +10,35 @@ import {
 } from "recharts";
 import { Award } from "lucide-react";
 
-const PerformanceReports = ({ employeeId , token }) => {
-  const [selectedEmployee, setSelectedEmployee] = useState("John Doe");
-  const [viewPerformanceModal , setViewPerformanceModal] = useState(false);
-  const [result , setResult] = useState(null);
-  const VITE_REACT_APP_URL = import.meta.env.VITE_REACT_APP_URL;
+const PerformanceReports = ({ result }) => {
+  // const [selectedEmployee, setSelectedEmployee] = useState("John Doe");
+  // const [viewPerformanceModal , setViewPerformanceModal] = useState(false);
+  // const [result , setResult] = useState(null);
+  // const VITE_REACT_APP_URL = import.meta.env.VITE_REACT_APP_URL;
 
-  const employeeData = async () => {
-    try {
-      const response = await fetch(`${VITE_REACT_APP_URL}/admin/${employeeId}/summary` ,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+  // const employeeData = async () => {
+  //   try {
+  //     const response = await fetch(`${VITE_REACT_APP_URL}/admin/${employeeId}/summary` ,
+  //       {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       },
+  //     );
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
+  //     if (!response.ok) {
+  //       throw new Error("Failed to fetch data");
+  //     }
 
-      const resultData = await response.json();
-      console.log("result in performance", resultData);
-      setResult(resultData);
-    }catch(error){
-      console.log('unable to fetch performance data' , error);
-    }
-  }
+  //     const resultData = await response.json();
+  //     console.log("result in performance", resultData);
+  //     setResult(resultData);
+  //   }catch(error){
+  //     console.log('unable to fetch performance data' , error);
+  //   }
+  // }
   
-  useEffect(()=>{
-    employeeData();
-  } , [employeeId , token]);
+  // useEffect(()=>{
+  //   employeeData();
+  // } , [employeeId , token]);
 
   const performanceData = [
     { name: "Jan", productivity: 100, tasks: 2 },
@@ -117,8 +117,6 @@ const PerformanceReports = ({ employeeId , token }) => {
         <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-5 border border-gray-100 dark:border-gray-700">
         <div className="flex justify-between">
             <h3 className="text-md font-semibold mb-2 text-gray-700 dark:text-gray-200">Awards & Recognition</h3>
-            <p className="text-sm hover:cursor-pointer hover:underline hover:text-green-400"
-            onClick={() => setViewPerformanceModal(true)}>view more</p>
             </div>
 
           {/* Performance Rating */}
@@ -129,12 +127,12 @@ const PerformanceReports = ({ employeeId , token }) => {
                 <span className="text-gray-700 dark:text-gray-300">Performance Rating</span>
               </div>
               {/* <span className="font-bold text-green-600 dark:text-green-400">{result.performance.Performance_Rating}/5</span> */}
-              {result?.performance?.Performance_Rating ? (
+              {result?.performance?.current?.rating ? (
              <span className="font-bold text-green-600 dark:text-green-400">
-            {result.performance.Performance_Rating}/5
+            {result.performance?.current?.rating}/5
             </span>
             ) : (
-           <span className="text-gray-500">Loading...</span>
+           <span className="text-gray-500">Not Available</span>
            )}
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
@@ -142,9 +140,6 @@ const PerformanceReports = ({ employeeId , token }) => {
                 className="bg-green-500 h-2.5 rounded-full"
                 style={{ width: "84%" }}
               ></div>
-            </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              Above team average (3.8)
             </div>
           </div>
 
@@ -163,34 +158,11 @@ const PerformanceReports = ({ employeeId , token }) => {
                 style={{ width: "95%" }}
               ></div>
             </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              95% of expected hours (180)
-            </div>
           </div>
 
           {/* Awards & Recognition */}
           <div className="mb-4">
             <h3 className="text-md font-semibold mb-2 text-gray-700 dark:text-gray-200">Awards & Recognition</h3>
-            {/* <div className="flex space-x-4">
-              <div className="flex items-center space-x-2 bg-yellow-50 dark:bg-yellow-900/30 px-3 py-2 rounded">
-                <div className="w-6 h-6 bg-yellow-500 rounded-full flex items-center justify-center text-white">
-                  🏆
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Team Player Award</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">February</div>
-                </div>
-              </div>
-              <div className="flex items-center space-x-2 bg-blue-50 dark:bg-blue-900/30 px-3 py-2 rounded">
-                <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white">
-                  💡
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Innovation Award</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">January</div>
-                </div>
-              </div>
-            </div> */}
             {result?.rewards?.awards?.length ? (
             <div className="flex flex-wrap gap-4">
           {result.rewards.awards.map((award, index) => (
