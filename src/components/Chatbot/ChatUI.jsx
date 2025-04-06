@@ -34,6 +34,15 @@ const ChatUI = ({ className = "" }) => {
     onSessionCreated: (newId) => setSessionId(newId),
   });
 
+  const handleSessionSelect = (session) => {
+    setSessionId(session.session_id);
+    setShowSidebar(true);
+    // Pre-populate history cache if not already present
+    if (!sessionHistory.length) {
+      queryClient.setQueryData(["chatHistory", session.session_id], []);
+    }
+  };
+
   const messageEndRef = useRef(null);
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -166,10 +175,7 @@ const ChatUI = ({ className = "" }) => {
                 {conversations.map((session) => (
                   <button
                     key={session.session_id}
-                    onClick={() => {
-                      setSessionId(session.session_id);
-                      setShowSidebar(true);
-                    }}
+                    onClick={() => handleSessionSelect(session)}
                     className={`w-full text-left p-3 rounded-lg transition-all duration-200 ${
                       sessionId === session.session_id
                         ? "bg-[#DCFCE7] dark:bg-[#0F4021] text-gray-900 dark:text-gray-100"
@@ -185,12 +191,12 @@ const ChatUI = ({ className = "" }) => {
                             : "text-gray-400"
                         }
                       />
-                      {`Session ${session.session_id.substring(0, 8)}...`}
+                      {session.chat_name || `Session ${session.session_id.substring(0, 8)}...`}
                     </div>
                     <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                       {new Date(session.timestamp).toLocaleDateString()}
                     </div>
-                  </button>
+                </button>
                 ))}
               </div>
             )}
@@ -234,7 +240,9 @@ const ChatUI = ({ className = "" }) => {
             </button>
             <div>
               <h2 className="font-semibold text-gray-800 dark:text-gray-200">
-                {sessionId ? "Active Conversation" : "Chat Interface"}
+                {sessionId 
+                  ? (conversations.find(s => s.session_id === sessionId)?.chat_name || "Active Conversation")
+                  : "Chat Interface"}
               </h2>
               <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
                 {sessionId
