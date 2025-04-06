@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../components/employeeCompo/Layout.jsx";
 import SevereCases from "../../components/HRDashboard/SevereCases.jsx";
 import Correlations from "../../components/HRDashboard/Correlations.jsx";
@@ -6,31 +6,158 @@ import { Smile, ArrowDownRight, ChartNoAxesCombined, Brain } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, Tooltip,
   ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 import { useAuth } from "../../contexts/AuthContext.jsx";
-
-const weeklyData = [
-  { day: "Mon", score: 6.5 },
-  { day: "Tue", score: 7.0 },
-  { day: "Wed", score: 7.2 },
-  { day: "Thu", score: 7.5 },
-  { day: "Fri", score: 7.8 },
-  { day: "Sat", score: 7.4 },
-  { day: "Sun", score: 7.1 },
-];
-
-const moodData = [
-  { name: "Happy", value: 40, color: "#34D399" },
-  { name: "Sad", value: 15, color: "#F87171" },
-  { name: "Frustrated", value: 10, color: "#FBBF24" },
-  { name: "Okay", value: 25, color: "#60A5FA" },
-  { name: "Excited", value: 10, color: "#A78BFA" },
-];
+import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
-  const {refreshToken}=useAuth();
+  const { user, token } = useAuth();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [data, setData] = useState(null);
+  const [weeklyData, setWeeklyData] = useState([]);
+  const [moodData, setMoodData] = useState([]);
   
+  const BASE_URL = import.meta.env.VITE_REACT_APP_URL;
+  const navigate = useNavigate();
+
+  // Get mood label based on overall mood score
+  const moodLabel = () => {
+    if (!data) return "Unknown";
+    const score = data.overall_mood;
+    
+    if (score >= 4.5) return "Excellent";
+    if (score >= 3.5) return "Good";
+    if (score >= 2.5) return "Neutral";
+    if (score >= 1.5) return "Poor";
+    return "Critical";
+  };
+  
+  // Process weekly trend data
+  const processWeeklyData = (weeklyRiskTrend) => {
+    return Object.entries(weeklyRiskTrend).map(([date, score]) => {
+      // Convert YYYY-MM-DD to day of week
+      const day = new Date(date).toLocaleDateString('en-US', { weekday: 'short' });
+      return { day, score: score || 0 };
+    });
+  };
+  
+  // Process mood distribution data
+  const processMoodData = (moodDistribution) => {
+    const colorMap = {
+      "excited": "#A78BFA", // Purple
+      "happy": "#34D399",   // Green
+      "ok": "#60A5FA",      // Blue
+      "sad": "#F87171",     // Red
+      "frustrated": "#FBBF24" // Yellow/Orange
+    };
+    
+    return Object.entries(moodDistribution).map(([mood, count]) => ({
+      name: mood.charAt(0).toUpperCase() + mood.slice(1),
+      value: count,
+      color: colorMap[mood]
+    }));
+  };
+
   useEffect(() => {
-    refreshToken();
-  }, [])
+    if (!token) return;
+
+    const fetchDashboardData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`${BASE_URL}/admin/overall_dashboard`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          const text = await response.text();
+          throw new Error("Expected JSON but got: " + text);
+        }
+
+        const apiData = await response.json();
+        console.log(apiData);
+        
+        // Update state with the API data
+        setData(apiData);
+        
+        // Process weekly trend data
+        if (apiData?.weekly_risk_trend) {
+          setWeeklyData(processWeeklyData(apiData.weekly_risk_trend));
+        }
+        
+        // Process mood distribution data
+        if (apiData?.mood_distribution) {
+          setMoodData(processMoodData(apiData.mood_distribution));
+        }
+
+      } catch (error) {
+        setError(error.message);
+        console.error("Error fetching dashboard data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, [token, BASE_URL]);
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="flex flex-col items-center justify-center h-screen w-full">
+          <div className="flex flex-col items-center justify-center">
+            <div className="relative h-20 w-20">
+              {/* Pulse animation around the spinner */}
+              <span className="absolute inset-0 rounded-full animate-ping opacity-20 bg-emerald-500"></span>
+
+              {/* Main spinner with nice transition effect */}
+              <svg className="absolute inset-0 animate-spin" viewBox="0 0 50 50">
+                <circle
+                  cx="25"
+                  cy="25"
+                  r="20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  className="text-emerald-500"
+                  strokeDasharray="80"
+                  strokeDashoffset="60"
+                />
+              </svg>
+            </div>
+
+            {/* Text with subtle fade-in animation */}
+            <div className="mt-6 text-xl font-medium text-gray-800 dark:text-gray-100 animate-fadeIn">
+              Loading
+            </div>
+            <div className="text-sm text-gray-500 dark:text-gray-400 animate-pulse">
+              Just a moment
+            </div>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center h-80">
+          <div className="text-red-500">Error: {error}</div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (!user || !data) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center h-80">
+          <div>User not found or data unavailable. Please log in.</div>
+        </div>
+      </Layout>
+    );
+  }
   
   return (
     <Layout>
@@ -45,10 +172,10 @@ const AdminDashboard = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {[
-              { title: "Overall Wellness Score", value: "7.2/10", sign:<Smile className="text-green-400"/> },
-              { title: "Critical Cases", value: "5", sign:<ArrowDownRight className="text-red-600"/> },
-              { title: "Total Employees Surveyed", value: "300", sign:<ChartNoAxesCombined className="text-green-400"/> },
-              { title: "Overall Mood", value: "Frustated", sign:<Brain className="text-green-400"/> },
+              { title: "Overall Wellness Score", value: `${data.overall_risk_score.toFixed(1)}/10`, sign: <Smile className="text-green-400"/> },
+              { title: "Critical Cases", value: data.critical_cases.length, sign: <ArrowDownRight className="text-red-600"/> },
+              { title: "Total Employees Surveyed", value: data.total_employees, sign: <ChartNoAxesCombined className="text-green-400"/> },
+              { title: "Overall Mood", value: moodLabel(), sign: <Brain className="text-green-400"/> },
             ].map((item, index) => (
               <div
                 key={index}
@@ -72,7 +199,7 @@ const AdminDashboard = () => {
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={weeklyData}>
                   <XAxis dataKey="day" stroke="#03C03C" />
-                  <YAxis domain={[6, 8]} stroke="#03C03C" />
+                  <YAxis domain={[0, 10]} stroke="#03C03C" />
                   <Tooltip contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: '#fff', border: 'none' }} />
                   <Line type="monotone" dataKey="score" stroke="#03C03C" strokeWidth={3} dot={{ r: 5 }} />
                 </LineChart>
@@ -95,8 +222,7 @@ const AdminDashboard = () => {
             </div>
           </div>
         </div>
-        <Correlations />
-        <SevereCases />
+        <SevereCases criticalCases={data.critical_cases} />
       </div>
     </Layout>
   );
