@@ -41,7 +41,7 @@ const AdminEmployeeDetail = () => {
   const { token } = useAuth();
   const VITE_REACT_APP_URL = import.meta.env.VITE_REACT_APP_URL;
   const [employee, setEmployee] = useState(null);
-  const [result , setResult] = useState(null);
+  const [result, setResult] = useState(null);
   const [employeeVibes, setEmployeeVibes] = useState([]);
   const [employeeLeaves, setEmployeeLeaves] = useState([]);
   const [employeeActivities, setEmployeeActivities] = useState([]);
@@ -51,7 +51,7 @@ const AdminEmployeeDetail = () => {
   const [employeeChatSessions, setEmployeeChatSessions] = useState([]);
   const employeeData = async () => {
     try {
-      const response = await fetch(`${VITE_REACT_APP_URL}/admin/${employeeId}/summary` ,
+      const response = await fetch(`${VITE_REACT_APP_URL}/admin/${employeeId}/summary`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -64,76 +64,76 @@ const AdminEmployeeDetail = () => {
       const resultData = await response.json();
       setResult(resultData);
 
-        if (resultData?.employee_info?.employee_id) {
-               setEmployee(resultData?.employee_info?.employee_id);
-                if(resultData.mental_states){
-                  const filteredVibes = Object.entries(resultData.mental_states).map(([state, count]) => ({
-                    state,
-                    count,
-                  }));
-                  setEmployeeVibes(filteredVibes);
-                }
-                if (resultData.leaves) {
-                  const filteredLeaves = Object.entries(resultData.leaves).map(([reason, count]) => ({
-                    reason,
-                    count,
-                  }));
-                  setEmployeeLeaves(filteredLeaves);
-                }
+      if (resultData?.employee_info?.employee_id) {
+        setEmployee(resultData?.employee_info?.employee_id);
+        if (resultData.mental_states) {
+          const filteredVibes = Object.entries(resultData.mental_states).map(([state, count]) => ({
+            state,
+            count,
+          }));
+          setEmployeeVibes(filteredVibes);
+        }
+        if (resultData.leaves) {
+          const filteredLeaves = Object.entries(resultData.leaves).map(([reason, count]) => ({
+            reason,
+            count,
+          }));
+          setEmployeeLeaves(filteredLeaves);
+        }
 
-                if(resultData.communication_activity){
-                  const filteredActivities = Object.entries(resultData.communication_activity).map(([message_type, count]) => ({
-                    message_type,
-                    count,
-                  }));
-                  
-                  const formattedActivities = filteredActivities.map((a) => ({
-                    ...a,
-                    total:
-                      (resultData.communication_activity.teams_messages_sent || 0) +
-                      (resultData.communication_activity.emails_sent || 0) +
-                      (resultData.communication_activity.meetings_attended || 0),
-                  }));
-                  setEmployeeActivities(formattedActivities);
-                }
-            
-                if(resultData.rewards){
-                  const formattedRewards = [
-                    {
-                      total_points: resultData.rewards.total_points,
-                      awards: resultData.rewards.awards,
-                    },
-                  ];
-                  setEmployeeRecognitions(formattedRewards);
-                }
-                
-                if (resultData.performance) {
-                  setEmployeePerformance({
-                    employeeId: resultData.performance.Employee_ID,
-                    reviewPeriod: resultData.performance.Review_Period,
-                    performanceRating: resultData.performance.Performance_Rating,
-                    managerFeedback: resultData.performance.Manager_Feedback,
-                    promotionConsideration: resultData.performance.Promotion_Consideration,
-                  });
-                }
-                
-                if (resultData.onboarding_data) {
-                  setEmployeeOnboarding({
-                    feedback: resultData.onboarding_data.feedback,
-                    mentorAssigned: resultData.onboarding_data.mentor_assigned,
-                    trainingCompleted: resultData.onboarding_data.training_completed,
-                  });
-                }
-              }
-    }catch (error) {
+        if (resultData.communication_activity) {
+          const filteredActivities = Object.entries(resultData.communication_activity).map(([message_type, count]) => ({
+            message_type,
+            count,
+          }));
+
+          const formattedActivities = filteredActivities.map((a) => ({
+            ...a,
+            total:
+              (resultData.communication_activity.teams_messages_sent || 0) +
+              (resultData.communication_activity.emails_sent || 0) +
+              (resultData.communication_activity.meetings_attended || 0),
+          }));
+          setEmployeeActivities(formattedActivities);
+        }
+
+        if (resultData.rewards) {
+          const formattedRewards = [
+            {
+              total_points: resultData.rewards.total_points,
+              awards: resultData.rewards.awards,
+            },
+          ];
+          setEmployeeRecognitions(formattedRewards);
+        }
+
+        if (resultData.performance) {
+          setEmployeePerformance({
+            employeeId: resultData.performance.Employee_ID,
+            reviewPeriod: resultData.performance.Review_Period,
+            performanceRating: resultData.performance.Performance_Rating,
+            managerFeedback: resultData.performance.Manager_Feedback,
+            promotionConsideration: resultData.performance.Promotion_Consideration,
+          });
+        }
+
+        if (resultData.onboarding_data) {
+          setEmployeeOnboarding({
+            feedback: resultData.onboarding_data.feedback,
+            mentorAssigned: resultData.onboarding_data.mentor_assigned,
+            trainingCompleted: resultData.onboarding_data.training_completed,
+          });
+        }
+      }
+    } catch (error) {
       console.log("unable to fetch user data", error);
     }
   };
-  
 
-  useEffect(() =>{
+
+  useEffect(() => {
     employeeData()
-  } , [employeeId, token]);
+  }, [employeeId, token]);
 
   if (!employee) {
     return (
@@ -151,37 +151,37 @@ const AdminEmployeeDetail = () => {
 
 
   let getVibe = (vibeScore) => {
-    if(vibeScore === 1){
+    if (vibeScore === 1) {
       return "Frustrated";
     }
-    else if(vibeScore === 2){
+    else if (vibeScore === 2) {
       return "Sad";
     }
-    else if(vibeScore === 3){
+    else if (vibeScore === 3) {
       return "Okay";
     }
-    else if(vibeScore === 4){
+    else if (vibeScore === 4) {
       return "Happy";
     }
-    else{
+    else {
       return "Excited";
     }
   }
 
   let getRisk = (riskScore) => {
-    if(riskScore === 1){
+    if (riskScore === 1) {
       return "Very Low";
     }
-    else if(riskScore === 2){
+    else if (riskScore === 2) {
       return "Low";
     }
-    else if(riskScore === 3){
+    else if (riskScore === 3) {
       return "Moderate";
     }
-    else if(riskScore === 4){
+    else if (riskScore === 4) {
       return "High";
     }
-    else{
+    else {
       return "Urgent";
     }
   }
@@ -192,13 +192,21 @@ const AdminEmployeeDetail = () => {
       <div className="page-container py-8 bg-white dark:bg-gray-800 rounded-lg m-5 w-full shadow-2xl">
         <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between animate-fade-in">
           <div>
-            <Link
-              to="/admin/reports"
-              className="inline-flex items-center text-primary hover:underline mb-2"
-            >
-              <ArrowLeft size={16} className="mr-1" />
-              Back to Reports
-            </Link>
+            <div className="flex flex-col mb-2 justify-between">
+              <Link
+                to="/admin/reports"
+                className="inline-flex items-center text-primary hover:underline mb-2"
+              >
+                <ArrowLeft size={16} className="mr-1" />
+                Back to Reports
+              </Link>
+              <Link
+                to={`/admin/exportReport/${employeeId}`}
+                className="inline-flex items-center text-primary hover:underline mb-2 text-none"
+              >
+                <span className="p-2 bg-green-700 text-white rounded-xl text-none px-4 no-underline">Export</span>
+              </Link>
+            </div>
             <h1 className="page-header mb-2">{result?.employee_info?.name}</h1>
             <div className="flex flex-wrap items-center gap-2">
               <p className="text-muted-foreground">ID: {result?.employee_info?.employee_id}</p>
@@ -251,7 +259,7 @@ const AdminEmployeeDetail = () => {
                   <p className="text-sm">{result?.employee_info?.email}</p>
                 </div>
               </div>
-              </div>
+            </div>
           </div>
 
           <div
@@ -316,15 +324,15 @@ const AdminEmployeeDetail = () => {
       </div>
 
       {result &&
-      <>
-      <Emotion  result={result} />
-       <IntentReport result={result} />
-      <InteractionReports  result={result} />
-      <Performance result={result} />
-      <LeaveAnalysis result={result} />
-      <Experience  result={result} />
-      </>
-}
+        <>
+          <Emotion result={result} />
+          <IntentReport result={result} />
+          <InteractionReports result={result} />
+          <Performance result={result} />
+          <LeaveAnalysis result={result} />
+          <Experience result={result} />
+        </>
+      }
     </Layout>
   );
 };

@@ -19,6 +19,7 @@
     "clsx": "^2.1.1",
     "dotenv": "^16.4.7",
     "framer-motion": "^12.5.0",
+    "html2canvas": "^1.4.1",
     "lucide-react": "^0.485.0",
     "motion": "^12.5.0",
     "react": "^19.0.0",
