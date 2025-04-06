@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect, useCallback } from "react";
 import Layout from "../../components/employeeCompo/Layout";
 import { useAuth } from "../../contexts/AuthContext";
@@ -62,22 +60,16 @@ const AdminReports = () => {
   };
 
   const getRisk = (riskScore) => {
-    if(riskScore === 1){
-      return "Very Low";
-    }
-    else if(riskScore === 2){
-      return "Low";
-    }
-    else if(riskScore === 3){
-      return "Medium";
-    }
-    else if(riskScore === 4){
-      return "High";
-    }
-    else{
-      return "Urgent";
-    }
+    const risks = {
+      1: { name: "Very Low", color: "bg-blue-500" },
+      2: { name: "Low", color: "bg-green-400" },
+      3: { name: "Medium", color: "bg-yellow-400" },
+      4: { name: "High", color: "bg-orange-400" },
+      5: { name: "Urgent", color: "bg-red-500" }
+    };
+    return risks[riskScore] || { name: "Unknown", color: "bg-gray-400" };
   };
+
 
   
   const debouncedSearch = useCallback(
@@ -299,9 +291,9 @@ const AdminReports = () => {
                       </td>
                       <td className="p-4 whitespace-nowrap">
                         {employee.risk_assessment ? (
-                          <span className={`px-3 py-1 rounded-full text-xs font-medium text-black dark:text-gray-50
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium  text-white ${getRisk(employee.risk_assessment).color}
                           }`}>
-                            {getRisk(employee.risk_assessment)}
+                            {getRisk(employee.risk_assessment).name}
                           </span>
                         ) : (
                           <span className="text-xs bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 py-1 px-2 rounded-full">
