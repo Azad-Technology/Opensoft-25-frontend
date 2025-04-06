@@ -2,11 +2,11 @@ import React from "react";
 import { GaugeComponent } from "react-gauge-component";
 
 const EmployeeExperience = ({ result }) => {
-  // Get feedback from the correct path in the API response
+  
   const feedback = result?.onboarding_experience?.feedback;
   let emotionalStateValue = -1;
 
-  // Map feedback to gauge value
+ 
   if (feedback && feedback === 'Poor') {
     emotionalStateValue = 0;
   }
@@ -22,9 +22,9 @@ const EmployeeExperience = ({ result }) => {
 
   return (
     <div className="p-4 mt-10">
-      {/* Main Content */}
+     
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Onboarding Experience */}
+       
         <div className="rounded-xl p-4 bg-white dark:bg-gray-800 shadow-xl border border-gray-100 dark:border-gray-700">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Onboarding Experience</h2>
@@ -60,11 +60,11 @@ const EmployeeExperience = ({ result }) => {
           </div>
         </div>
 
-        {/* Transition Details */}
+       
         <div className="bg-white dark:bg-gray-800 shadow-xl rounded p-4 border border-gray-100 dark:border-gray-700">
           <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Transition Details</h2>
 
-          {/* Onboarding Feedback */}
+         
           <div className="mb-4">
             <div className="flex justify-between items-center mb-2">
               <span className="font-medium text-gray-700 dark:text-gray-200">Onboarding Feedback</span>
@@ -78,7 +78,7 @@ const EmployeeExperience = ({ result }) => {
             </p>
           </div>
 
-          {/* Initial Training */}
+         
           <div className="flex justify-between items-center mb-4">
             <div>
               <span className="font-medium text-gray-700 dark:text-gray-200">Initial Training</span>
@@ -100,7 +100,7 @@ const EmployeeExperience = ({ result }) => {
             </svg>
           </div>
 
-          {/* Mentor Assigned */}
+          
           <div className="flex justify-between items-center mb-4">
             <div>
               <span className="font-medium text-gray-700 dark:text-gray-200">Mentor Assigned</span>
@@ -122,7 +122,7 @@ const EmployeeExperience = ({ result }) => {
             </svg>
           </div>
 
-          {/* Transition Summary */}
+         
           <div className="bg-blue-50 dark:bg-blue-900/30 border-l-4 border-blue-500 p-3 mt-4">
             <p className="text-sm text-gray-700 dark:text-gray-300">
               {(result?.onboarding_experience?.training_completed) ? 'Employee has successfully transitioned into their role with good feedback on the onboarding process. All required training has been completed.':
