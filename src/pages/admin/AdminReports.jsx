@@ -191,7 +191,7 @@ const AdminReports = () => {
                   <th className="p-4 font-medium rounded-tl-lg">Employee</th>
                   <th className="p-4 font-medium">Current Vibe</th>
                   <th className="p-4 font-medium">Risk Level</th>
-                  <th className="p-4 font-medium">Leaves</th>
+                  <th className="p-4 font-medium">Performance Rating</th>
                   <th className="p-4 font-medium">Last Check-in</th>
                   <th className="p-4 font-medium rounded-tr-lg">Actions</th>
                 </tr>
@@ -257,9 +257,9 @@ const AdminReports = () => {
                           </span>
                         )}
                       </td>
-                      <td className="p-4">
+                      <td className="p-4 text-center">
                         <span className="bg-secondary text-gray-700 dark:text-gray-300 py-1 px-2 rounded text-xs">
-                          {employee?.monthlyLeaves || 0} days
+                          {employee?.performance?.rating || 0} / 5
                         </span>
                       </td>
                       <td className="p-4">

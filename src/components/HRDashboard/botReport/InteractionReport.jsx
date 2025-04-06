@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   LineChart,
   Line,
@@ -7,28 +7,30 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  BarChart,
+  Bar,
 } from "recharts";
 
 const InteractionReports = ({ result }) => {
+  // Validate and provide default values for the incoming data
+  const communicationActivity =
+    result?.communication_activity?.weekly_averages || {};
+  const activityLevel = result?.communication_activity?.activity_level || [];
 
+  console.log("Result in Interaction Page:", result);
+  console.log("Communication Activity:", communicationActivity);
 
-  console.log("result in Interaction Page" , result);
-  const communicationActivity = result?.communication_activity?.weekly_pattern|| {};
-
-  console.log("communication Activity" , communicationActivity);
-
-  // const communicationData = (communicationActivity) => {
-  //   const daysOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday","Saturday","Sunday"];
-  //   return daysOrder.map((day) => ({
-  //     name: day,
-  //     teamMessages: communicationActivity?.teams_messages || 0,
-  //     emails: communicationActivity?.emails || 0,
-  //     meetings: communicationActivity?.meetings || 0,
-  //   }));
-  // };
-
+  // Generate data for the chart
   const communicationData = (communicationActivity) => {
-    const daysOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    const daysOrder = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
     return daysOrder.map((day) => {
       const dayData = communicationActivity?.[day] || {};
       return {
@@ -40,120 +42,180 @@ const InteractionReports = ({ result }) => {
     });
   };
 
-  console.log("communicationData" , communicationData(communicationActivity));
+  console.log("Communication Data:", communicationData(communicationActivity));
 
+  // Prepare activity level data for the BarChart
+  const activityLevelData = Object.values(activityLevel)
+    .map((item) => ({
+      ...item,
+      formattedDate: new Date(item.date).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }),
+      dateObj: new Date(item.date),
+    }))
+    .sort((a, b) => b.dateObj - a.dateObj); // Sort by date in descending order
 
   return (
     <div className="p-4 mt-10">
-   
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-       
+        {/* Communication Activity Chart */}
         <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-5 border border-gray-100 dark:border-gray-700">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Communication Activity</h2>
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
+              Communication Activity
+            </h2>
             <div className="text-xs text-gray-500 dark:text-gray-400 bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded">
               Last 7 days
             </div>
           </div>
-          <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={communicationData(communicationActivity)}>
-              <CartesianGrid
-                strokeDasharray="3 3"
-                vertical={false}
-                stroke="#f0f0f0"
+          <ResponsiveContainer width="100%" height={400}>
+            <BarChart
+              data={activityLevelData}
+              margin={{ top: 20, right: 30, left: 20, bottom: 40 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+              <XAxis
+                dataKey="formattedDate"
+                tick={{ fontSize: 12 }}
+                interval="preserveStartEnd"
               />
-              <XAxis dataKey="name" axisLine={false} tickLine={false} stroke="#90EE90" />
-              <YAxis axisLine={false} tickLine={false} stroke="#90EE90" />
-              <Tooltip contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: '#fff', border: 'none' }} />
-              <Line
-                type="monotone"
-                dataKey="teamMessages"
-                stroke="#84cc16"
-                strokeWidth={3}
-                dot={true}
+              <YAxis tick={{ fontSize: 12 }} width={40} />
+              <Tooltip
+                labelFormatter={(value) => `Date: ${value}`}
+                contentStyle={{
+                  color: "#333",
+                  borderRadius: "8px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  backgroundColor: "rgba(255,255,255,0.9)",
+                }}
               />
-              <Line
-                type="monotone"
+              <Bar
+                dataKey="teamsMessages"
+                name="Teams Messages"
+                fill="#8E44AD"
+                radius={[10, 10, 0, 0]}
+              />
+              <Bar
                 dataKey="emails"
-                stroke="#3b82f6"
-                strokeWidth={3}
-                dot={true}
+                name="Emails"
+                fill="#1ABC9C"
+                radius={[10, 10, 0, 0]}
               />
-              <Line
-                type="monotone"
+              <Bar
                 dataKey="meetings"
-                stroke="#71717a"
-                strokeWidth={3}
-                dot={true}
+                name="Meetings"
+                fill="#E67E22"
+                radius={[10, 10, 0, 0]}
               />
-            </LineChart>
+            </BarChart>
           </ResponsiveContainer>
+          {/* Legend */}
           <div className="flex justify-center space-x-4 mt-2">
             <div className="flex items-center space-x-1">
               <div className="w-3 h-3 bg-lime-500 rounded-full"></div>
-              <span className="text-xs text-gray-600 dark:text-gray-300">Team Messages</span>
+              <span className="text-xs text-gray-600 dark:text-gray-300">
+                Team Messages
+              </span>
             </div>
             <div className="flex items-center space-x-1">
               <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-              <span className="text-xs text-gray-600 dark:text-gray-300">Emails</span>
+              <span className="text-xs text-gray-600 dark:text-gray-300">
+                Emails
+              </span>
             </div>
             <div className="flex items-center space-x-1">
               <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
-              <span className="text-xs text-gray-600 dark:text-gray-300">Meetings</span>
+              <span className="text-xs text-gray-600 dark:text-gray-300">
+                Meetings
+              </span>
             </div>
           </div>
         </div>
 
-        
+        {/* Inactivity Analysis */}
         <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-5 border border-gray-100 dark:border-gray-700">
-          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Inactivity Analysis</h2>
+          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">
+            Inactivity Analysis
+          </h2>
 
+          {/* Team Messages */}
           <div className="mb-4">
             <div className="flex justify-between text-sm mb-2">
               <div className="flex items-center space-x-2">
                 <div className="w-5 h-5 bg-green-500 rounded-full"></div>
-                <span className="text-gray-700 dark:text-gray-300">Team Messages</span>
+                <span className="text-gray-700 dark:text-gray-300">
+                  Team Messages
+                </span>
               </div>
-              <span className="text-gray-700 dark:text-gray-300">{result?.communication_activity?.total_activity?.teams_messages}</span>
+              <span className="text-gray-700 dark:text-gray-300">
+                {communicationActivity?.teams_messages || "N/A"} / week
+              </span>
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
               <div
-                className="bg-green-500 h-2.5 rounded-full"
-                style={{ width: "60%" }}
+                style={{
+                  width: `${
+                    result?.communication_activity?.communication_scores
+                      ?.messages_score || 0
+                  }%`,
+                  backgroundColor: "#8E44AD",
+                  height: "100%",
+                  borderRadius: "inherit",
+                }}
               ></div>
             </div>
           </div>
 
-        
+          {/* Emails Sent */}
           <div className="mb-4">
             <div className="flex justify-between text-sm mb-2">
               <div className="flex items-center space-x-2">
                 <div className="w-5 h-5 bg-blue-500 rounded-full"></div>
-                <span className="text-gray-700 dark:text-gray-300">Emails Sent</span>
+                <span className="text-gray-700 dark:text-gray-300">Emails</span>
               </div>
-              <span className="text-gray-700 dark:text-gray-300">{result?.communication_activity?.total_activity?.emails}</span>
+              <span className="text-gray-700 dark:text-gray-300">
+                {communicationActivity?.emails || "N/A"} / week
+              </span>
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
               <div
-                className="bg-blue-500 h-2.5 rounded-full"
-                style={{ width: "70%" }}
+                style={{
+                  width: `${
+                    result?.communication_activity?.communication_scores
+                      ?.emails_score || 0
+                  }%`,
+                  backgroundColor: "#1ABC9C",
+                  height: "100%",
+                  borderRadius: "inherit",
+                }}
               ></div>
             </div>
           </div>
 
-         
+          {/* Meetings Attended */}
           <div className="mb-4">
             <div className="flex justify-between text-sm mb-2">
               <div className="flex items-center space-x-2">
                 <div className="w-5 h-5 bg-gray-500 rounded-full"></div>
-                <span className="text-gray-700 dark:text-gray-300">Meetings Attended</span>
+                <span className="text-gray-700 dark:text-gray-300">Meetings</span>
               </div>
-              <span className="text-gray-700 dark:text-gray-300">{result?.communication_activity?.total_activity?.meetings}</span>
+              <span className="text-gray-700 dark:text-gray-300">
+                {communicationActivity?.meetings || "N/A"} / week
+              </span>
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
               <div
-                className="bg-gray-500 h-2.5 rounded-full"
-                style={{ width: "90%" }}
+                style={{
+                  width: `${
+                    result?.communication_activity?.communication_scores
+                      ?.meetings_score || 0
+                  }%`,
+                  backgroundColor: "#E67E22",
+                  height: "100%",
+                  borderRadius: "inherit",
+                }}
               ></div>
             </div>
           </div>

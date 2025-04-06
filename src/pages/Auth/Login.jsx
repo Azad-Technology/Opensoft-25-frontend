@@ -260,14 +260,14 @@ const AuthPage = () => {
               </button>
             </div>
 
-            <div className="flex justify-end">
+            {/* <div className="flex justify-end">
               <button
                 type="button"
                 className="text-sm text-[#00a85a] hover:text-[#00c86b] hover:underline transition-colors duration-300"
               >
                 Forgot Password?
               </button>
-            </div>
+            </div> */}
 
             <motion.button
               type="submit"

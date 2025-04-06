@@ -214,7 +214,7 @@ const Layout = ({ children }) => {
                         {user?.name}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {user?.role_type}
+                        {user?.role_type=="hr"?"Hiring Manager":"Employee"}
                       </p>
                     </div>
                     <div className="relative">
@@ -302,7 +302,7 @@ const Layout = ({ children }) => {
 
       {isAuthenticated && (
         <footer
-          className={`py-6 border-t border-green-100 dark:border-green-900/40 glass transition-all duration-300 ease-in-out ${
+          className={`py-3  border-t border-green-100 dark:border-green-900/40 glass transition-all duration-300 ease-in-out flex  ${
             sidebarExpanded ? "md:ml-64" : "md:ml-20"
           }`}
         >
@@ -314,19 +314,19 @@ const Layout = ({ children }) => {
             </div>
             <div className="mt-4 md:mt-0 flex space-x-6">
               <a
-                href="#"
+                href="https://www2.deloitte.com/us/en/footerlinks1/privacy.html"
                 className="text-gray-500 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-500 text-sm"
               >
-                Privacy Policy
+                Privacy
               </a>
               <a
-                href="#"
+                href="https://www2.deloitte.com/us/en/footerlinks1/terms-of-use.html?icid=bottom_terms-of-use"
                 className="text-gray-500 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-500 text-sm"
               >
-                Terms of Service
+                Terms of Use
               </a>
               <a
-                href="#"
+                href="/"
                 className="text-gray-500 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-500 text-sm"
               >
                 Contact Us
