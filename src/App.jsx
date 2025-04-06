@@ -29,6 +29,8 @@ import Report from "./components/EmployeeReportPdf/Report";
 import EmployeeReportPage from "./components/EmployeeReportPdf/dashPage";
 import Schedule from "./pages/schedule/myschedule"; // Updated import
 import { UserProvider } from "./contexts/UserContext";
+// import EmployeeReportGenerator from "./components/AdminEmployeePDF/EmployeeReportGenerator";
+import EmployeeReportGenerator from "./components/EmployeeReportPdf/Report";
 
 // Protected route component
 const ProtectedRoute = ({ children, allowedRoles = [] }) => {
@@ -132,9 +134,9 @@ const App = () => (
               />
 
                 <Route
-                  path="/employee/exportReport"
+                  path="/admin/exportReport/:employeeId"
                   element={
-                    <ProtectedRoute allowedRoles={["employee"]}>
+                    <ProtectedRoute allowedRoles={["hr"]}>
                       <EmployeeReportPage />
                     </ProtectedRoute>
                   }
