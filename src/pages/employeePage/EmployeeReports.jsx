@@ -23,57 +23,37 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useNavigate } from "react-router-dom";
-import { p } from "framer-motion/client";
+import { useQuery } from "@tanstack/react-query";
 
 const EmployeeReports = () => {
   const { user, token } = useAuth();
-  const { vibes, leaves, activities, recognitions, performances } = useData();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [stats, setStats] = useState(null);
-
+  // const { vibes, leaves, activities, recognitions, performances } = useData();
 
   const BASE_URL = import.meta.env.VITE_REACT_APP_URL;
 
   const navigate = useNavigate();
-  const [userActivities, setUserActivities] = useState([]);
 
-  useEffect(() => {
-    if (!token) return;
+  const {
+    data: stats, // "stats" will contain the returned JSON object
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["employeeDashboard"],
+    queryFn: async () => {
+      const response = await fetch(`${BASE_URL}/employee/dashboard/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    const fetchDashboardData = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(`${BASE_URL}/employee/dashboard/`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const contentType = response.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
-          const text = await response.text();
-          throw new Error("Expected JSON but got: " + text);
-        }
-
-        const data = await response.json();
-        // Update stats directly with the new data
-        setStats(data);
-
-      } catch (error) {
-        setError(error.message);
-        console.error("Error fetching dashboard data:", error);
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error("Failed to fetch dashboard data");
       }
-    };
+      return response.json();
+    },
+    enabled: !!token, // Only fetch if we have a valid token
+  });
 
-    fetchDashboardData();
-  }, [token, BASE_URL]);
-
-  const handleExport = () => {
-    navigate("/employee/exportReport");
-  }
-
-  if (loading) {
+  if (isLoading) {
     return (
       <Layout>
         <div className="flex flex-col items-center justify-center h-screen w-full">
@@ -112,11 +92,11 @@ const EmployeeReports = () => {
     );
   }
 
-  if (error) {
+  if (isError) {
     return (
       <Layout>
         <div className="flex items-center justify-center h-80">
-          <div className="text-red-500">Error: {error}</div>
+          <div className="text-red-500">Error: {error.message}</div>
         </div>
       </Layout>
     );
@@ -152,11 +132,7 @@ const EmployeeReports = () => {
               View detailed information about your well-being and performance
             </p>
           </div>
-          <div>
-            <button className="bg-green-700 p-2 px-5 rounded-xl text-white" onClick={handleExport}>
-              Export
-            </button>
-          </div>
+
         </div>
         {stats.is_chat_required && <ChatAlert />}
 

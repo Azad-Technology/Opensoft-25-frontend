@@ -32,7 +32,7 @@ const VibeSelector = ({ selected, onChange, className = "" }) => {
         )}
       </div>
 
-      <div className="grid grid-cols-2 gap-2 md:grid-cols-5">
+      <div className="grid grid-cols-3 gap-2 md:grid-cols-5">
         {vibes.map((vibe) => (
           <button
             key={vibe.type}
