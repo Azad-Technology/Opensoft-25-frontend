@@ -16,11 +16,10 @@ import {
   Calendar,
   AlertCircle,
   Handshake,
-  
 } from "lucide-react";
 
 const Sidebar = ({ expanded, onToggle }) => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const location = useLocation();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -56,7 +55,7 @@ const Sidebar = ({ expanded, onToggle }) => {
     {
       path: "/admin/schedule",
       label: "Schedules",
-      icon:  <Calendar size={20} />,
+      icon: <Calendar size={20} />,
     },
     {
       path: "/admin/inquiries",
@@ -91,14 +90,9 @@ const Sidebar = ({ expanded, onToggle }) => {
       label: "Help & Support",
       icon: <HelpCircle size={20} />,
     },
-    
   ];
 
   const navItems = user?.role_type === "hr" ? adminNavItems : employeeNavItems;
-
-  const handleLogout = () => {
-    logout();
-  };
 
   return (
     <>
@@ -110,7 +104,7 @@ const Sidebar = ({ expanded, onToggle }) => {
         />
       )}
 
-      <aside className={`sidebar ${!expanded ? "sidebar-collapsed" : ""}`}>
+      <aside className={`sidebar ${!expanded ? "sidebar-collapsed" : ""} z-30`}>
         <div className="flex flex-col h-full">
           {/* Logo + Toggle */}
           <div className="flex items-center justify-between p-4 border-b border-green-100/50 dark:border-green-800/30">
@@ -148,10 +142,11 @@ const Sidebar = ({ expanded, onToggle }) => {
                 <li key={item.path}>
                   <Link
                     to={item.path}
-                    className={`flex items-center ${expanded ? "justify-start px-4" : "justify-center"} py-3 rounded-lg transition-colors ${isActive(item.path)
+                    className={`flex items-center ${expanded ? "justify-start px-4" : "justify-center"} py-3 rounded-lg transition-colors ${
+                      isActive(item.path)
                         ? "bg-green-100 dark:bg-green-800/40 text-green-700 dark:text-green-300"
                         : "text-gray-600 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-green-900/30 hover:text-green-600 dark:hover:text-green-300"
-                      }`}
+                    }`}
                     title={!expanded ? item.label : undefined}
                   >
                     <span className="flex-shrink-0">{item.icon}</span>
@@ -165,7 +160,6 @@ const Sidebar = ({ expanded, onToggle }) => {
               ))}
             </ul>
           </nav>
-
         </div>
       </aside>
     </>

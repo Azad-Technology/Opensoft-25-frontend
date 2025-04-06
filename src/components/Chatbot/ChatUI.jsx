@@ -26,7 +26,18 @@ const ChatUI = ({ className = "" }) => {
   const [isTyping, setIsTyping] = useState(false);
   const [isNewChat, setIsNewChat] = useState(false);
   const [newMessage, setNewMessage] = useState("");
-  const [showSidebar, setShowSidebar] = useState(true);
+  const [showSidebar, setShowSidebar] = useState(() => {
+    // Only set it true on initial load if it's wide enough
+    return window.innerWidth >= 768;
+  });
+  useEffect(() => {
+    const handleResize = () => {
+      setShowSidebar(window.innerWidth >= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const { data: conversations = [], isLoading: isLoadingSessions } =
     useFetchSessions(token);
@@ -43,6 +54,9 @@ const ChatUI = ({ className = "" }) => {
     // Pre-populate history cache if not already present
     if (!sessionHistory.length) {
       queryClient.setQueryData(["chatHistory", session.session_id], []);
+    }
+    if (window.innerWidth < 768) {
+      setShowSidebar(false);
     }
   };
 
@@ -125,15 +139,16 @@ const ChatUI = ({ className = "" }) => {
       {/* Mobile sidebar overlay */}
       {showSidebar && (
         <div
-          className="md:hidden fixed inset-0  z-20"
+          className="md:hidden fixed inset-0 bg-black/30 z-5"
           onClick={() => setShowSidebar(false)}
         />
       )}
 
       {/* SIDEBAR */}
       <div
-        className={`${showSidebar ? "w-72" : "w-0"
-          } md:flex h-full border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-y-auto transition-all duration-300 ease-in-out shadow-lg md:shadow-none`}
+        className={`${
+          showSidebar ? "w-72" : "w-0"
+        } md:flex h-full border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-y-auto transition-all duration-300 ease-in-out shadow-lg md:shadow-none z-20 absolute md:relative`}
       >
         <div className="p-4 space-y-6 w-72">
           <div className="flex items-center justify-between mb-2">
@@ -180,11 +195,15 @@ const ChatUI = ({ className = "" }) => {
                 {conversations.map((session) => (
                   <button
                     key={session.session_id}
-                    onClick={() => handleSessionSelect(session)}
-                    className={`w-full text-left p-3 rounded-lg transition-all duration-200 ${sessionId === session.session_id
-                      ? "bg-[#DCFCE7] dark:bg-[#0F4021] text-gray-900 dark:text-gray-100"
-                      : "hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-                      }`}
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent event bubbling
+                      handleSessionSelect(session);
+                    }}
+                    className={`w-full text-left p-3 rounded-lg transition-all duration-200 ${
+                      sessionId === session.session_id
+                        ? "bg-[#DCFCE7] dark:bg-[#0F4021] text-gray-900 dark:text-gray-100"
+                        : "hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                    }`}
                   >
                     <div className="font-medium text-sm truncate flex items-center gap-2">
                       <MessageSquare
@@ -195,7 +214,8 @@ const ChatUI = ({ className = "" }) => {
                             : "text-gray-400"
                         }
                       />
-                      {session.chat_name || `Session ${session.session_id.substring(0, 8)}...`}
+                      {session.chat_name ||
+                        `Session ${session.session_id.substring(0, 8)}...`}
                     </div>
                     <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                       {new Date(session.timestamp).toLocaleDateString()}
@@ -245,7 +265,8 @@ const ChatUI = ({ className = "" }) => {
             <div>
               <h2 className="font-semibold text-gray-800 dark:text-gray-200">
                 {sessionId
-                  ? (conversations.find(s => s.session_id === sessionId)?.chat_name || "Active Conversation")
+                  ? conversations.find((s) => s.session_id === sessionId)
+                      ?.chat_name || "Active Conversation"
                   : "Chat Interface"}
               </h2>
               <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
@@ -334,70 +355,78 @@ const ChatUI = ({ className = "" }) => {
                   </p>
                 </div>
               ) : (
-                sessionHistory.map((m, idx) => (
-                  <div
-                    key={m.id || idx}
-                    className={`flex items-start ${m.role === "user" ? "justify-end" : "justify-start"} gap-2`}
-                  >
-                    {m.role !== "user" && (
-                      <div className="w-8 h-8 rounded-full bg-[#DCFCE7] dark:bg-[#0F4021] flex items-center justify-center mt-1">
-                        <Bot size={18} className="text-[#22C55E]" />
-                      </div>
-                    )}
+                sessionHistory
+                  .filter(
+                    (m) => !(m.role === "user" && m.message.trim() === ""),
+                  )
+                  .map((m, idx) => (
                     <div
-                      className={`max-w-[80%] rounded-lg p-3 ${m.role === "user"
-                        ? "bg-[#22C55E] text-white shadow-md rounded-tr-none"
-                        : "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 shadow-sm rounded-tl-none border border-gray-100 dark:border-gray-700"
-                        }`}
+                      key={m.id || idx}
+                      className={`flex items-start ${m.role === "user" ? "justify-end" : "justify-start"} gap-2`}
                     >
-                      <div className="text-sm prose prose-sm dark:prose-invert max-w-none break-words">
-                        <ReactMarkdown
-                          components={{
-                            root: ({ node, ...props }) => <div {...props} />,
-                            a: ({ node, ...props }) => (
-                              <a
-                                {...props}
-                                className="text-green-600 hover:underline"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              />
-                            ),
-                            code: ({ node, inline, ...props }) =>
-                              inline ? (
-                                <code
+                      {m.role !== "user" && (
+                        <div className="w-8 h-8 rounded-full bg-[#DCFCE7] dark:bg-[#0F4021] flex items-center justify-center mt-1">
+                          <Bot size={18} className="text-[#22C55E]" />
+                        </div>
+                      )}
+                      <div
+                        className={`max-w-[80%] rounded-lg p-3 ${
+                          m.role === "user"
+                            ? "bg-[#22C55E] text-white shadow-md rounded-tr-none"
+                            : "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 shadow-sm rounded-tl-none border border-gray-100 dark:border-gray-700"
+                        }`}
+                      >
+                        <div className="text-sm prose prose-sm dark:prose-invert max-w-none break-words">
+                          <ReactMarkdown
+                            components={{
+                              root: ({ node, ...props }) => <div {...props} />,
+                              a: ({ node, ...props }) => (
+                                <a
                                   {...props}
-                                  className="px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs"
-                                />
-                              ) : (
-                                <code
-                                  {...props}
-                                  className="block bg-gray-100 dark:bg-gray-800 p-3 rounded-md text-xs overflow-x-auto"
+                                  className="text-green-600 hover:underline"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
                                 />
                               ),
-                          }}
-                        >
-                          {m.message}
-                        </ReactMarkdown>
-                      </div>
-                      <div
-                        className={`text-right mt-1 ${m.role === "user" ? "text-green-100" : "text-gray-400"
+                              code: ({ node, inline, ...props }) =>
+                                inline ? (
+                                  <code
+                                    {...props}
+                                    className="px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs"
+                                  />
+                                ) : (
+                                  <code
+                                    {...props}
+                                    className="block bg-gray-100 dark:bg-gray-800 p-3 rounded-md text-xs overflow-x-auto"
+                                  />
+                                ),
+                            }}
+                          >
+                            {m.message}
+                          </ReactMarkdown>
+                        </div>
+                        <div
+                          className={`text-right mt-1 ${
+                            m.role === "user"
+                              ? "text-green-100"
+                              : "text-gray-400"
                           }`}
-                      >
-                        <span className="text-xs font-light">
-                          {formatTime(m.timestamp)}
-                        </span>
+                        >
+                          <span className="text-xs font-light">
+                            {formatTime(m.timestamp)}
+                          </span>
+                        </div>
                       </div>
+                      {m.role === "user" && (
+                        <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center mt-1">
+                          <UserCircle
+                            size={18}
+                            className="text-gray-600 dark:text-gray-300"
+                          />
+                        </div>
+                      )}
                     </div>
-                    {m.role === "user" && (
-                      <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center mt-1">
-                        <UserCircle
-                          size={18}
-                          className="text-gray-600 dark:text-gray-300"
-                        />
-                      </div>
-                    )}
-                  </div>
-                ))
+                  ))
               )}
               {isTyping && (
                 <div className="flex items-start justify-start gap-2">
@@ -428,10 +457,11 @@ const ChatUI = ({ className = "" }) => {
                 <button
                   onClick={handleSendMessage}
                   disabled={!newMessage.trim()}
-                  className={`p-3 rounded-full ${newMessage.trim()
-                    ? "bg-[#22C55E] text-white hover:bg-[#1EA34F] shadow-md"
-                    : "bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500"
-                    } transition-all duration-200`}
+                  className={`p-3 rounded-full ${
+                    newMessage.trim()
+                      ? "bg-[#22C55E] text-white hover:bg-[#1EA34F] shadow-md"
+                      : "bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500"
+                  } transition-all duration-200`}
                   title="Send message"
                 >
                   <Send size={20} />
