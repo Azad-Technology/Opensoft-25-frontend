@@ -191,7 +191,7 @@ const AdminEmployeeDetail = () => {
 
   return (
     <Layout>
-      <div className="page-container py-8 bg-white rounded-lg m-5 w-full shadow-2xl">
+      <div className="page-container py-8 bg-white dark:bg-gray-800 rounded-lg m-5 w-full shadow-2xl">
         <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between animate-fade-in">
           <div>
             <Link
@@ -341,9 +341,9 @@ const AdminEmployeeDetail = () => {
       <Emotion  result={result} />
        <IntentReport result={result} />
       <InteractionReports  result={result} />
-      {/* <Performance result={result} /> */}
+      <Performance result={result} />
       <LeaveAnalysis result={result} />
-      {/* <Experience  result={result} /> */}
+      <Experience  result={result} />
       </>
 }
     </Layout>

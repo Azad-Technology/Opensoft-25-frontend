@@ -24,19 +24,19 @@ const Footer = () => {
               We're committed to enhancing employee wellness through innovative, data-driven solutions that respect privacy and deliver actionable insights.
             </p>
             <div className="footer-social">
-              <a href="#" className="footer-social-link">
+              {/* <a href="#" className="footer-social-link">
                 <Facebook size={20} />
-              </a>
-              <a href="#" className="footer-social-link">
+              </a> */}
+              <a href="https://x.com/deloitteus" className="footer-social-link">
                 <Twitter size={20} />
               </a>
-              <a href="#" className="footer-social-link">
+              <a href="https://www.instagram.com/lifeatdeloitteus/" className="footer-social-link">
                 <Instagram size={20} />
               </a>
-              <a href="#" className="footer-social-link">
+              <a href="https://www.linkedin.com/company/deloitte/" className="footer-social-link">
                 <Linkedin size={20} />
               </a>
-              <a href="#" className="footer-social-link">
+              <a href="https://www.youtube.com/user/DeloitteLLP" className="footer-social-link">
                 <Youtube size={20} />
               </a>
             </div>
@@ -56,11 +56,11 @@ const Footer = () => {
           <div>
             <h3 className="footer-section-title">Legal</h3>
             <ul className="footer-links">
-              <li><Link to="/" className="footer-link">Privacy Policy</Link></li>
-              <li><Link to="/" className="footer-link">Terms of Service</Link></li>
-              <li><Link to="/" className="footer-link">Cookie Policy</Link></li>
-              <li><Link to="/" className="footer-link">GDPR Compliance</Link></li>
-              <li><Link to="/" className="footer-link">FAQs</Link></li>
+              <li><Link to="https://www2.deloitte.com/us/en/footerlinks1/privacy.html" className="footer-link">Privacy</Link></li>
+              <li><Link to="https://www2.deloitte.com/us/en/footerlinks1/terms-of-use.html?icid=bottom_terms-of-use" className="footer-link">Terms of Use</Link></li>
+              <li><Link to="https://cookienotice.deloitte.com/" className="footer-link">Cookies</Link></li>
+              <li><Link to="https://www2.deloitte.com/us/en/footerlinks1/data-privacy-framework.html?icid=bottom_data-privacy-framework" className="footer-link">Data Privacy Framework</Link></li>
+              <li><Link to="https://www2.deloitte.com/us/en/careers/life-at-deloitte.html?icid=bottom_life-at-deloitte" className="footer-link">Life at Deloitte</Link></li>
             </ul>
           </div>
           
@@ -71,7 +71,7 @@ const Footer = () => {
             </p>
             <button className="footer-chat-button">
               <MessageSquare size={16} />
-              <span>Start Live Chat</span>
+              <a href="#contact">Contact Us</a>
             </button>
           </div>
         </div>
