@@ -10,7 +10,7 @@ import {
 
 const IntentReport = ({ result }) => {
 
-  const intentData = result.intent_analysis;
+  const intentData = result?.intent_analysis;
 
     const priorityToValue = {
       High: 3,

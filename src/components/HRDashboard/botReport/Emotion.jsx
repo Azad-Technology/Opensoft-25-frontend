@@ -11,16 +11,8 @@ import {
 
 const Emotion = ({ result }) => {
   console.log("result in emotion" , result);
-  const dataToAnalyze = result?.post_chat_analysis?.wellbeing_analysis?.component_breakdown;
+  const dataToAnalyze = result?.chat_analysis?.wellbeing_analysis?.component_breakdown;
   console.log("dataToAnalyse" , dataToAnalyze);
-  const emotionalStateData = [
-    { dimension: "Happy", value: 75, fullMark: 100 },
-    { dimension: "Satisfied", value: 65, fullMark: 100 },
-    { dimension: "Motivated", value: 60, fullMark: 100 },
-    { dimension: "Stressed", value: 30, fullMark: 100 },
-    { dimension: "Tired", value: 40, fullMark: 100 },
-    { dimension: "Frustrated", value: 25, fullMark: 100 },
-  ];
 
   let getMainWord = (word) => {
     let mainWord ="";
