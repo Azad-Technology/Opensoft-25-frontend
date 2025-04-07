@@ -1,35 +1,112 @@
-# Opensoft'25 Frontend
+# VibeCatcher: AI-Powered Employee Well-being Platform
 
-This is the frontend service for Opensoft'25 application. It is built using React.js, TailwindCSS, Vite.js etc.
+## 🎯 Overview
 
-## Table of Contents
+VibeCatcher's frontend provides an intuitive interface for employee well-being monitoring and support. Built with React + Vite, it offers real-time mood tracking, AI-powered chat support, and comprehensive analytics dashboards.
 
--   [Installation](#installation)
--   [Scripts](#scripts)
+<!-- First row of images -->
+<p align="center">
+  <img src="assets/dashboard-overview.png" width="48%" />
+  &nbsp; &nbsp;
+  <img src="assets/chat-interface.png" width="48%" />
+</p>
 
-## Installation
+<!-- Adding vertical space -->
+<br>
 
-1. Clone the repository:
+<!-- Second row of images -->
+<p align="center">
+  <img src="assets/analytics-dashboard.png" width="48%" />
+  &nbsp; &nbsp;
+  <img src="assets/mentor-portal.png" width="48%" />
+</p>
 
-    ```sh
-    git clone https://github.com/Chaquen-fantasy-sports/chaquen-backend.git
-    cd opensoft-25-frontend
-    ```
+## 🚀 Quick Setup
 
-2. Install the dependencies:
+### Prerequisites
 
-    ```sh
-    npm install
-    ```
+- Node.js 18+
+- npm/yarn/pnpm
 
-3. Create a `.env` file in the root directory and add the necessary environment variables. You can use the `.env.example` file as a reference.
+### Environment Setup
 
-## Scripts
+Create `.env` file:
 
-Here are some useful scripts you can run:
+```env
+VITE_API_URL=your_backend_url
+VITE_WEBSOCKET_URL=your_websocket_url
+VITE_AUTH_KEY=your_auth_key
+```
 
--   `npm run format`: Format the codebase using Prettier.
--   `npm run format:check`: Check the code formatting.
--   `npm run build`: Build the project.
--   `npm run dev`: Start the server in development mode with hot-reloading.
--   `npm run lint`: Lint the codebase using ESLint.   
+### Installation
+
+```bash
+# Using npm
+npm install
+npm run dev
+
+# Using yarn
+yarn
+yarn dev
+
+# Using pnpm
+pnpm install
+pnpm dev
+```
+
+### Docker Deployment
+
+```bash
+docker compose up --build -d
+docker compose ps
+docker compose logs -f
+```
+
+## 📁 Project Structure
+
+```
+src/
+├── assets/              # Static files
+├── components/          # Reusable components
+│   ├── common/         # Shared components
+│   ├── dashboard/      # Dashboard components
+│   └── chat/          # Chat interface components
+├── pages/              # Page components
+├── context/            # React context
+├── hooks/              # Custom hooks
+├── services/           # API services
+├── store/              # State management
+├── styles/             # Global styles
+└── utils/              # Helper functions
+```
+
+## 🎨 Features
+
+### Employee Dashboard
+- Real-time mood tracking
+- Performance metrics visualization
+- Leave management interface
+- Activity monitoring
+
+### Chat Interface
+- AI-powered conversation
+- Real-time message updates
+- Emoji support
+
+### Analytics Dashboard
+- Comprehensive well-being metrics
+- Team performance tracking
+- Trend analysis
+- Custom report generation
+
+### Mentor Portal
+- Case management
+- Employee progress tracking
+- Communication tools
+- Resource management
+
+## 🔐 Security Features
+
+- JWT authentication
+- Role-based access control
+- API request encryption
