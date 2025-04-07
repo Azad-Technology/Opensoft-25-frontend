@@ -105,7 +105,7 @@ const AdminReports = () => {
         vibeFilter === "all" || (employee.current_vibe && getVibe(employee.current_vibe.score).name === vibeFilter);
 
       const matchesRisk =
-        riskFilter === "all" || (getRisk(employee.risk_assessment) === riskFilter);
+        riskFilter === "all" || (getRisk(employee.risk_assessment).name === riskFilter);
 
       return matchesSearch && matchesVibe && matchesRisk;
     });

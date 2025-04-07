@@ -7,7 +7,7 @@ import "./HeroSection.css";
 const HeroSection = () => {
   const { user } = useAuth();
   return (
-    <section className="hero-section">
+    <section className="hero-section" id="hero">
       <div className="hero-overlay"></div>
       
       <div className="hero-pattern">

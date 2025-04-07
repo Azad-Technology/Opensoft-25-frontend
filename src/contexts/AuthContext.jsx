@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
       const parsed = JSON.parse(stored);
       const currentTime = Date.now();
       if (parsed.expiration && currentTime > parsed.expiration) {
-        localStorage.removeItem("auth"); // Expired, clean up
+        localStorage.removeItem("auth");
       } else {
         setUser(parsed.user);
         setToken(parsed.access_token);
@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
       const path = location.pathname;
 
       if (user) {
-        if (["/login", "/signup"].includes(path)) {
+        if (["/login"].includes(path)) {
           const redirectPath =
             user.role_type === "hr"
               ? "/admin/dashboard"
@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }) => {
         const isProtected =
           path.startsWith("/admin") || path.startsWith("/employee");
 
-        if (isProtected && !["/login", "/signup"].includes(path)) {
+        if (isProtected && !["/login"].includes(path)) {
           navigate("/login");
         }
       }

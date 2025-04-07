@@ -9,7 +9,6 @@ import { queryClient } from "./services/react-query-client";
 
 // Pages
 import Login from "./pages/Auth/Login";
-import Signup from "./pages/Auth/Signup";
 import BlogPage from "./pages/blogPage/BlogPage";
 import BlogDetail from "./pages/blogPage/BlogDetail"
 import EmployeeDashboard from "./pages/employeePage/EmployeeDashboard";
@@ -33,6 +32,7 @@ import Schedule from "./pages/schedule/myschedule"; // Updated import
 import { UserProvider } from "./contexts/UserContext";
 // import EmployeeReportGenerator from "./components/AdminEmployeePDF/EmployeeReportGenerator";
 import EmployeeReportGenerator from "./components/EmployeeReportPdf/Report";
+import { ReportProvider } from "./contexts/ReportContext";
 
 // Protected route component
 const ProtectedRoute = ({ children, allowedRoles = [] }) => {
@@ -76,13 +76,13 @@ const App = () => (
         <AuthProvider>
           <DataProvider>
             <UserProvider>
+              <ReportProvider>
               <Sonner />
               <Routes>
                 {/* Public routes */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/blog" element={<BlogPage />} />
                 <Route path="/blog/:blogId" element={<BlogDetail />} />
-                {/* <Route path="/signup" element={<Signup />} /> */}
                 <Route path="/" element={<Home />} />
 
                 {/* Protected Employee routes */}
@@ -213,12 +213,9 @@ const App = () => (
                   }
                 />
 
-                {/* Default route */}
-                {/* <Route path="/" element={<Index />} /> */}
-
-                {/* 404 catch-all */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
+              </ReportProvider>
             </UserProvider>
           </DataProvider>
         </AuthProvider>

@@ -35,6 +35,7 @@ import {
 } from "recharts";
 import { useAuth } from "../../contexts/AuthContext";
 import IntentReport from "../../components/HRDashboard/botReport/IntentReport";
+import { useReport } from "../../contexts/ReportContext";
 
 const AdminEmployeeDetail = () => {
   const { employeeId } = useParams();
@@ -49,6 +50,7 @@ const AdminEmployeeDetail = () => {
   const [employeePerformance, setEmployeePerformance] = useState(null);
   const [employeeOnboarding, setEmployeeOnboarding] = useState(null);
   const [employeeChatSessions, setEmployeeChatSessions] = useState([]);
+  const { resultSummary, setResultSummary } = useReport()
   const employeeData = async () => {
     try {
       const response = await fetch(`${VITE_REACT_APP_URL}/admin/${employeeId}/summary`,
@@ -63,6 +65,7 @@ const AdminEmployeeDetail = () => {
 
       const resultData = await response.json();
       setResult(resultData);
+      setResultSummary(resultData)
 
       if (resultData?.employee_info?.employee_id) {
         setEmployee(resultData?.employee_info?.employee_id);
@@ -130,6 +133,7 @@ const AdminEmployeeDetail = () => {
     }
   };
 
+  console.log("Result Summary", resultSummary)
 
   useEffect(() => {
     employeeData()
@@ -138,11 +142,36 @@ const AdminEmployeeDetail = () => {
   if (!employee) {
     return (
       <Layout>
-        <div className="page-container py-8">
-          <div className="text-center py-16">
-            <p className="text-muted-foreground">
-              Loading...
-            </p>
+        <div className="flex flex-col items-center justify-center h-screen w-full">
+          <div className="flex flex-col items-center justify-center">
+            <div className="relative h-20 w-20">
+              {/* Pulse animation around the spinner */}
+              <span className="absolute inset-0 rounded-full animate-ping opacity-20 bg-emerald-500"></span>
+
+              {/* Main spinner with nice transition effect */}
+              <svg className="absolute inset-0 animate-spin" viewBox="0 0 50 50">
+                <circle
+                  cx="25"
+                  cy="25"
+                  r="20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  className="text-emerald-500"
+                  strokeDasharray="80"
+                  strokeDashoffset="60"
+                />
+              </svg>
+            </div>
+
+            {/* Text with subtle fade-in animation */}
+            <div className="mt-6 text-xl font-medium text-gray-800 dark:text-gray-100 animate-fadeIn">
+              Loading
+            </div>
+            <div className="text-sm text-gray-500 dark:text-gray-400 animate-pulse">
+              Just a moment
+            </div>
           </div>
         </div>
       </Layout>
@@ -189,7 +218,7 @@ const AdminEmployeeDetail = () => {
 
   return (
     <Layout>
-      <div className="page-container py-8 bg-white dark:bg-gray-800 rounded-lg m-5 w-full shadow-2xl">
+      <div className="page-container  py-8 bg-white dark:bg-gray-800 rounded-lg w-full shadow-2xl">
         <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between animate-fade-in">
           <div>
             <div className="flex flex-col mb-2 justify-between">
@@ -210,7 +239,19 @@ const AdminEmployeeDetail = () => {
             <h1 className="page-header mb-2">{result?.employee_info?.name}</h1>
             <div className="flex flex-wrap items-center gap-2">
               <p className="text-muted-foreground">ID: {result?.employee_info?.employee_id}</p>
-              <span>{getRisk(result?.current_state?.risk_assessment)}</span>
+              <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          result?.current_state?.risk_assessment === 1
+                            ? "bg-blue-500"
+                            : result?.current_state?.risk_assessment === 2
+                            ? "bg-green-400"
+                            : result?.current_state?.risk_assessment === 3
+                            ? "bg-yellow-400"
+                            : result?.current_state?.risk_assessment === 4
+                            ? "bg-orange-400"
+                            : result?.current_state?.risk_assessment === 5
+                            ? "bg-red-500"
+                            : "bg-gray-400"
+                        }`}>{getRisk(result?.current_state?.risk_assessment)}</span>
             </div>
           </div>
         </div>
@@ -275,7 +316,19 @@ const AdminEmployeeDetail = () => {
                 </div>
                 {result?.current_state?.vibe_score ? (
                   <div className="flex items-center space-x-2">
-                    <span className="text-sm">
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          result?.current_state?.vibe_score === 5
+                            ? "bg-blue-500"
+                            : result?.current_state?.vibe_score === 4
+                            ? "bg-green-400"
+                            : result?.current_state?.vibe_score === 3
+                            ? "bg-yellow-400"
+                            : result?.current_state?.vibe_score === 2
+                            ? "bg-orange-400"
+                            : result?.current_state?.vibe_score === 1
+                            ? "bg-red-500"
+                            : "bg-gray-400"
+                        }`}>
                       {getVibe(result?.current_state?.vibe_score)}
                     </span>
                   </div>
@@ -289,7 +342,20 @@ const AdminEmployeeDetail = () => {
                 <div className="text-sm text-muted-foreground">
                   Risk Assessment
                 </div>
-                <div>{getRisk(result?.current_state?.risk_assessment)}</div>
+                <div>
+                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          result?.current_state?.risk_assessment === 1
+                            ? "bg-blue-500"
+                            : result?.current_state?.risk_assessment === 2
+                            ? "bg-green-400"
+                            : result?.current_state?.risk_assessment === 3
+                            ? "bg-yellow-400"
+                            : result?.current_state?.risk_assessment === 4
+                            ? "bg-orange-400"
+                            : result?.current_state?.risk_assessment === 5
+                            ? "bg-red-500"
+                            : "bg-gray-400"
+                        }`}>{getRisk(result?.current_state?.risk_assessment)}</span></div>
               </div>
 
               <div className="space-y-2">
