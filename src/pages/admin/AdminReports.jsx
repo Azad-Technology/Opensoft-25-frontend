@@ -361,7 +361,7 @@ const AdminReports = () => {
                     const totalPages = Math.ceil((filteredEmployees?.length || 0) / postsPerPage);
                     const pageNumbers = [];
                     
-                    // Always show first page
+                    
                     if (totalPages > 0) {
                       if (currentPage > 3) {
                         pageNumbers.push(
@@ -384,7 +384,7 @@ const AdminReports = () => {
                       }
                     }
                     
-                    // Current page neighborhood
+                   
                     for (let i = Math.max(1, currentPage - 1); i <= Math.min(totalPages, currentPage + 1); i++) {
                       pageNumbers.push(
                         <button
@@ -401,7 +401,7 @@ const AdminReports = () => {
                       );
                     }
                     
-                    // Always show last page
+                   
                     if (totalPages > 0) {
                       if (currentPage < totalPages - 2) {
                         if (currentPage < totalPages - 3) {
