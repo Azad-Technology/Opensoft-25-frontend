@@ -85,7 +85,6 @@ export default function Schedule() {
 
     setLoading(true);
     setApiError(null);
-    console.log(currentDate.getMonth())
     try {
       const formattedDate = formatDateForApi(currentDate);
       const response = await fetch(
@@ -123,11 +122,9 @@ export default function Schedule() {
 
   // Function to delete an event
   const deleteEvent = async (id) => {
-    console.log(id)
     if (!id) return;
 
     const token = getToken();
-    console.log(token)
     if (!token) return;
     setIsEventDetailsOpen(false);
     try {
@@ -258,7 +255,6 @@ export default function Schedule() {
       }
 
       const result = await response.json();
-      console.log('Schedule added successfully:', result);
       toast.success('Schedule added successfully')
 
       // Refresh the events after adding a new one
@@ -272,7 +268,6 @@ export default function Schedule() {
   // Get events for a specific day - FIXED FUNCTION
   const getEventsForDay = (day, month, year) => {
     if (!events || !Array.isArray(events)) return [];
-
     return events.filter((event) => {
       if (!event.date) return false;
 
@@ -442,7 +437,6 @@ export default function Schedule() {
               {isOtherMonth ? `${displayMonth} ${day}` : day}
             </span>
           </div>
-
           {/* Events */}
           <div className="px-1">
             {dayEvents?.map((event) => (
@@ -554,7 +548,7 @@ export default function Schedule() {
           <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div
               className={cn(
-                "rounded-xl shadow-2xl w-full max-w-md transition-all duration-200 ease-in-out transform neo-glass",             
+                "rounded-xl shadow-2xl w-full max-w-md transition-all duration-200 ease-in-out transform neo-glass",
               )}
             >
               <div className="flex justify-between items-center p-5 m-3 border-b border-opacity-20 border-current">

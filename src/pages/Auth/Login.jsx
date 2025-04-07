@@ -4,12 +4,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Eye,
   EyeOff,
-  Users,
   Lock,
   Mail,
-  Shield,
   ArrowRight,
-  Briefcase,
+  Activity,
+  BarChart,
+  HeartHandshake,
 } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { toast } from "sonner";
@@ -17,21 +17,22 @@ import { ArrowLeft } from "lucide-react";
 
 const SliderContent = [
   {
-    icon: Briefcase,
-    title: "Welcome to Deloitte Connect",
-    description: "Sign in to access your personalized dashboard, resources, and exclusive insights.",
+    icon: Activity,
+    title: "Welcome to Vibe Catcher",
+    description: "Gain meaningful insights into employee sentiment to foster a healthier, more engaged workplace.",
   },
   {
-    icon: Shield,
-    title: "Enterprise Security",
-    description: "Benefit from robust, enterprise‑grade security designed to protect your professional data.",
+    icon: BarChart,
+    title: "Real-Time Mood Analytics",
+    description: "Track organizational mood trends with intuitive dashboards that help identify challenges and opportunities early.",
   },
   {
-    icon: Users,
-    title: "Empowering Collaboration",
-    description: "Join a global network of professionals and leverage innovative tools to drive success.",
+    icon: HeartHandshake,
+    title: "Empowering Employee Wellbeing",
+    description: "Promote a culture of care by listening proactively and taking action to support mental and emotional health.",
   },
 ];
+
 
 const AuthPage = () => {
   const [isLoading, setIsLoading] = useState(false);

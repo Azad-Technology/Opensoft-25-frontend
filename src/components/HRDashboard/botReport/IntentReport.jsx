@@ -8,8 +8,10 @@ import {
   Tooltip,
   ResponsiveContainer,
   Cell,
+  Legend
 } from "recharts";
 import { Info } from "lucide-react";
+import { a } from "framer-motion/client";
 
 const IntentReport = ({ result }) => {
   const intentData = result?.intent_analysis || {
@@ -106,12 +108,15 @@ const IntentReport = ({ result }) => {
                       domain={[0, 3]}
                       tick={{ fontSize: 12 }}
                     />
+                    console.log(graphData)
+                    <XAxis dataKey="tag" fontSize={12}/>
                     <Tooltip content={<CustomTooltip />} />
                     <Bar dataKey="value">
                       {graphData.map((entry, index) => (
                         <Cell key={index} fill={getColor(entry.priority)} />
                       ))}
                     </Bar>
+                    <Legend payload={[{value: 'High', type: 'square', color:'#EF4444'},{value: 'Medium', type: 'square', color:'#F59E0B'},{value: 'Low', type: 'square', color:'#10B981'}]} />
                   </BarChart>
                 </ResponsiveContainer>
               ) : (
