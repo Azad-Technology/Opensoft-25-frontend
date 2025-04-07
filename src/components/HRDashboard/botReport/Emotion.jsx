@@ -116,24 +116,25 @@ const Emotion = ({ result }) => {
               <div className="h-96 w-full flex items-center justify-center" ref={chartRef}>
                 <ResponsiveContainer width="100%" height="100%">
                   <RadarChart cx="50%" cy="50%" outerRadius="85%" data={wellbeingData}>
-                    <PolarGrid stroke="#03C03C" />
+                    <PolarGrid stroke="#01601E" />
                     <PolarAngleAxis
                       dataKey="dimension"
                       tick={{ fontSize: 12, fill: "#03C03C" }}
+                      
                     />
                     <PolarRadiusAxis
                       angle={90}
                       domain={[0, 30]}
                       tickCount={7}
                       tick={{ fontSize: 10 }}
-                      stroke="#03C03C"
+                      stroke="#02862A"
                     />
                     <Radar
                       name="Wellbeing Score"
                       dataKey="value"
                       stroke="green"
                       fill="#8884d8"
-                      fillOpacity={0.6}
+                      fillOpacity={0.8}
                     />
                     <Tooltip
                       formatter={(value, name, props) => [`Score: ${value}`, props.payload.dimension]}
