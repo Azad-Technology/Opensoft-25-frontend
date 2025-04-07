@@ -239,7 +239,19 @@ const AdminEmployeeDetail = () => {
             <h1 className="page-header mb-2">{result?.employee_info?.name}</h1>
             <div className="flex flex-wrap items-center gap-2">
               <p className="text-muted-foreground">ID: {result?.employee_info?.employee_id}</p>
-              <span>{getRisk(result?.current_state?.risk_assessment)}</span>
+              <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          result?.current_state?.risk_assessment === 1
+                            ? "bg-blue-500"
+                            : result?.current_state?.risk_assessment === 2
+                            ? "bg-green-400"
+                            : result?.current_state?.risk_assessment === 3
+                            ? "bg-yellow-400"
+                            : result?.current_state?.risk_assessment === 4
+                            ? "bg-orange-400"
+                            : result?.current_state?.risk_assessment === 5
+                            ? "bg-red-500"
+                            : "bg-gray-400"
+                        }`}>{getRisk(result?.current_state?.risk_assessment)}</span>
             </div>
           </div>
         </div>
@@ -304,7 +316,19 @@ const AdminEmployeeDetail = () => {
                 </div>
                 {result?.current_state?.vibe_score ? (
                   <div className="flex items-center space-x-2">
-                    <span className="text-sm">
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          result?.current_state?.vibe_score === 5
+                            ? "bg-blue-500"
+                            : result?.current_state?.vibe_score === 4
+                            ? "bg-green-400"
+                            : result?.current_state?.vibe_score === 3
+                            ? "bg-yellow-400"
+                            : result?.current_state?.vibe_score === 2
+                            ? "bg-orange-400"
+                            : result?.current_state?.vibe_score === 1
+                            ? "bg-red-500"
+                            : "bg-gray-400"
+                        }`}>
                       {getVibe(result?.current_state?.vibe_score)}
                     </span>
                   </div>
@@ -318,7 +342,20 @@ const AdminEmployeeDetail = () => {
                 <div className="text-sm text-muted-foreground">
                   Risk Assessment
                 </div>
-                <div>{getRisk(result?.current_state?.risk_assessment)}</div>
+                <div>
+                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          result?.current_state?.risk_assessment === 1
+                            ? "bg-blue-500"
+                            : result?.current_state?.risk_assessment === 2
+                            ? "bg-green-400"
+                            : result?.current_state?.risk_assessment === 3
+                            ? "bg-yellow-400"
+                            : result?.current_state?.risk_assessment === 4
+                            ? "bg-orange-400"
+                            : result?.current_state?.risk_assessment === 5
+                            ? "bg-red-500"
+                            : "bg-gray-400"
+                        }`}>{getRisk(result?.current_state?.risk_assessment)}</span></div>
               </div>
 
               <div className="space-y-2">
