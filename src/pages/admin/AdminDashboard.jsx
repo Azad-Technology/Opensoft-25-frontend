@@ -200,7 +200,7 @@ const AdminDashboard = () => {
       <div className="relative bg-gray-50 dark:bg-gray-900 min-h-screen pb-4">
         <div className="py-6 px-6 md:px-10">
           <div className="mb-8 animate-fade-in">
-            <h1 className="page-header mb-2 text-gray-800 dark:text-gray-100">Admin Dashboard</h1>
+            <h1 className="page-header mb-2 text-gray-800 dark:text-gray-100">HR Dashboard</h1>
             <p className="text-muted-foreground dark:text-gray-400">
               Monitor employee well-being and engagement across the organization
             </p>

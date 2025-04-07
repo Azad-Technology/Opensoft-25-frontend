@@ -33,6 +33,7 @@ import Schedule from "./pages/schedule/myschedule"; // Updated import
 import { UserProvider } from "./contexts/UserContext";
 // import EmployeeReportGenerator from "./components/AdminEmployeePDF/EmployeeReportGenerator";
 import EmployeeReportGenerator from "./components/EmployeeReportPdf/Report";
+import { ReportProvider } from "./contexts/ReportContext";
 
 // Protected route component
 const ProtectedRoute = ({ children, allowedRoles = [] }) => {
@@ -76,6 +77,7 @@ const App = () => (
         <AuthProvider>
           <DataProvider>
             <UserProvider>
+              <ReportProvider>
               <Sonner />
               <Routes>
                 {/* Public routes */}
@@ -219,6 +221,7 @@ const App = () => (
                 {/* 404 catch-all */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
+              </ReportProvider>
             </UserProvider>
           </DataProvider>
         </AuthProvider>
