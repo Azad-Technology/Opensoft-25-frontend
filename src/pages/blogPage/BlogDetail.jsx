@@ -9,6 +9,13 @@ const BlogPage = () => {
   const navigate = useNavigate();
   const blog = content.find((blog) => blog.id === blogId);
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'instant'
+    })
+  }, []);
+
   return (
     <>
       <div className="relative flex flex-col min-h-screen bg-white p-4">
@@ -16,14 +23,18 @@ const BlogPage = () => {
           <Navbar />
           <article className="blog-article">
             <hr className="mb-6" />
-            <Link to="/blog" className="inline-flex items-center mb-6 text-gray-600 hover:text-primary transition-colors">
-              <svg className="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="19" y1="12" x2="5" y2="12"></line>
-                <polyline points="12 19 5 12 12 5"></polyline>
-              </svg>
-              Back
-            </Link>
-            <h1>{blog.title}</h1>
+            <div className="flex items-center justify-between mb-6">
+              <h1 className="text-2xl font-bold text-primary">
+                {blog.title}
+              </h1>
+              <Link to="/blog" className="inline-flex text-lg items-center text-gray-600 hover:text-primary transition-colors pb-6 pr-4">
+                <svg className="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="19" y1="12" x2="5" y2="12"></line>
+                  <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back
+              </Link>
+            </div>
 
             <div className="key-takeaways">
               <h3>Key Takeaways</h3>

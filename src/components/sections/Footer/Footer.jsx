@@ -24,9 +24,6 @@ const Footer = () => {
               We're committed to enhancing employee wellness through innovative, data-driven solutions that respect privacy and deliver actionable insights.
             </p>
             <div className="footer-social">
-              {/* <a href="#" className="footer-social-link">
-                <Facebook size={20} />
-              </a> */}
               <a href="https://x.com/deloitteus" className="footer-social-link">
                 <Twitter size={20} />
               </a>
@@ -45,11 +42,11 @@ const Footer = () => {
           <div>
             <h3 className="footer-section-title">Quick Links</h3>
             <ul className="footer-links">
-              <li><Link to="/" className="footer-link">Home</Link></li>
-              <li><Link to="/" className="footer-link">About Us</Link></li>
-              <li><Link to="/" className="footer-link">Services</Link></li>
+              <li><a href="#hero" className="footer-link">Home</a></li>
+              <li><a href="#benefits" className="footer-link">Benefits</a></li>
+              <li><a href="#about" className="footer-link">About Us</a></li>
+              <li><a href="#contact" className="footer-link">Contact</a></li>
               <li><Link to="/blog" className="footer-link">Blog</Link></li>
-              <li><Link to="/" className="footer-link">Contact</Link></li>
             </ul>
           </div>
           
@@ -62,17 +59,6 @@ const Footer = () => {
               <li><Link to="https://www2.deloitte.com/us/en/footerlinks1/data-privacy-framework.html?icid=bottom_data-privacy-framework" className="footer-link">Data Privacy Framework</Link></li>
               <li><Link to="https://www2.deloitte.com/us/en/careers/life-at-deloitte.html?icid=bottom_life-at-deloitte" className="footer-link">Life at Deloitte</Link></li>
             </ul>
-          </div>
-          
-          <div>
-            <h3 className="footer-section-title">Contact Us</h3>
-            <p className="footer-contact-text">
-              Have questions or need assistance? Reach out to our support team.
-            </p>
-            <button className="footer-chat-button">
-              <MessageSquare size={16} />
-              <a href="#contact">Contact Us</a>
-            </button>
           </div>
         </div>
         

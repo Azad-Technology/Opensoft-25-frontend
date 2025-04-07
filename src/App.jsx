@@ -9,7 +9,6 @@ import { queryClient } from "./services/react-query-client";
 
 // Pages
 import Login from "./pages/Auth/Login";
-import Signup from "./pages/Auth/Signup";
 import BlogPage from "./pages/blogPage/BlogPage";
 import BlogDetail from "./pages/blogPage/BlogDetail"
 import EmployeeDashboard from "./pages/employeePage/EmployeeDashboard";
@@ -84,7 +83,6 @@ const App = () => (
                 <Route path="/login" element={<Login />} />
                 <Route path="/blog" element={<BlogPage />} />
                 <Route path="/blog/:blogId" element={<BlogDetail />} />
-                {/* <Route path="/signup" element={<Signup />} /> */}
                 <Route path="/" element={<Home />} />
 
                 {/* Protected Employee routes */}
@@ -215,10 +213,6 @@ const App = () => (
                   }
                 />
 
-                {/* Default route */}
-                {/* <Route path="/" element={<Index />} /> */}
-
-                {/* 404 catch-all */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
               </ReportProvider>
