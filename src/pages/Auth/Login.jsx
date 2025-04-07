@@ -4,11 +4,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Eye,
   EyeOff,
+  Users,
   Lock,
   Mail,
-  User,
+  Shield,
   ArrowRight,
-  Layers,
+  Briefcase,
 } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { toast } from "sonner";
@@ -16,19 +17,19 @@ import { ArrowLeft } from "lucide-react";
 
 const SliderContent = [
   {
-    icon: Layers,
-    title: "Secure Authentication",
-    description: "Advanced security features to protect your account",
+    icon: Briefcase,
+    title: "Welcome to Deloitte Connect",
+    description: "Sign in to access your personalized dashboard, resources, and exclusive insights.",
   },
   {
-    icon: User,
-    title: "Easy Access",
-    description: "Simple and intuitive user experience",
+    icon: Shield,
+    title: "Enterprise Security",
+    description: "Benefit from robust, enterprise‑grade security designed to protect your professional data.",
   },
   {
-    icon: Lock,
-    title: "Privacy First",
-    description: "Your data is always protected",
+    icon: Users,
+    title: "Empowering Collaboration",
+    description: "Join a global network of professionals and leverage innovative tools to drive success.",
   },
 ];
 
@@ -68,7 +69,7 @@ const AuthPage = () => {
       const res = await response.json();
 
       if (res.access_token) {
-        const expiresIn = 24 * 60 * 60 * 1000; // 24 hours
+        const expiresIn = 24 * 60 * 60 * 1000;
         const expirationTime = new Date().getTime() + expiresIn;
 
         const tokenData = {
@@ -78,7 +79,7 @@ const AuthPage = () => {
         };
 
         localStorage.setItem("auth", JSON.stringify(tokenData));
-        await login(res.user, res.access_token); // Set user in context
+        await login(res.user, res.access_token);
         toast.success("Login successful!");
       } else {
         toast.error("Invalid email or password. Please try again.");
@@ -259,15 +260,6 @@ const AuthPage = () => {
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
-
-            {/* <div className="flex justify-end">
-              <button
-                type="button"
-                className="text-sm text-[#00a85a] hover:text-[#00c86b] hover:underline transition-colors duration-300"
-              >
-                Forgot Password?
-              </button>
-            </div> */}
 
             <motion.button
               type="submit"
