@@ -1,4 +1,3 @@
-
 import React, { useRef } from "react";
 import {
   RadarChart,
@@ -9,11 +8,12 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import FileSaver from 'file-saver';
+import FileSaver from "file-saver";
 
 const Emotion = ({ result }) => {
-  const dataToAnalyze = result?.chat_analysis?.wellbeing_analysis?.component_breakdown || {};
-  const chartRef = useRef(null)
+  const dataToAnalyze =
+    result?.chat_analysis?.wellbeing_analysis?.component_breakdown || {};
+  const chartRef = useRef(null);
 
   const rechartToSvg = async (chartRef) => {
     try {
@@ -25,7 +25,7 @@ const Emotion = ({ result }) => {
       }
 
       // Find the SVG element within the Recharts component
-      const chartSvg = chartContainer.querySelector('svg');
+      const chartSvg = chartContainer.querySelector("svg");
 
       if (!chartSvg) {
         throw new Error("SVG element not found in the chart");
@@ -39,7 +39,9 @@ const Emotion = ({ result }) => {
       const svgString = serializer.serializeToString(svgClone);
 
       // Create a Blob from the SVG string
-      const svgBlob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
+      const svgBlob = new Blob([svgString], {
+        type: "image/svg+xml;charset=utf-8",
+      });
 
       // Create a URL for the Blob
       const svgUrl = URL.createObjectURL(svgBlob);
@@ -48,7 +50,7 @@ const Emotion = ({ result }) => {
         svgElement: svgClone,
         svgString: svgString,
         svgBlob: svgBlob,
-        svgUrl: svgUrl
+        svgUrl: svgUrl,
       };
     } catch (error) {
       console.error("Error converting Recharts to SVG:", error);
@@ -64,7 +66,6 @@ const Emotion = ({ result }) => {
       FileSaver.saveAs(svgData.svgBlob, "chart.svg");
     }
   };
-
 
   const getMainWord = (word) => {
     if (!word) return "Unknown";
@@ -102,25 +103,35 @@ const Emotion = ({ result }) => {
     });
   }
 
-  
   return (
     <div className="p-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Radar Chart */}
         <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-5 border border-gray-100 dark:border-gray-700">
-          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Wellbeing Analysis</h2>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">Based on bot interactions</p>
+          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">
+            Wellbeing Analysis
+          </h2>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+            Based on bot interactions
+          </p>
 
           {wellbeingData.length > 0 ? (
             <>
-              <div className="h-96 w-full flex items-center justify-center" ref={chartRef}>
+              <div
+                className="h-96 w-full flex items-center justify-center"
+                ref={chartRef}
+              >
                 <ResponsiveContainer width="100%" height="100%">
-                  <RadarChart cx="50%" cy="50%" outerRadius="85%" data={wellbeingData}>
+                  <RadarChart
+                    cx="50%"
+                    cy="50%"
+                    outerRadius="85%"
+                    data={wellbeingData}
+                  >
                     <PolarGrid stroke="#01601E" />
                     <PolarAngleAxis
                       dataKey="dimension"
                       tick={{ fontSize: 12, fill: "#03C03C" }}
-                      
                     />
                     <PolarRadiusAxis
                       angle={90}
@@ -137,7 +148,10 @@ const Emotion = ({ result }) => {
                       fillOpacity={0.8}
                     />
                     <Tooltip
-                      formatter={(value, name, props) => [`Score: ${value}`, props.payload.dimension]}
+                      formatter={(value, name, props) => [
+                        `Score: ${value}`,
+                        props.payload.dimension,
+                      ]}
                       contentStyle={{
                         backgroundColor: "rgba(0, 0, 0, 0.85)",
                         color: "#fff",
@@ -169,14 +183,18 @@ const Emotion = ({ result }) => {
 
         {/* Insights */}
         <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-5 border border-gray-100 dark:border-gray-700">
-          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Wellbeing Inferences</h2>
+          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">
+            Wellbeing Inferences
+          </h2>
           <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
             Based on natural language processing of bot conversations, the
             following inferences were detected.
           </p>
 
           <div className="space-y-2">
-            <h3 className="text-md font-semibold mb-2 text-gray-700 dark:text-gray-200">Key Insights</h3>
+            <h3 className="text-md font-semibold mb-2 text-gray-700 dark:text-gray-200">
+              Key Insights
+            </h3>
 
             {keyInsights.length > 0 ? (
               keyInsights.map((insight, index) => (
@@ -191,7 +209,9 @@ const Emotion = ({ result }) => {
                     <span className="inline-block px-2 py-0.5 text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100 rounded-md mb-1">
                       {insight.tag}
                     </span>
-                    <p className="text-sm text-gray-700 dark:text-gray-300">{insight.summary}</p>
+                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                      {insight.summary}
+                    </p>
                   </div>
                 </div>
               ))
@@ -208,4 +228,3 @@ const Emotion = ({ result }) => {
 };
 
 export default Emotion;
-

@@ -100,7 +100,7 @@ const Sidebar = ({ expanded, onToggle }) => {
       path: "/blog",
       label: "Blogs",
       icon: <FileText size={20} />,
-    },   
+    },
   ];
 
   const navItems = user?.role_type === "hr" ? adminNavItems : employeeNavItems;
@@ -120,7 +120,10 @@ const Sidebar = ({ expanded, onToggle }) => {
           {/* Logo + Toggle */}
           <div className="flex items-center justify-between p-5 border-b border-green-100/50 dark:border-green-800/30">
             {expanded ? (
-              <Link to="/" className="flex items-center justify-center hover:no-underline">
+              <Link
+                to="/"
+                className="flex items-center justify-center hover:no-underline"
+              >
                 <span className="text-xl text-none font-sans font-bold text-[#2ECC71]">
                   MINDFLIX
                 </span>

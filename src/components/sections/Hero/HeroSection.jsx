@@ -1,5 +1,5 @@
 import React from "react";
-import { useAuth } from "./../../../contexts/AuthContext"
+import { useAuth } from "./../../../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import "./HeroSection.css";
@@ -9,39 +9,58 @@ const HeroSection = () => {
   return (
     <section className="hero-section" id="hero">
       <div className="hero-overlay"></div>
-      
+
       <div className="hero-pattern">
         <div className="hero-pattern-inner"></div>
       </div>
-      
+
       <div className="container">
         <div className="hero-content">
           <div className="hero-text animate-fade-right">
             <div className="hero-text-inner">
               <h1 className="hero-heading">
-                We <span className="hero-highlight">Care</span><span className="hero-highlight">.</span>
+                We <span className="hero-highlight">Care</span>
+                <span className="hero-highlight">.</span>
               </h1>
               <p className="hero-description">
-                about how our employees are doing, and we 
-                want to solve it together as a community
+                about how our employees are doing, and we want to solve it
+                together as a community
               </p>
               <div className="hero-buttons">
                 {user && (
                   <>
                     {user.role === "employee" && (
-                      <Link to="/employee/dashboard" className="hover:no-underline">
+                      <Link
+                        to="/employee/dashboard"
+                        className="hover:no-underline"
+                      >
                         <button className="btn-primary">
                           <span>Dashboard</span>
-                          <ArrowRight size={16} style={{ marginLeft: "0.5rem", transition: "transform 0.3s" }} />
+                          <ArrowRight
+                            size={16}
+                            style={{
+                              marginLeft: "0.5rem",
+                              transition: "transform 0.3s",
+                            }}
+                          />
                         </button>
                       </Link>
                     )}
 
                     {user.role === "hr" && (
-                      <Link to="/admin/dashboard" className="hover:no-underline">
+                      <Link
+                        to="/admin/dashboard"
+                        className="hover:no-underline"
+                      >
                         <button className="btn-primary">
                           <span>Dashboard</span>
-                          <ArrowRight size={16} style={{ marginLeft: "0.5rem", transition: "transform 0.3s" }} />
+                          <ArrowRight
+                            size={16}
+                            style={{
+                              marginLeft: "0.5rem",
+                              transition: "transform 0.3s",
+                            }}
+                          />
                         </button>
                       </Link>
                     )}
@@ -50,7 +69,7 @@ const HeroSection = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="hero-visual animate-fade-left">
             <div className="hero-visual-container">
               <div className="circle-glow"></div>
@@ -62,7 +81,7 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-      
+
       <div className="scroll-indicator">
         <div className="scroll-box">
           <div className="scroll-dot"></div>

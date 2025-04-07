@@ -19,15 +19,15 @@
 .benefits-section .overlay {
   position: absolute;
   inset: 0;
-  background: 
+  background:
     radial-gradient(
-      circle at top right, 
-      rgba(0, 136, 74, 0.1) 0%, 
+      circle at top right,
+      rgba(0, 136, 74, 0.1) 0%,
       transparent 50%
     ),
     radial-gradient(
-      circle at bottom left, 
-      rgba(0, 136, 74, 0.1) 0%, 
+      circle at bottom left,
+      rgba(0, 136, 74, 0.1) 0%,
       transparent 50%
     ),
     linear-gradient(to bottom, #000, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.9));
@@ -58,12 +58,11 @@
 }
 
 .benefit-card {
-  background: 
-    linear-gradient(
-      145deg, 
-      rgba(255, 255, 255, 0.05), 
-      rgba(255, 255, 255, 0.02)
-    );
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.02)
+  );
   backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
@@ -77,21 +76,21 @@
   animation: fade-up 0.7s ease-out forwards;
   position: relative;
   overflow: hidden;
-  box-shadow: 
+  box-shadow:
     0 10px 25px rgba(0, 0, 0, 0.1),
     0 5px 15px rgba(0, 136, 74, 0.05);
 }
 
 .benefit-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -50%;
   left: -50%;
   width: 200%;
   height: 200%;
   background: radial-gradient(
-    circle at center, 
-    rgba(0, 136, 74, 0.05) 0%, 
+    circle at center,
+    rgba(0, 136, 74, 0.05) 0%,
     transparent 70%
   );
   opacity: 0;
@@ -104,16 +103,15 @@
 
 .benefit-card:hover {
   transform: translateY(-10px);
-  background: 
-    linear-gradient(
-      145deg, 
-      rgba(255, 255, 255, 0.1), 
-      rgba(255, 255, 255, 0.05)
-    );
-  box-shadow: 
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05)
+  );
+  box-shadow:
     0 15px 35px rgba(0, 0, 0, 0.2),
     0 8px 20px rgba(0, 136, 74, 0.1);
-    border: 1px solid #00875a;
+  border: 1px solid #00875a;
 }
 
 .icon-container {
@@ -142,7 +140,6 @@
 
 .benefit-card:hover .benefit-icon {
   transform: rotate(10deg);
-  
 }
 
 .benefit-card h3 {

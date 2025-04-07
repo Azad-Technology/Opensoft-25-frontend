@@ -66,7 +66,9 @@ const Layout = ({ children }) => {
   }, [showUserDropdown, showNotifications]);
 
   return (
-    <div className={`min-h-screen flex flex-col bg-pattern dark:bg-gray-900 ${theme=="dark" && "text-white"}`}>
+    <div
+      className={`min-h-screen flex flex-col bg-pattern dark:bg-gray-900 ${theme == "dark" && "text-white"}`}
+    >
       {isAuthenticated && (
         <>
           <Sidebar expanded={sidebarExpanded} onToggle={toggleSidebar} />
@@ -98,7 +100,6 @@ const Layout = ({ children }) => {
               </button>
 
               <div className="flex items-center space-x-4 ml-auto">
-
                 <ThemeSwitch />
 
                 {/* User dropdown */}
@@ -113,7 +114,9 @@ const Layout = ({ children }) => {
                         {user?.name}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {user?.role_type=="hr"?"Hiring Manager":"Employee"}
+                        {user?.role_type == "hr"
+                          ? "Hiring Manager"
+                          : "Employee"}
                       </p>
                     </div>
                     <div className="relative">

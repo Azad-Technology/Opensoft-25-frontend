@@ -20,25 +20,21 @@ const AdminSupportPage = () => {
     has_previous: false,
   });
 
-  
   const fetchTickets = async (page = 1, status = null) => {
     setLoading(true);
     setError(null);
     const token = JSON.parse(localStorage.getItem("auth"))?.access_token;
     try {
-      
       let url = `${import.meta.env.VITE_REACT_APP_URL}/admin/get_all_tickets?page=${page}&page_size=${pageSize}`;
 
-      
       if (status && status !== "recent") {
         url += `&status=${status === "resolved" ? "true" : "false"}`;
       }
 
-      
       const response = await fetch(url, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`, 
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
@@ -49,10 +45,9 @@ const AdminSupportPage = () => {
 
       const data = await response.json();
 
-     
       const transformedInquiries = data.data.map((ticket) => ({
         id: ticket.ticket_id,
-        topic: ticket.description.split(" ")[0] || "Technical Issue", 
+        topic: ticket.description.split(" ")[0] || "Technical Issue",
         name: ticket.employee_name,
         date: ticket.date,
         status: ticket.is_resolved ? "resolved" : "pending",
@@ -62,7 +57,6 @@ const AdminSupportPage = () => {
 
       setInquiries(transformedInquiries);
       setPagination(data.pagination);
-    
     } catch (err) {
       console.error("Error fetching tickets:", err);
       setError("Failed to load tickets. Please try again later.");
@@ -71,7 +65,6 @@ const AdminSupportPage = () => {
       setLoading(false);
     }
   };
-
 
   const updateTicketStatus = async (ticketId, status) => {
     const token = JSON.parse(localStorage.getItem("auth"))?.access_token;
@@ -86,7 +79,7 @@ const AdminSupportPage = () => {
           },
           body: JSON.stringify({
             ticket_id: ticketId,
-            status_update: status === "resolved", 
+            status_update: status === "resolved",
           }),
         },
       );
@@ -97,7 +90,6 @@ const AdminSupportPage = () => {
 
       const result = await response.json();
 
-    
       const updatedInquiries = inquiries.map((inquiry) =>
         inquiry.id === ticketId ? { ...inquiry, status } : inquiry,
       );
@@ -108,7 +100,6 @@ const AdminSupportPage = () => {
         setSelectedInquiry({ ...selectedInquiry, status });
       }
 
-      
       fetchTickets(currentPage, activeTab !== "recent" ? activeTab : null);
     } catch (err) {
       console.error("Error updating ticket status:", err);
@@ -116,18 +107,15 @@ const AdminSupportPage = () => {
     }
   };
 
- 
   const handleStatusChange = (status) => {
     if (!selectedInquiry) return;
     updateTicketStatus(selectedInquiry.id, status);
   };
 
-
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  
   useEffect(() => {
     const status = activeTab !== "recent" ? activeTab : null;
     fetchTickets(currentPage, status);
@@ -138,19 +126,15 @@ const AdminSupportPage = () => {
     return inquiries.filter((inquiry) => inquiry.status === activeTab);
   };
 
- 
   const filteredInquiries = getFilteredInquiries();
 
-  
   const totalPages = pagination.total_pages;
 
-  
   const openInquiryModal = (inquiry) => {
     setSelectedInquiry(inquiry);
     setIsModalOpen(true);
   };
 
- 
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedInquiry(null);
@@ -167,7 +151,6 @@ const AdminSupportPage = () => {
 
           <div className="p-6 dark:bg-gray-800">
             <div className="bg-white rounded-lg shadow dark:bg-gray-700">
-           
               <div className="flex border-b dark:border-gray-700">
                 <button
                   className={`py-3 px-3 sm:px-6 text-sm sm:text-base font-medium ${activeTab === "recent" ? "text-green-600 border-b-2 border-green-600" : "text-gray-600 dark:text-white"}`}
@@ -223,7 +206,6 @@ const AdminSupportPage = () => {
                 </div>
               )}
 
-            
               {!loading && !error && (
                 <div className="overflow-x-auto">
                   <table className="w-full">
@@ -303,7 +285,6 @@ const AdminSupportPage = () => {
                 </div>
               )}
 
-            
               {totalPages > 1 && !loading && !error && (
                 <div className="flex items-center justify-between px-4 py-3 border-t">
                   <div>
@@ -374,7 +355,6 @@ const AdminSupportPage = () => {
             </div>
           </div>
 
-        
           {isModalOpen && selectedInquiry && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 dark:bg-opacity-50 dark:bg-gray-900">
               <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl dark:bg-gray-800">

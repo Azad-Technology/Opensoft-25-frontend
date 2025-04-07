@@ -10,7 +10,7 @@ import {
   ArrowRight,
   AlertCircle,
   ChevronDown,
-  X
+  X,
 } from "lucide-react";
 import debounce from "lodash/debounce";
 
@@ -34,7 +34,7 @@ const AdminReports = () => {
           `${VITE_REACT_APP_URL}/admin/employees/all`,
           {
             headers: { Authorization: `Bearer ${token}` },
-          }
+          },
         );
         const data = await response.json();
         setEmployees(data.users);
@@ -54,7 +54,7 @@ const AdminReports = () => {
       2: { name: "Sad", color: "bg-orange-400" },
       3: { name: "Okay", color: "bg-yellow-400" },
       4: { name: "Happy", color: "bg-green-400" },
-      5: { name: "Excited", color: "bg-blue-500" }
+      5: { name: "Excited", color: "bg-blue-500" },
     };
     return vibes[vibeScore] || { name: "Unknown", color: "bg-gray-400" };
   };
@@ -65,18 +65,16 @@ const AdminReports = () => {
       2: { name: "Low", color: "bg-green-400" },
       3: { name: "Medium", color: "bg-yellow-400" },
       4: { name: "High", color: "bg-orange-400" },
-      5: { name: "Urgent", color: "bg-red-500" }
+      5: { name: "Urgent", color: "bg-red-500" },
     };
     return risks[riskScore] || { name: "Unknown", color: "bg-gray-400" };
   };
 
-
-  
   const debouncedSearch = useCallback(
     debounce((term) => {
       setSearchTerm(term);
     }, 300),
-    []
+    [],
   );
 
   const handleSearchChange = (e) => {
@@ -97,15 +95,23 @@ const AdminReports = () => {
     const filtered = employees?.filter((employee) => {
       const matchesSearch =
         searchTerm === "" ||
-        (employee.name && employee.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (employee.employee_id && employee.employee_id.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (employee.department && employee.department.toLowerCase().includes(searchTerm.toLowerCase()));
+        (employee.name &&
+          employee.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (employee.employee_id &&
+          employee.employee_id
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())) ||
+        (employee.department &&
+          employee.department.toLowerCase().includes(searchTerm.toLowerCase()));
 
       const matchesVibe =
-        vibeFilter === "all" || (employee.current_vibe && getVibe(employee.current_vibe.score).name === vibeFilter);
+        vibeFilter === "all" ||
+        (employee.current_vibe &&
+          getVibe(employee.current_vibe.score).name === vibeFilter);
 
       const matchesRisk =
-        riskFilter === "all" || (getRisk(employee.risk_assessment).name === riskFilter);
+        riskFilter === "all" ||
+        getRisk(employee.risk_assessment).name === riskFilter;
 
       return matchesSearch && matchesVibe && matchesRisk;
     });
@@ -115,19 +121,26 @@ const AdminReports = () => {
   }, [searchTerm, vibeFilter, riskFilter, employees]);
 
   useEffect(() => {
-    if (currentPage > Math.ceil((filteredEmployees?.length || 0) / postsPerPage) && filteredEmployees?.length > 0) {
+    if (
+      currentPage >
+        Math.ceil((filteredEmployees?.length || 0) / postsPerPage) &&
+      filteredEmployees?.length > 0
+    ) {
       setCurrentPage(1);
     }
   }, [filteredEmployees?.length, currentPage, postsPerPage]);
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = filteredEmployees?.slice(indexOfFirstPost, indexOfLastPost) || [];
+  const currentPosts =
+    filteredEmployees?.slice(indexOfFirstPost, indexOfLastPost) || [];
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const nextPage = () => {
-    if (currentPage < Math.ceil((filteredEmployees?.length || 0) / postsPerPage)) {
+    if (
+      currentPage < Math.ceil((filteredEmployees?.length || 0) / postsPerPage)
+    ) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -141,10 +154,10 @@ const AdminReports = () => {
   const formatDate = (dateString) => {
     if (!dateString) return "Never";
     const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', { 
-      month: 'short', 
-      day: 'numeric', 
-      year: 'numeric' 
+    return new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
     }).format(date);
   };
 
@@ -158,34 +171,33 @@ const AdminReports = () => {
           </p>
         </div>
         <div
-  className="neo-glass rounded-xl p-6 mb-8 animate-fade-in shadow-sm"
-  style={{ animationDelay: "0.1s" }}
->
-  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-
-    <div className="relative flex-grow">
-      <div className="relative flex items-center">
-        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
-          <Search className="h-4 w-4" />
-        </div>
-        <input
-          id="employee-search"
-          type="text"
-          placeholder="Search by name or employee ID..."
-          className="pl-10 pr-10 py-2 w-full border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 transition-all bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200"
-          onChange={handleSearchChange}
-          defaultValue={searchTerm}
-        />
-        {searchTerm && (
-          <button 
-            onClick={clearSearch}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        )}
-      </div>
-    </div>
+          className="neo-glass rounded-xl p-6 mb-8 animate-fade-in shadow-sm"
+          style={{ animationDelay: "0.1s" }}
+        >
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="relative flex-grow">
+              <div className="relative flex items-center">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                  <Search className="h-4 w-4" />
+                </div>
+                <input
+                  id="employee-search"
+                  type="text"
+                  placeholder="Search by name or employee ID..."
+                  className="pl-10 pr-10 py-2 w-full border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 transition-all bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+                  onChange={handleSearchChange}
+                  defaultValue={searchTerm}
+                />
+                {searchTerm && (
+                  <button
+                    onClick={clearSearch}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
+            </div>
             <div className="flex flex-wrap gap-3">
               <div className="relative">
                 <select
@@ -253,8 +265,8 @@ const AdminReports = () => {
                   </tr>
                 ) : currentPosts.length > 0 ? (
                   currentPosts.map((employee, index) => (
-                    <tr 
-                      key={`${employee.employee_id}-${index}`} 
+                    <tr
+                      key={`${employee.employee_id}-${index}`}
                       className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
                     >
                       <td className="p-4">
@@ -267,20 +279,27 @@ const AdminReports = () => {
                             />
                           ) : (
                             <div className="h-10 w-10 bg-secondary rounded-full flex items-center justify-center">
-                              <User size={16} className="text-muted-foreground" />
+                              <User
+                                size={16}
+                                className="text-muted-foreground"
+                              />
                             </div>
                           )}
                           <div>
                             <div className="font-medium">{employee?.name}</div>
                             <div className="text-xs text-muted-foreground">
-                              {employee?.employee_id} · {employee?.department || "No Department"}
+                              {employee?.employee_id} ·{" "}
+                              {employee?.department || "No Department"}
                             </div>
                           </div>
                         </div>
                       </td>
                       <td className="p-4">
-                        {employee.current_vibe && employee.current_vibe.score ? (
-                          <span className={`px-3 py-1 rounded-full text-xs font-medium text-white ${getVibe(employee.current_vibe.score).color}`}>
+                        {employee.current_vibe &&
+                        employee.current_vibe.score ? (
+                          <span
+                            className={`px-3 py-1 rounded-full text-xs font-medium text-white ${getVibe(employee.current_vibe.score).color}`}
+                          >
                             {getVibe(employee.current_vibe.score).name}
                           </span>
                         ) : (
@@ -291,8 +310,10 @@ const AdminReports = () => {
                       </td>
                       <td className="p-4 whitespace-nowrap">
                         {employee.risk_assessment ? (
-                          <span className={`px-3 py-1 rounded-full text-xs font-medium  text-white ${getRisk(employee.risk_assessment).color}
-                          }`}>
+                          <span
+                            className={`px-3 py-1 rounded-full text-xs font-medium  text-white ${getRisk(employee.risk_assessment).color}
+                          }`}
+                          >
                             {getRisk(employee.risk_assessment).name}
                           </span>
                         ) : (
@@ -338,11 +359,16 @@ const AdminReports = () => {
           {filteredEmployees?.length > 0 && (
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 px-4 py-4 bg-secondary">
               <div className="text-sm text-muted-foreground">
-                Showing <span className="font-medium">{indexOfFirstPost + 1}</span> to{" "}
-                <span className="font-medium">{Math.min(indexOfLastPost, filteredEmployees.length)}</span> of{" "}
-                <span className="font-medium">{filteredEmployees.length}</span> employees
+                Showing{" "}
+                <span className="font-medium">{indexOfFirstPost + 1}</span> to{" "}
+                <span className="font-medium">
+                  {Math.min(indexOfLastPost, filteredEmployees.length)}
+                </span>{" "}
+                of{" "}
+                <span className="font-medium">{filteredEmployees.length}</span>{" "}
+                employees
               </div>
-              
+
               <div className="flex items-center">
                 <button
                   onClick={prevPage}
@@ -355,13 +381,14 @@ const AdminReports = () => {
                 >
                   <ChevronLeft size={16} />
                 </button>
-                
+
                 <div className="flex space-x-1 mx-1">
                   {(() => {
-                    const totalPages = Math.ceil((filteredEmployees?.length || 0) / postsPerPage);
+                    const totalPages = Math.ceil(
+                      (filteredEmployees?.length || 0) / postsPerPage,
+                    );
                     const pageNumbers = [];
-                    
-                    
+
                     if (totalPages > 0) {
                       if (currentPage > 3) {
                         pageNumbers.push(
@@ -371,21 +398,27 @@ const AdminReports = () => {
                             className="w-8 h-8 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
                           >
                             1
-                          </button>
+                          </button>,
                         );
-                        
+
                         if (currentPage > 4) {
                           pageNumbers.push(
-                            <span key="ellipsis1" className="flex items-center justify-center w-8 h-8">
+                            <span
+                              key="ellipsis1"
+                              className="flex items-center justify-center w-8 h-8"
+                            >
                               ...
-                            </span>
+                            </span>,
                           );
                         }
                       }
                     }
-                    
-                   
-                    for (let i = Math.max(1, currentPage - 1); i <= Math.min(totalPages, currentPage + 1); i++) {
+
+                    for (
+                      let i = Math.max(1, currentPage - 1);
+                      i <= Math.min(totalPages, currentPage + 1);
+                      i++
+                    ) {
                       pageNumbers.push(
                         <button
                           key={i}
@@ -397,21 +430,23 @@ const AdminReports = () => {
                           }`}
                         >
                           {i}
-                        </button>
+                        </button>,
                       );
                     }
-                    
-                   
+
                     if (totalPages > 0) {
                       if (currentPage < totalPages - 2) {
                         if (currentPage < totalPages - 3) {
                           pageNumbers.push(
-                            <span key="ellipsis2" className="flex items-center justify-center w-8 h-8">
+                            <span
+                              key="ellipsis2"
+                              className="flex items-center justify-center w-8 h-8"
+                            >
                               ...
-                            </span>
+                            </span>,
                           );
                         }
-                        
+
                         pageNumbers.push(
                           <button
                             key={totalPages}
@@ -419,20 +454,24 @@ const AdminReports = () => {
                             className="w-8 h-8 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
                           >
                             {totalPages}
-                          </button>
+                          </button>,
                         );
                       }
                     }
-                    
+
                     return pageNumbers;
                   })()}
                 </div>
-                
+
                 <button
                   onClick={nextPage}
-                  disabled={currentPage === Math.ceil((filteredEmployees?.length || 0) / postsPerPage)}
+                  disabled={
+                    currentPage ===
+                    Math.ceil((filteredEmployees?.length || 0) / postsPerPage)
+                  }
                   className={`flex items-center justify-center w-8 h-8 rounded-md ${
-                    currentPage === Math.ceil((filteredEmployees?.length || 0) / postsPerPage)
+                    currentPage ===
+                    Math.ceil((filteredEmployees?.length || 0) / postsPerPage)
                       ? "text-gray-400 cursor-not-allowed"
                       : "text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
                   }`}

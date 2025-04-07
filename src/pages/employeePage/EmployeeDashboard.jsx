@@ -129,7 +129,10 @@ const EmployeeDashboard = () => {
               <span className="absolute inset-0 rounded-full animate-ping opacity-20 bg-emerald-500"></span>
 
               {/* Main spinner with nice transition effect */}
-              <svg className="absolute inset-0 animate-spin" viewBox="0 0 50 50">
+              <svg
+                className="absolute inset-0 animate-spin"
+                viewBox="0 0 50 50"
+              >
                 <circle
                   cx="25"
                   cy="25"
@@ -193,7 +196,6 @@ const EmployeeDashboard = () => {
             <p className="text-muted-foreground">
               Track your well-being and stay connected with your team
             </p>
-
           </div>
         </div>
         {stats.is_chat_required && <ChatAlert />}
@@ -206,7 +208,12 @@ const EmployeeDashboard = () => {
             >
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-medium">Vibe Trend</h2>
-                <Tooltips text={"Vibe trend shows the distribution of your vibes over 14 Days. It shows emotional well-being and identifies patterns."} placement="left">
+                <Tooltips
+                  text={
+                    "Vibe trend shows the distribution of your vibes over 14 Days. It shows emotional well-being and identifies patterns."
+                  }
+                  placement="left"
+                >
                   <Info className="text-muted-foreground" size={20} />
                 </Tooltips>
               </div>
@@ -219,7 +226,7 @@ const EmployeeDashboard = () => {
               />
 
               {/* Vibe input */}
-              {(!showVibeSubmitted && stats.is_vibe_feedback_required) ? (
+              {!showVibeSubmitted && stats.is_vibe_feedback_required ? (
                 <div>
                   <VibeSelector
                     selected={selectedVibe}
@@ -271,7 +278,11 @@ const EmployeeDashboard = () => {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <MetricCard
                 title="Performance Rating"
-                value={(performance?.length > 0) ? performance[0]?.Performance_Rating : null}
+                value={
+                  performance?.length > 0
+                    ? performance[0]?.Performance_Rating
+                    : null
+                }
                 icon={
                   <TrendingUp
                     size={24}
@@ -282,7 +293,14 @@ const EmployeeDashboard = () => {
               />
               <MetricCard
                 title="Total Leaves"
-                value={(stats.all_leaves.length > 0) ? (stats?.all_leaves.reduce((total, leave) => total + leave.leave_days, 0)) : 0}
+                value={
+                  stats.all_leaves.length > 0
+                    ? stats?.all_leaves.reduce(
+                        (total, leave) => total + leave.leave_days,
+                        0,
+                      )
+                    : 0
+                }
                 icon={
                   <Clock
                     size={24}

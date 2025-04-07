@@ -4,11 +4,11 @@ import Layout from "../../components/employeeCompo/Layout";
 import { useData } from "../../contexts/DataContext";
 import VibeChart from "../../components/employeeCompo/VibeChart";
 import VibeStatusBadge from "../../components/employeeCompo/VibeStatusBadge";
-import Emotion from "../../components/HRDashboard/botReport/Emotion"
-import Experience from '../../components/HRDashboard/botReport/Experience';
+import Emotion from "../../components/HRDashboard/botReport/Emotion";
+import Experience from "../../components/HRDashboard/botReport/Experience";
 import InteractionReports from "../../components/HRDashboard/botReport/InteractionReport";
-import LeaveAnalysis from '../../components/HRDashboard/botReport/LeaveAnalysis';
-import Performance from '../../components/HRDashboard/botReport/Performance';
+import LeaveAnalysis from "../../components/HRDashboard/botReport/LeaveAnalysis";
+import Performance from "../../components/HRDashboard/botReport/Performance";
 import { users } from "../../data/mockData";
 import {
   ArrowLeft,
@@ -50,10 +50,11 @@ const AdminEmployeeDetail = () => {
   const [employeePerformance, setEmployeePerformance] = useState(null);
   const [employeeOnboarding, setEmployeeOnboarding] = useState(null);
   const [employeeChatSessions, setEmployeeChatSessions] = useState([]);
-  const { resultSummary, setResultSummary } = useReport()
+  const { resultSummary, setResultSummary } = useReport();
   const employeeData = async () => {
     try {
-      const response = await fetch(`${VITE_REACT_APP_URL}/admin/${employeeId}/summary`,
+      const response = await fetch(
+        `${VITE_REACT_APP_URL}/admin/${employeeId}/summary`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -65,27 +66,33 @@ const AdminEmployeeDetail = () => {
 
       const resultData = await response.json();
       setResult(resultData);
-      setResultSummary(resultData)
+      setResultSummary(resultData);
 
       if (resultData?.employee_info?.employee_id) {
         setEmployee(resultData?.employee_info?.employee_id);
         if (resultData.mental_states) {
-          const filteredVibes = Object.entries(resultData.mental_states).map(([state, count]) => ({
-            state,
-            count,
-          }));
+          const filteredVibes = Object.entries(resultData.mental_states).map(
+            ([state, count]) => ({
+              state,
+              count,
+            }),
+          );
           setEmployeeVibes(filteredVibes);
         }
         if (resultData.leaves) {
-          const filteredLeaves = Object.entries(resultData.leaves).map(([reason, count]) => ({
-            reason,
-            count,
-          }));
+          const filteredLeaves = Object.entries(resultData.leaves).map(
+            ([reason, count]) => ({
+              reason,
+              count,
+            }),
+          );
           setEmployeeLeaves(filteredLeaves);
         }
 
         if (resultData.communication_activity) {
-          const filteredActivities = Object.entries(resultData.communication_activity).map(([message_type, count]) => ({
+          const filteredActivities = Object.entries(
+            resultData.communication_activity,
+          ).map(([message_type, count]) => ({
             message_type,
             count,
           }));
@@ -116,7 +123,8 @@ const AdminEmployeeDetail = () => {
             reviewPeriod: resultData.performance.Review_Period,
             performanceRating: resultData.performance.Performance_Rating,
             managerFeedback: resultData.performance.Manager_Feedback,
-            promotionConsideration: resultData.performance.Promotion_Consideration,
+            promotionConsideration:
+              resultData.performance.Promotion_Consideration,
           });
         }
 
@@ -134,7 +142,7 @@ const AdminEmployeeDetail = () => {
   };
 
   useEffect(() => {
-    employeeData()
+    employeeData();
   }, [employeeId, token]);
 
   if (!employee) {
@@ -143,11 +151,12 @@ const AdminEmployeeDetail = () => {
         <div className="flex flex-col items-center justify-center h-screen w-full">
           <div className="flex flex-col items-center justify-center">
             <div className="relative h-20 w-20">
-          
               <span className="absolute inset-0 rounded-full animate-ping opacity-20 bg-emerald-500"></span>
 
-              
-              <svg className="absolute inset-0 animate-spin" viewBox="0 0 50 50">
+              <svg
+                className="absolute inset-0 animate-spin"
+                viewBox="0 0 50 50"
+              >
                 <circle
                   cx="25"
                   cy="25"
@@ -163,7 +172,6 @@ const AdminEmployeeDetail = () => {
               </svg>
             </div>
 
-           
             <div className="mt-6 text-xl font-medium text-gray-800 dark:text-gray-100 animate-fadeIn">
               Loading
             </div>
@@ -179,7 +187,10 @@ const AdminEmployeeDetail = () => {
               <span className="absolute inset-0 rounded-full animate-ping opacity-20 bg-emerald-500"></span>
 
               {/* Main spinner with nice transition effect */}
-              <svg className="absolute inset-0 animate-spin" viewBox="0 0 50 50">
+              <svg
+                className="absolute inset-0 animate-spin"
+                viewBox="0 0 50 50"
+              >
                 <circle
                   cx="25"
                   cy="25"
@@ -208,43 +219,33 @@ const AdminEmployeeDetail = () => {
     );
   }
 
-
   let getVibe = (vibeScore) => {
     if (vibeScore === 1) {
       return "Frustrated";
-    }
-    else if (vibeScore === 2) {
+    } else if (vibeScore === 2) {
       return "Sad";
-    }
-    else if (vibeScore === 3) {
+    } else if (vibeScore === 3) {
       return "Okay";
-    }
-    else if (vibeScore === 4) {
+    } else if (vibeScore === 4) {
       return "Happy";
-    }
-    else {
+    } else {
       return "Excited";
     }
-  }
+  };
 
   let getRisk = (riskScore) => {
     if (riskScore === 1) {
       return "Very Low";
-    }
-    else if (riskScore === 2) {
+    } else if (riskScore === 2) {
       return "Low";
-    }
-    else if (riskScore === 3) {
+    } else if (riskScore === 3) {
       return "Moderate";
-    }
-    else if (riskScore === 4) {
+    } else if (riskScore === 4) {
       return "High";
-    }
-    else {
+    } else {
       return "Urgent";
     }
-  }
-
+  };
 
   return (
     <Layout>
@@ -263,25 +264,33 @@ const AdminEmployeeDetail = () => {
                 to={`/admin/exportReport/${employeeId}`}
                 className="inline-flex items-center text-primary hover:underline mb-2 text-none"
               >
-                <span className="p-2 bg-green-700 text-white rounded-xl text-none px-4 no-underline">Export</span>
+                <span className="p-2 bg-green-700 text-white rounded-xl text-none px-4 no-underline">
+                  Export
+                </span>
               </Link>
             </div>
             <h1 className="page-header mb-2">{result?.employee_info?.name}</h1>
             <div className="flex flex-wrap items-center gap-2">
-              <p className="text-muted-foreground">ID: {result?.employee_info?.employee_id}</p>
-              <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          result?.current_state?.risk_assessment === 1
-                            ? "bg-blue-500"
-                            : result?.current_state?.risk_assessment === 2
-                            ? "bg-green-400"
-                            : result?.current_state?.risk_assessment === 3
-                            ? "bg-yellow-400"
-                            : result?.current_state?.risk_assessment === 4
-                            ? "bg-orange-400"
-                            : result?.current_state?.risk_assessment === 5
+              <p className="text-muted-foreground">
+                ID: {result?.employee_info?.employee_id}
+              </p>
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-medium ${
+                  result?.current_state?.risk_assessment === 1
+                    ? "bg-blue-500"
+                    : result?.current_state?.risk_assessment === 2
+                      ? "bg-green-400"
+                      : result?.current_state?.risk_assessment === 3
+                        ? "bg-yellow-400"
+                        : result?.current_state?.risk_assessment === 4
+                          ? "bg-orange-400"
+                          : result?.current_state?.risk_assessment === 5
                             ? "bg-red-500"
                             : "bg-gray-400"
-                        }`}>{getRisk(result?.current_state?.risk_assessment)}</span>
+                }`}
+              >
+                {getRisk(result?.current_state?.risk_assessment)}
+              </span>
             </div>
           </div>
         </div>
@@ -307,7 +316,9 @@ const AdminEmployeeDetail = () => {
                   </span>
                 </div>
               )}
-              <h3 className="text-lg font-medium">{result?.employee_info?.name}</h3>
+              <h3 className="text-lg font-medium">
+                {result?.employee_info?.name}
+              </h3>
             </div>
 
             <div className="space-y-3">
@@ -317,7 +328,9 @@ const AdminEmployeeDetail = () => {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Employee ID</p>
-                  <p className="text-sm">{result?.employee_info?.employee_id}</p>
+                  <p className="text-sm">
+                    {result?.employee_info?.employee_id}
+                  </p>
                 </div>
               </div>
 
@@ -346,19 +359,21 @@ const AdminEmployeeDetail = () => {
                 </div>
                 {result?.current_state?.vibe_score ? (
                   <div className="flex items-center space-x-2">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          result?.current_state?.vibe_score === 5
-                            ? "bg-blue-500"
-                            : result?.current_state?.vibe_score === 4
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        result?.current_state?.vibe_score === 5
+                          ? "bg-blue-500"
+                          : result?.current_state?.vibe_score === 4
                             ? "bg-green-400"
                             : result?.current_state?.vibe_score === 3
-                            ? "bg-yellow-400"
-                            : result?.current_state?.vibe_score === 2
-                            ? "bg-orange-400"
-                            : result?.current_state?.vibe_score === 1
-                            ? "bg-red-500"
-                            : "bg-gray-400"
-                        }`}>
+                              ? "bg-yellow-400"
+                              : result?.current_state?.vibe_score === 2
+                                ? "bg-orange-400"
+                                : result?.current_state?.vibe_score === 1
+                                  ? "bg-red-500"
+                                  : "bg-gray-400"
+                      }`}
+                    >
                       {getVibe(result?.current_state?.vibe_score)}
                     </span>
                   </div>
@@ -367,25 +382,29 @@ const AdminEmployeeDetail = () => {
                 )}
               </div>
 
-
               <div className="space-y-2">
                 <div className="text-sm text-muted-foreground">
                   Risk Assessment
                 </div>
                 <div>
-                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          result?.current_state?.risk_assessment === 1
-                            ? "bg-blue-500"
-                            : result?.current_state?.risk_assessment === 2
-                            ? "bg-green-400"
-                            : result?.current_state?.risk_assessment === 3
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${
+                      result?.current_state?.risk_assessment === 1
+                        ? "bg-blue-500"
+                        : result?.current_state?.risk_assessment === 2
+                          ? "bg-green-400"
+                          : result?.current_state?.risk_assessment === 3
                             ? "bg-yellow-400"
                             : result?.current_state?.risk_assessment === 4
-                            ? "bg-orange-400"
-                            : result?.current_state?.risk_assessment === 5
-                            ? "bg-red-500"
-                            : "bg-gray-400"
-                        }`}>{getRisk(result?.current_state?.risk_assessment)}</span></div>
+                              ? "bg-orange-400"
+                              : result?.current_state?.risk_assessment === 5
+                                ? "bg-red-500"
+                                : "bg-gray-400"
+                    }`}
+                  >
+                    {getRisk(result?.current_state?.risk_assessment)}
+                  </span>
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -394,7 +413,9 @@ const AdminEmployeeDetail = () => {
                 </div>
                 <div className="text-sm">
                   {result?.current_state?.last_check_in
-                    ? new Date(result.current_state.last_check_in).toLocaleDateString()
+                    ? new Date(
+                        result.current_state.last_check_in,
+                      ).toLocaleDateString()
                     : "Never"}
                 </div>
               </div>
@@ -419,7 +440,7 @@ const AdminEmployeeDetail = () => {
         </div>
       </div>
 
-      {result &&
+      {result && (
         <>
           <Emotion result={result} />
           <IntentReport result={result} />
@@ -428,7 +449,7 @@ const AdminEmployeeDetail = () => {
           <LeaveAnalysis result={result} />
           <Experience result={result} />
         </>
-      }
+      )}
     </Layout>
   );
 };

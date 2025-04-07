@@ -17,7 +17,7 @@ import { useData } from "../../contexts/DataContext";
 import Layout from "../../components/employeeCompo/Layout";
 import { cn } from "../../lib/utils";
 import { useTheme } from "../../contexts/ThemeContext";
-import { toast } from "sonner"
+import { toast } from "sonner";
 
 export default function Schedule() {
   const { user, token } = useAuth();
@@ -71,7 +71,7 @@ export default function Schedule() {
 
   // Format date consistently for API calls
   const formatDateForApi = (date) => {
-    if (!date) return '';
+    if (!date) return "";
     return date.toISOString().split("T")[0]; // YYYY-MM-DD format
   };
 
@@ -93,13 +93,15 @@ export default function Schedule() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          }
-        }
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch schedules: ${response.status} ${response.statusText}`);
+        throw new Error(
+          `Failed to fetch schedules: ${response.status} ${response.statusText}`,
+        );
       }
 
       const data = await response.json();
@@ -128,16 +130,21 @@ export default function Schedule() {
     if (!token) return;
     setIsEventDetailsOpen(false);
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_URL}/common/delete_schedule/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        }
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_APP_URL}/common/delete_schedule/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
       if (!response.ok) {
-        throw new Error(`Failed to delete schedule: ${response.status} ${response.statusText}`);
+        throw new Error(
+          `Failed to delete schedule: ${response.status} ${response.statusText}`,
+        );
       }
 
       // Remove from local state
@@ -164,7 +171,11 @@ export default function Schedule() {
 
   // When month changes, update selectedDay to first day of the month
   useEffect(() => {
-    const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const firstDayOfMonth = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      1,
+    );
     setSelectedDay(firstDayOfMonth);
   }, [currentDate]);
 
@@ -202,7 +213,7 @@ export default function Schedule() {
     const selectedDate = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth(),
-      day
+      day,
     );
     setSelectedDay(selectedDate);
     setIsDialogOpen(true);
@@ -236,32 +247,37 @@ export default function Schedule() {
     try {
       const formattedDate = formatDateForApi(selectedDay);
 
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_URL}/common/add_schedule`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_APP_URL}/common/add_schedule`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            date: `${selectedDay.getFullYear()}-${selectedDay.getMonth() + 1 <= 9 ? "0" : ""}${selectedDay.getMonth() + 1}-${selectedDay.getDate() <= 9 ? "0" : ""}${selectedDay.getDate()}`,
+            title: newEvent.title,
+            note: newEvent.note || "", // Ensure note is never undefined
+          }),
         },
-        body: JSON.stringify({
-          "date": `${selectedDay.getFullYear()}-${selectedDay.getMonth() + 1 <= 9 ? "0" : ""}${selectedDay.getMonth() + 1}-${selectedDay.getDate() <= 9 ? "0" : ""}${selectedDay.getDate()}`,
-          "title": newEvent.title,
-          "note": newEvent.note || "" // Ensure note is never undefined
-        })
-      });
+      );
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Failed to add schedule: ${response.status} ${response.statusText}. ${errorText}`);
+        throw new Error(
+          `Failed to add schedule: ${response.status} ${response.statusText}. ${errorText}`,
+        );
       }
 
       const result = await response.json();
-      toast.success('Schedule added successfully')
+      toast.success("Schedule added successfully");
 
       // Refresh the events after adding a new one
       await fetchSchedules();
     } catch (error) {
-      console.error('Error adding schedule:', error);
-      toast.error('Error adding schedule')
+      console.error("Error adding schedule:", error);
+      toast.error("Error adding schedule");
     }
   }
 
@@ -450,7 +466,10 @@ export default function Schedule() {
                   isDarkMode ? "text-white" : "text-black",
                 )}
               >
-                <div className="flex justify-between items-center" onClick={(e) => handleEventClick(event, e)}>
+                <div
+                  className="flex justify-between items-center"
+                  onClick={(e) => handleEventClick(event, e)}
+                >
                   <span className="truncate">{event.title}</span>
                 </div>
               </div>
@@ -510,10 +529,7 @@ export default function Schedule() {
         {isVisible && apiError && (
           <div className="bg-red-500 text-white p-2 text-center">
             {apiError}
-            <button
-              onClick={() => fetchSchedules()}
-              className="ml-2 underline"
-            >
+            <button onClick={() => fetchSchedules()} className="ml-2 underline">
               Retry
             </button>
           </div>
@@ -564,9 +580,7 @@ export default function Schedule() {
                   onClick={() => setIsDialogOpen(false)}
                   className={cn(
                     "rounded-full p-2 transition-colors",
-                    isDarkMode
-                      ? "hover:bg-gray-800"
-                      : "hover:bg-gray-100"
+                    isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-100",
                   )}
                   aria-label="Close dialog"
                 >
@@ -590,7 +604,7 @@ export default function Schedule() {
                       "w-full p-3 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none transition-all",
                       isDarkMode
                         ? "bg-gray-800 border-gray-700 text-white"
-                        : "bg-gray-50 border-gray-200 text-gray-900"
+                        : "bg-gray-50 border-gray-200 text-gray-900",
                     )}
                   />
                 </div>
@@ -611,7 +625,7 @@ export default function Schedule() {
                       "w-full p-3 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none resize-none transition-all",
                       isDarkMode
                         ? "bg-gray-800 border-gray-700 text-white"
-                        : "bg-gray-50 border-gray-200 text-gray-900"
+                        : "bg-gray-50 border-gray-200 text-gray-900",
                     )}
                   />
                 </div>
@@ -623,7 +637,7 @@ export default function Schedule() {
                     "px-4 py-2 rounded-lg font-medium transition-all duration-200",
                     isDarkMode
                       ? "text-gray-300 hover:bg-gray-800"
-                      : "text-gray-600 hover:bg-gray-100"
+                      : "text-gray-600 hover:bg-gray-100",
                   )}
                   onClick={() => setIsDialogOpen(false)}
                   disabled={isAddingEvent}
@@ -633,16 +647,34 @@ export default function Schedule() {
                 <button
                   className={cn(
                     "px-5 py-2 bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 text-white rounded-lg font-medium shadow-sm hover:bg-green-800 transition-all duration-200",
-                    isAddingEvent ? "opacity-70 cursor-not-allowed" : "hover:shadow-md"
+                    isAddingEvent
+                      ? "opacity-70 cursor-not-allowed"
+                      : "hover:shadow-md",
                   )}
                   onClick={handleAddEvent}
                   disabled={isAddingEvent}
                 >
                   {isAddingEvent ? (
                     <span className="flex items-center">
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      <svg
+                        className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
                       </svg>
                       Adding...
                     </span>

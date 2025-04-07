@@ -1,6 +1,14 @@
 import React, { useState } from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend,
-  ResponsiveContainer, Cell } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  Cell,
+} from "recharts";
 
 const dataMoodVsLeaves = [
   { mood: "Frustrated", leaves: 5 },
@@ -35,9 +43,27 @@ const dataPerformanceVsSentiment = [
 ];
 
 const tabs = [
-  { id: 1, name: "Mood vs Leaves", data: dataMoodVsLeaves, key: "leaves", color: "#ff4d4d" },
-  { id: 2, name: "Mood vs Working Hours", data: dataMoodVsHours, key: "hours", color: "#ffcc00" },
-  { id: 3, name: "Mood Vs Performance", data: dataPerformanceVsSentiment, key: "performance", color: "#33cc33" },
+  {
+    id: 1,
+    name: "Mood vs Leaves",
+    data: dataMoodVsLeaves,
+    key: "leaves",
+    color: "#ff4d4d",
+  },
+  {
+    id: 2,
+    name: "Mood vs Working Hours",
+    data: dataMoodVsHours,
+    key: "hours",
+    color: "#ffcc00",
+  },
+  {
+    id: 3,
+    name: "Mood Vs Performance",
+    data: dataPerformanceVsSentiment,
+    key: "performance",
+    color: "#33cc33",
+  },
 ];
 
 const CorrelationAnalysis = () => {
@@ -47,7 +73,9 @@ const CorrelationAnalysis = () => {
 
   return (
     <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg w-auto m-10 border border-gray-100 dark:border-gray-700">
-      <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">Correlation Analysis</h2>
+      <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">
+        Correlation Analysis
+      </h2>
 
       <div className="flex h-auto md:h-12 bg-gray-100 dark:bg-gray-800/50 mb-5 justify-around rounded-lg sm:overflow-visible overflow-x-auto border border-gray-200 dark:border-gray-700">
         {tabs.map((tab) => (
@@ -66,16 +94,36 @@ const CorrelationAnalysis = () => {
       </div>
 
       <div className="flex flex-col items-center bg-gray-100 dark:bg-gray-800/50 p-5 rounded-lg border border-gray-200 dark:border-gray-700">
-        <h3 className="text-lg font-medium mb-2 text-gray-700 dark:text-gray-200">{activeData.name}</h3>
+        <h3 className="text-lg font-medium mb-2 text-gray-700 dark:text-gray-200">
+          {activeData.name}
+        </h3>
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={activeData.data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+          <BarChart
+            data={activeData.data}
+            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+          >
             <XAxis dataKey="mood" stroke="#03C03C" />
             <YAxis stroke="#03C03C" />
-            <Tooltip contentStyle={{ backgroundColor: '#17B169', color: '#fff', border: 'none' }} />
-            <Legend formatter={(value) => <span className="text-gray-800 dark:text-gray-200">{value}</span>} />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "#17B169",
+                color: "#fff",
+                border: "none",
+              }}
+            />
+            <Legend
+              formatter={(value) => (
+                <span className="text-gray-800 dark:text-gray-200">
+                  {value}
+                </span>
+              )}
+            />
             <Bar dataKey={activeData.key} barSize={140}>
               {activeData.data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={moodColors[entry.mood] || "#999999"} />
+                <Cell
+                  key={`cell-${index}`}
+                  fill={moodColors[entry.mood] || "#999999"}
+                />
               ))}
             </Bar>
           </BarChart>

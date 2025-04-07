@@ -1,4 +1,3 @@
-
 const blogData = [
   // Negative Issue Tags
   {
@@ -6,7 +5,8 @@ const blogData = [
     tag: "Work_Overload_Stress",
     category: "negative",
     title: "Managing Work Overload & Stress",
-    snippet: "Practical strategies to handle overwhelming workloads and reduce stress while maintaining productivity.",
+    snippet:
+      "Practical strategies to handle overwhelming workloads and reduce stress while maintaining productivity.",
     keyTakeaways: [
       "Stress is a natural response but can be managed effectively",
       "Setting boundaries is essential for long-term productivity",
@@ -59,7 +59,8 @@ const blogData = [
       {
         title: "Burnout Prevention and Treatment",
         url: "https://www.helpguide.org/articles/stress/burnout-prevention-and-recovery.htm",
-        description: "Comprehensive guide to recognizing and addressing burnout",
+        description:
+          "Comprehensive guide to recognizing and addressing burnout",
       },
       {
         title: "The Pomodoro Technique",
@@ -78,7 +79,8 @@ const blogData = [
     tag: "Lack_of_Engagement",
     category: "negative",
     title: "Rekindling Workplace Engagement",
-    snippet: "Discover how to rediscover purpose and motivation when you feel disconnected from your work.",
+    snippet:
+      "Discover how to rediscover purpose and motivation when you feel disconnected from your work.",
     keyTakeaways: [
       "Disengagement is often a symptom of deeper misalignment",
       "Small changes in daily work can significantly boost engagement",
@@ -131,12 +133,14 @@ const blogData = [
       {
         title: "Drive: The Surprising Truth About What Motivates Us",
         url: "https://www.danpink.com/books/drive/",
-        description: "Book exploring the three elements of true motivation: autonomy, mastery, and purpose",
+        description:
+          "Book exploring the three elements of true motivation: autonomy, mastery, and purpose",
       },
       {
         title: "Job Crafting Exercise",
         url: "https://positiveorgs.bus.umich.edu/cpo-tools/job-crafting-exercise/",
-        description: "Tool for redesigning your job to increase meaning and engagement",
+        description:
+          "Tool for redesigning your job to increase meaning and engagement",
       },
       {
         title: "VIA Character Strengths Survey",
@@ -150,7 +154,8 @@ const blogData = [
     tag: "Feeling_Undervalued",
     category: "negative",
     title: "When Your Contributions Go Unnoticed",
-    snippet: "Strategies for handling situations where your contributions aren't receiving the recognition they deserve.",
+    snippet:
+      "Strategies for handling situations where your contributions aren't receiving the recognition they deserve.",
     keyTakeaways: [
       "Feeling undervalued is common but can be addressed proactively",
       "Recognition needs vary by individual and understanding yours is key",
@@ -206,7 +211,8 @@ const blogData = [
       {
         title: "The 5 Languages of Appreciation in the Workplace",
         url: "https://www.appreciationatwork.com/5-languages-appreciation-workplace-improve-employee-engagement/",
-        description: "Framework for understanding different recognition preferences",
+        description:
+          "Framework for understanding different recognition preferences",
       },
       {
         title: "Radical Candor",
@@ -225,7 +231,8 @@ const blogData = [
     tag: "Career_Concerns",
     category: "negative",
     title: "Navigating Career Uncertainty",
-    snippet: "Practical approaches to address career stagnation, uncertainty about your path, or concerns about professional development.",
+    snippet:
+      "Practical approaches to address career stagnation, uncertainty about your path, or concerns about professional development.",
     keyTakeaways: [
       "Career anxiety is normal and can be channeled productively",
       "Clarity comes from exploration and reflection, not just thinking",
@@ -279,7 +286,8 @@ const blogData = [
       {
         title: "Designing Your Life",
         url: "https://designingyour.life/",
-        description: "Approach to career development using design thinking principles",
+        description:
+          "Approach to career development using design thinking principles",
       },
       {
         title: "What Color Is Your Parachute?",
@@ -294,11 +302,12 @@ const blogData = [
     ],
   },
   {
-    id: "workplace-conflict",   
+    id: "workplace-conflict",
     tag: "Workplace_Conflict",
     category: "negative",
     title: "Resolving Workplace Conflict Effectively",
-    snippet: "Effective approaches for addressing and resolving conflicts with colleagues while maintaining professional relationships.",
+    snippet:
+      "Effective approaches for addressing and resolving conflicts with colleagues while maintaining professional relationships.",
     keyTakeaways: [
       "Conflict is inevitable but can lead to growth when handled well",
       "Understanding different conflict styles improves resolution",
@@ -356,17 +365,20 @@ const blogData = [
       {
         title: "Crucial Conversations: Tools for Talking When Stakes Are High",
         url: "https://www.vitalsmarts.com/crucial-conversations-training/",
-        description: "Framework for navigating high-stakes discussions effectively",
+        description:
+          "Framework for navigating high-stakes discussions effectively",
       },
       {
         title: "Getting to Yes: Negotiating Agreement Without Giving In",
         url: "https://www.pon.harvard.edu/shop/getting-to-yes-negotiating-agreement-without-giving-in/",
-        description: "Classic guide to principled negotiation and conflict resolution",
+        description:
+          "Classic guide to principled negotiation and conflict resolution",
       },
       {
         title: "Conflict Resolution Network",
         url: "https://www.crnhq.org/",
-        description: "Free resources and tools for resolving workplace conflicts",
+        description:
+          "Free resources and tools for resolving workplace conflicts",
       },
     ],
   },
@@ -375,7 +387,8 @@ const blogData = [
     tag: "Social_Isolation",
     category: "negative",
     title: "Overcoming Workplace Isolation",
-    snippet: "Strategies for building relationships and feeling connected in the workplace, especially for remote or isolated employees.",
+    snippet:
+      "Strategies for building relationships and feeling connected in the workplace, especially for remote or isolated employees.",
     keyTakeaways: [
       "Social connection at work impacts both wellbeing and performance",
       "Isolation can occur even in busy environments",
@@ -438,19 +451,22 @@ const blogData = [
     ],
     resources: [
       {
-        title: "Connect First: 52 Simple Ways to Ignite Success, Meaning, and Joy at Work",
+        title:
+          "Connect First: 52 Simple Ways to Ignite Success, Meaning, and Joy at Work",
         url: "https://melissahughes.rocks/connect-first/",
         description: "Practical strategies for building workplace connections",
       },
       {
         title: "Virtual Culture: The Way We Work Doesn't Work Anymore",
         url: "https://www.amazon.com/Virtual-Culture-Work-Doesnt-Anymore/dp/1599329700",
-        description: "Guide to building connection in remote and hybrid environments",
+        description:
+          "Guide to building connection in remote and hybrid environments",
       },
       {
         title: "The Power of Vulnerability",
         url: "https://www.ted.com/talks/brene_brown_the_power_of_vulnerability",
-        description: "TED Talk on the role of vulnerability in building authentic connections",
+        description:
+          "TED Talk on the role of vulnerability in building authentic connections",
       },
     ],
   },
@@ -459,7 +475,8 @@ const blogData = [
     tag: "Lack_of_Work_Life_Balance",
     category: "negative",
     title: "Reclaiming Work-Life Balance",
-    snippet: "Practical approaches to create a healthier balance between professional obligations and personal life.",
+    snippet:
+      "Practical approaches to create a healthier balance between professional obligations and personal life.",
     keyTakeaways: [
       "Work-life balance is personal and evolves throughout your career",
       "Small boundaries can make a significant difference",
@@ -519,17 +536,20 @@ const blogData = [
       {
         title: "Boundaries: When to Say Yes, How to Say No",
         url: "https://www.boundariesbooks.com/",
-        description: "Guide to establishing healthy personal and professional boundaries",
+        description:
+          "Guide to establishing healthy personal and professional boundaries",
       },
       {
         title: "Digital Minimalism",
         url: "https://www.calnewport.com/books/digital-minimalism/",
-        description: "Approach to technology use that reclaims time and attention",
+        description:
+          "Approach to technology use that reclaims time and attention",
       },
       {
         title: "The Energy Project",
         url: "https://theenergyproject.com/",
-        description: "Resources for sustainable high performance through energy management",
+        description:
+          "Resources for sustainable high performance through energy management",
       },
     ],
   },
@@ -538,7 +558,8 @@ const blogData = [
     tag: "Recognition_Gap",
     category: "negative",
     title: "Bridging the Recognition Gap",
-    snippet: "Strategies for increasing visibility and appropriate acknowledgment of your workplace contributions.",
+    snippet:
+      "Strategies for increasing visibility and appropriate acknowledgment of your workplace contributions.",
     keyTakeaways: [
       "Recognition is a fundamental human need in the workplace",
       "Different people prefer different types of recognition",
@@ -599,7 +620,8 @@ const blogData = [
       {
         title: "The 5 Languages of Appreciation in the Workplace",
         url: "https://www.appreciationatwork.com/5-languages-appreciation-workplace-improve-employee-engagement/",
-        description: "Framework for understanding different recognition preferences",
+        description:
+          "Framework for understanding different recognition preferences",
       },
       {
         title: "Radical Candor",
@@ -618,7 +640,8 @@ const blogData = [
     tag: "Job_Satisfaction_Concerns",
     category: "negative",
     title: "Rediscovering Meaning in Your Work",
-    snippet: "Approaches for identifying sources of dissatisfaction and making meaningful improvements to your work experience.",
+    snippet:
+      "Approaches for identifying sources of dissatisfaction and making meaningful improvements to your work experience.",
     keyTakeaways: [
       "Job satisfaction fluctuates naturally throughout your career",
       "Meaning can be found or created in almost any role",
@@ -681,17 +704,20 @@ const blogData = [
       {
         title: "Drive: The Surprising Truth About What Motivates Us",
         url: "https://www.danpink.com/books/drive/",
-        description: "Exploration of the three elements of true motivation: autonomy, mastery, and purpose",
+        description:
+          "Exploration of the three elements of true motivation: autonomy, mastery, and purpose",
       },
       {
         title: "Designing Your Life",
         url: "https://designingyour.life/",
-        description: "Approach to career development using design thinking principles",
+        description:
+          "Approach to career development using design thinking principles",
       },
       {
         title: "Job Crafting Exercise",
         url: "https://positiveorgs.bus.umich.edu/cpo-tools/job-crafting-exercise/",
-        description: "Tool for redesigning your job to increase meaning and engagement",
+        description:
+          "Tool for redesigning your job to increase meaning and engagement",
       },
     ],
   },
@@ -700,7 +726,8 @@ const blogData = [
     tag: "Performance_Pressure",
     category: "negative",
     title: "Thriving Under Pressure",
-    snippet: "How to handle high-pressure performance expectations while maintaining well-being and sustainable results.",
+    snippet:
+      "How to handle high-pressure performance expectations while maintaining well-being and sustainable results.",
     keyTakeaways: [
       "Performance pressure can be both beneficial and harmful",
       "Mindset significantly influences how pressure affects performance",
@@ -779,12 +806,14 @@ const blogData = [
       {
         title: "The Mindful Athlete",
         url: "https://mindfulathlete.org/the-mindful-athlete-book/",
-        description: "Approaches to performance based on mindfulness and presence",
+        description:
+          "Approaches to performance based on mindfulness and presence",
       },
       {
         title: "Headspace",
         url: "https://www.headspace.com/",
-        description: "App with guided meditations for performance and stress management",
+        description:
+          "App with guided meditations for performance and stress management",
       },
     ],
   },
@@ -795,7 +824,8 @@ const blogData = [
     tag: "Highly_Engaged_Employee",
     category: "positive",
     title: "Sustaining Your Exceptional Engagement",
-    snippet: "Strategies for preserving and nurturing your high engagement level for the long-term.",
+    snippet:
+      "Strategies for preserving and nurturing your high engagement level for the long-term.",
     keyTakeaways: [
       "High engagement is valuable but requires intentional maintenance",
       "Understanding your engagement drivers helps sustain motivation",
@@ -859,17 +889,21 @@ const blogData = [
       {
         title: "Flow: The Psychology of Optimal Experience",
         url: "https://www.harpercollins.com/products/flow-mihaly-csikszentmihalyi",
-        description: "Classic work on achieving the state of complete engagement in activities",
+        description:
+          "Classic work on achieving the state of complete engagement in activities",
       },
       {
         title: "Strengths Finder 2.0",
         url: "https://www.gallup.com/cliftonstrengths/en/253715/34-cliftonstrengths-themes.aspx",
-        description: "Assessment and strategies for identifying and leveraging your natural talents",
+        description:
+          "Assessment and strategies for identifying and leveraging your natural talents",
       },
       {
-        title: "Mindfulness: An Eight-Week Plan for Finding Peace in a Frantic World",
+        title:
+          "Mindfulness: An Eight-Week Plan for Finding Peace in a Frantic World",
         url: "https://www.mindfulnesscds.com/pages/books",
-        description: "Practices for maintaining presence and balance in high-engagement environments",
+        description:
+          "Practices for maintaining presence and balance in high-engagement environments",
       },
     ],
   },
@@ -878,7 +912,8 @@ const blogData = [
     tag: "High_Performance_Contributor",
     category: "positive",
     title: "Maximizing Your High Performance Impact",
-    snippet: "How to maintain exceptional performance levels while continuing to grow and avoid burnout.",
+    snippet:
+      "How to maintain exceptional performance levels while continuing to grow and avoid burnout.",
     keyTakeaways: [
       "High performance is a valuable asset that requires strategic management",
       "Sustainable excellence depends on balancing achievement with renewal",
@@ -940,17 +975,20 @@ const blogData = [
       {
         title: "Peak Performance",
         url: "https://www.bradstulberg.com/peak-performance",
-        description: "Science-based strategies for sustainable high performance",
+        description:
+          "Science-based strategies for sustainable high performance",
       },
       {
         title: "Deep Work",
         url: "https://www.calnewport.com/books/deep-work/",
-        description: "Approaches for achieving focused productivity in a distracted world",
+        description:
+          "Approaches for achieving focused productivity in a distracted world",
       },
       {
         title: "The Making of an Expert",
         url: "https://hbr.org/2007/07/the-making-of-an-expert",
-        description: "Harvard Business Review article on deliberate practice and expertise development",
+        description:
+          "Harvard Business Review article on deliberate practice and expertise development",
       },
     ],
   },
@@ -959,7 +997,8 @@ const blogData = [
     tag: "Innovative_Problem_Solver",
     category: "positive",
     title: "Amplifying Your Innovation Impact",
-    snippet: "How to nurture and apply your problem-solving skills for maximum organizational impact.",
+    snippet:
+      "How to nurture and apply your problem-solving skills for maximum organizational impact.",
     keyTakeaways: [
       "Innovation skills are increasingly valuable in every industry",
       "Creative problem-solving can be systematically developed and applied",
@@ -1022,7 +1061,8 @@ const blogData = [
       {
         title: "Creative Confidence",
         url: "https://www.creativeconfidence.com/",
-        description: "Approaches for developing and applying creative thinking from IDEO founders",
+        description:
+          "Approaches for developing and applying creative thinking from IDEO founders",
       },
       {
         title: "The Innovator's DNA",
@@ -1032,7 +1072,8 @@ const blogData = [
       {
         title: "What a Great Idea!",
         url: "https://www.penguinrandomhouse.com/books/330910/what-a-great-idea-by-charles-thompson/",
-        description: "Practical techniques for creative thinking and problem solving",
+        description:
+          "Practical techniques for creative thinking and problem solving",
       },
     ],
   },
@@ -1041,7 +1082,8 @@ const blogData = [
     tag: "Strong_Team_Collaborator",
     category: "positive",
     title: "Leveraging Your Collaborative Excellence",
-    snippet: "How to amplify your teamwork skills and create environments where collaboration flourishes.",
+    snippet:
+      "How to amplify your teamwork skills and create environments where collaboration flourishes.",
     keyTakeaways: [
       "Strong collaboration skills are increasingly valued in complex organizations",
       "Effective collaborators balance advocacy and inquiry",
@@ -1104,17 +1146,20 @@ const blogData = [
       {
         title: "Collaborative Intelligence",
         url: "https://www.dawnamarkova.com/collaborative-intelligence/",
-        description: "Framework for understanding and leveraging different thinking talents in collaboration",
+        description:
+          "Framework for understanding and leveraging different thinking talents in collaboration",
       },
       {
         title: "Crucial Conversations",
         url: "https://cruciallearning.com/crucial-conversations-book/",
-        description: "Techniques for effective dialogue when stakes are high and opinions differ",
+        description:
+          "Techniques for effective dialogue when stakes are high and opinions differ",
       },
       {
         title: "The Culture Map",
         url: "https://erinmeyer.com/books/the-culture-map/",
-        description: "Guide to navigating cultural differences in global collaboration",
+        description:
+          "Guide to navigating cultural differences in global collaboration",
       },
     ],
   },
@@ -1123,7 +1168,8 @@ const blogData = [
     tag: "Job_Satisfaction_Champion",
     category: "positive",
     title: "Sustaining and Sharing Your Workplace Fulfillment",
-    snippet: "How to maintain and share the practices that create lasting job satisfaction throughout your career.",
+    snippet:
+      "How to maintain and share the practices that create lasting job satisfaction throughout your career.",
     keyTakeaways: [
       "Job satisfaction is both a personal achievement and a potential contribution",
       "Understanding your satisfaction drivers helps maintain fulfillment",
@@ -1186,14 +1232,17 @@ const blogData = [
     ],
     resources: [
       {
-        title: "Happier: Learn the Secrets to Daily Joy and Lasting Fulfillment",
+        title:
+          "Happier: Learn the Secrets to Daily Joy and Lasting Fulfillment",
         url: "https://www.talbenshahar.com/books/happier/",
-        description: "Research-based approaches to sustainable happiness and fulfillment",
+        description:
+          "Research-based approaches to sustainable happiness and fulfillment",
       },
       {
         title: "Job Crafting Exercise",
         url: "https://positiveorgs.bus.umich.edu/cpo-tools/job-crafting-exercise/",
-        description: "Tool for reshaping your role to increase meaning and satisfaction",
+        description:
+          "Tool for reshaping your role to increase meaning and satisfaction",
       },
       {
         title: "How to Be a Positive Leader",
@@ -1202,6 +1251,6 @@ const blogData = [
       },
     ],
   },
-]
+];
 
 export default blogData;

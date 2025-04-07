@@ -1,11 +1,11 @@
 .layout {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-  
-  .layout-main {
-    flex-grow: 1;
-    color:#f8f8f8;
-    background-color: #0a0a0a;
-  }
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.layout-main {
+  flex-grow: 1;
+  color: #f8f8f8;
+  background-color: #0a0a0a;
+}

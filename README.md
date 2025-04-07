@@ -91,23 +91,27 @@ docker compose logs -f
 ## 🎨 Features
 
 ### Employee Dashboard
+
 - Real-time mood tracking
 - Performance metrics visualization
 - Leave management interface
 - Activity monitoring
 
 ### Chat Interface
+
 - AI-powered conversation
 - Real-time message updates
 - Emoji support
 
 ### Analytics Dashboard
+
 - Comprehensive well-being metrics
 - Team performance tracking
 - Trend analysis
 - Custom report generation
 
 ### Mentor Portal
+
 - Case management
 - Employee progress tracking
 - Communication tools

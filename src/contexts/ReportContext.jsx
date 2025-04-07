@@ -5,8 +5,8 @@ import { toast } from "sonner";
 const ReportContext = createContext(undefined);
 
 export const ReportProvider = ({ children }) => {
-    const [resultSummary, setResultSummary] = useState(null)
-    return (
+  const [resultSummary, setResultSummary] = useState(null);
+  return (
     <ReportContext.Provider
       value={{
         resultSummary,
