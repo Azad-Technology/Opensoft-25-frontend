@@ -109,7 +109,6 @@ const EmployeeReports = () => {
       </Layout>
     );
   }
-  console.log(stats);
   const userVibes = Object.values(stats.vibe_trend);
   const userLeaves = Object.values(stats.all_leaves);
   const activityData = Object.values(stats.activity_level);

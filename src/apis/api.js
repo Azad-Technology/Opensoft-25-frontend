@@ -12,7 +12,6 @@ const fetchDashboardData = async () => {
         }
 
         const data = await response.json();
-        console.log("Fetched Data:", data);
 
         // Update stats directly with the new data
         setStats(data);

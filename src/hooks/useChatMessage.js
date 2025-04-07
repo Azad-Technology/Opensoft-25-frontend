@@ -35,7 +35,6 @@ const fetchHistoryAPI = async ({ token, sessionId }) => {
     throw new Error(error || "Failed to fetch session history");
   }
   const data = await res.json();
-  // console.log("History data:", data);
   return data.history;
 };
 

@@ -40,7 +40,7 @@ const AdminReports = () => {
         setEmployees(data.users);
         setFilteredEmployees(data.users);
       } catch (error) {
-        console.log("Error fetching employee list:", error);
+        console.error("Error fetching employee list:", error);
       } finally {
         setLoading(false);
       }

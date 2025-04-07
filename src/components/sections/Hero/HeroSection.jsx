@@ -29,7 +29,7 @@ const HeroSection = () => {
                 {user && (
                   <>
                     {user.role === "employee" && (
-                      <Link to="/employee/dashboard">
+                      <Link to="/employee/dashboard" className="hover:no-underline">
                         <button className="btn-primary">
                           <span>Dashboard</span>
                           <ArrowRight size={16} style={{ marginLeft: "0.5rem", transition: "transform 0.3s" }} />
@@ -38,7 +38,7 @@ const HeroSection = () => {
                     )}
 
                     {user.role === "hr" && (
-                      <Link to="/admin/dashboard">
+                      <Link to="/admin/dashboard" className="hover:no-underline">
                         <button className="btn-primary">
                           <span>Dashboard</span>
                           <ArrowRight size={16} style={{ marginLeft: "0.5rem", transition: "transform 0.3s" }} />

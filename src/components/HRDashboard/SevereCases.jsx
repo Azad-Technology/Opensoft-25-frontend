@@ -24,7 +24,7 @@ const SevereCases = ({ criticalCases }) => {
     try {
       setFilteredEmployees(criticalCases || []);
     } catch (error) {
-      console.log("Error processing critical cases:", error);
+      console.error("Error processing critical cases:", error);
     } finally {
       setLoading(false);
     }

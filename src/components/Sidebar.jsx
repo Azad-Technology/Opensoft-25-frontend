@@ -120,7 +120,7 @@ const Sidebar = ({ expanded, onToggle }) => {
           {/* Logo + Toggle */}
           <div className="flex items-center justify-between p-5 border-b border-green-100/50 dark:border-green-800/30">
             {expanded ? (
-              <Link to="/" className="flex items-center justify-center">
+              <Link to="/" className="flex items-center justify-center hover:no-underline">
                 <span className="text-xl text-none font-sans font-bold text-[#2ECC71]">
                   MINDFLIX
                 </span>
@@ -153,7 +153,7 @@ const Sidebar = ({ expanded, onToggle }) => {
                 <li key={item.path}>
                   <Link
                     to={item.path}
-                    className={`flex items-center ${expanded ? "justify-start px-4" : "justify-center"} py-3 rounded-lg transition-colors ${
+                    className={`flex items-center ${expanded ? "justify-start px-4" : "justify-center"} py-3 rounded-lg transition-colors hover:no-underline ${
                       isActive(item.path)
                         ? "bg-green-100 dark:bg-green-800/40 text-green-700 dark:text-green-300"
                         : "text-gray-600 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-green-900/30 hover:text-green-600 dark:hover:text-green-300"

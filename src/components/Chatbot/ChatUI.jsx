@@ -471,14 +471,6 @@ const ChatUI = ({ className = "" }) => {
           </>
         )}
       </div>
-      {/* <div className="md:hidden fixed bottom-36 right-4 z-30">
-        <button
-          onClick={handleNewChat}
-          className="p-4 rounded-full bg-[#22C55E] text-white shadow-lg"
-        >
-          <MessageSquare size={24} />
-        </button>
-      </div> */}
     </div>
   );
 };

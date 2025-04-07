@@ -154,7 +154,7 @@ const Layout = ({ children }) => {
                       <div className="p-2">
                         <Link
                           to="/profile"
-                          className="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-green-50 dark:hover:bg-green-900/30 hover:text-green-700 dark:hover:text-green-400 rounded-md transition-colors"
+                          className="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-green-50 dark:hover:bg-green-900/30 hover:text-green-700 dark:hover:text-green-400 rounded-md transition-colors hover:no-underline"
                         >
                           <User size={16} className="mr-2" />
                           View Profile

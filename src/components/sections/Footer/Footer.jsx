@@ -16,7 +16,7 @@ const Footer = () => {
       <div className="footer-container">
         <div className="footer-grid">
           <div>
-            <Link to="/" className="footer-brand">
+            <Link to="/" className="footer-brand hover:no-underline">
               <span className="footer-brand-text">MINDFLIX</span>
             </Link>
             <p className="footer-description">

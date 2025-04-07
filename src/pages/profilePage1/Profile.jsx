@@ -402,40 +402,6 @@ function Profile() {
               {renderTabContent()}
             </div>
           </div>
-
-          {/* Quick Actions */}
-          {/* <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-4"
-          >
-            <button
-              onClick={handleLeaveRequest}
-              className="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 dark:text-white rounded-lg shadow-md hover:shadow-lg transition-all "
-            >
-              <CalendarRange className="w-5 h-5 text-deloitte-green" />
-              <span>Request Leave</span>
-            </button>
-            <button
-              onClick={handlePayslip}
-              className="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 dark:text-white rounded-lg shadow-md hover:shadow-lg transition-all "
-            >
-              <FileSpreadsheet className="w-5 h-5 text-deloitte-green" />
-              <span>View Payslip</span>
-            </button>
-            <button
-              onClick={() => handleDownload("HR Documents")}
-              className="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 dark:text-white rounded-lg shadow-md hover:shadow-lg transition-all "
-            >
-              <FileText className="w-5 h-5 text-deloitte-green" />
-              <span>HR Documents</span>
-            </button>
-            <button className="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 dark:text-white rounded-lg shadow-md hover:shadow-lg transition-all ">
-              <Settings className="w-5 h-5 text-deloitte-green" />
-              <span>Settings</span>
-            </button>
-          </motion.div> */}
         </div>
       </div>
     </Layout>

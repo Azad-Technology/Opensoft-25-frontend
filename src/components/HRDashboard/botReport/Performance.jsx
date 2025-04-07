@@ -1,18 +1,8 @@
 import React, { useEffect, useState } from "react";
-import ViewPerformanceModal from '../ViewPerformanceModal'
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  ResponsiveContainer,
-} from "recharts";
 import { Award } from "lucide-react";
 import VibeChart from "../../employeeCompo/VibeChart";
 
 const PerformanceReports = ({ result }) => {
-  const [viewPerformanceModal , setViewPerformanceModal] = useState(false);
 
   return (
     <>
@@ -140,7 +130,6 @@ const PerformanceReports = ({ result }) => {
         </div>
       </div>
     </div>
-    {viewPerformanceModal && <ViewPerformanceModal setViewPerformanceModal={setViewPerformanceModal} />}
     </>
   );
 };
