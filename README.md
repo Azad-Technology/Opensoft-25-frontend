@@ -38,6 +38,7 @@ VITE_API_URL=your_backend_url
 ### Installation
 
 ```bash
+cd Opensoft-25-frontend-main
 # Using npm
 npm install
 npm run dev
