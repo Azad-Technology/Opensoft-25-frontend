@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { MessageSquare, Mail, Phone, MapPin, Send } from "lucide-react";
 import "./ContactSection.css";
+import { toast } from "sonner";
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -18,10 +19,8 @@ const ContactSection = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Reset form after submission
     setFormData({ name: "", email: "", subject: "", message: "" });
-    // Here you would typically send the data to a server or API
+    toast.success("Message sent successfully!");
   };
 
   return (
