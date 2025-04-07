@@ -54,6 +54,7 @@ const BlogPage = () => {
             {content.map((blog, index) => (
               <Link
                 to={`/blog/${blog.id}`}
+                key={blog.id}
                 className="rounded-lg overflow-hidden shadow-md border bg-gradient-to-br from-white to-green-100/50 transition-all hover:shadow-lg border-green-200 hover:border-green-400 hover:no-underline"
               >
                 <div className="p-6">
@@ -61,10 +62,7 @@ const BlogPage = () => {
                     {blog.title}
                   </h3>
                   <p className="text-gray-600 mb-4">{blog.snippet}</p>
-                  <Link
-                    to={`/blog/${blog.id}`}
-                    className="flex items-center font-medium text-primary hover:text-primary/80 transition-colors"
-                  >
+                  <div className="flex items-center font-medium text-primary hover:text-primary/80 transition-colors">
                     Read More
                     <svg
                       className="h-4 w-4 ml-1"
@@ -78,7 +76,7 @@ const BlogPage = () => {
                       <line x1="5" y1="12" x2="19" y2="12"></line>
                       <polyline points="12 5 19 12 12 19"></polyline>
                     </svg>
-                  </Link>
+                  </div>
                 </div>
                 {/* </div> */}
               </Link>
