@@ -25,7 +25,7 @@ const BlogPage = () => {
                 to={`/blog/${blog.id}`}
                 className="rounded-lg overflow-hidden shadow-md border bg-gradient-to-br from-white to-green-100/50 transition-all hover:shadow-lg border-green-200 hover:border-green-400 hover:no-underline"
               >
-                {/* <div key={index} className="rounded-lg overflow-hidden shadow-md border bg-gradient-to-br from-white to-green-100/50 transition-all hover:shadow-lg border-green-200 hover:border-green-400"> */}
+               
                 <div className="p-6">
                   <h3 className="text-xl font-semibold mb-2 text-gray-900">{blog.title}</h3>
                   <p className="text-gray-600 mb-4">{blog.snippet}</p>

@@ -48,11 +48,13 @@ const ChatUI = ({ className = "" }) => {
     onSessionCreated: (newId) => setSessionId(newId),
   });
 
+
   const handleSessionSelect = (session) => {
     setSessionId(session.session_id);
     setShowSidebar(true);
     // Pre-populate history cache if not already present
     if (!sessionHistory.length) {
+      console.log("Session History from backend:", sessionHistory); //to be removed
       queryClient.setQueryData(["chatHistory", session.session_id], []);
     }
     if (window.innerWidth < 768) {
@@ -119,9 +121,12 @@ const ChatUI = ({ className = "" }) => {
   };
 
   const formatTime = (ts) => {
-    return new Date(ts).toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
+
+    return new Date(ts).toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+      timeZone: 'Asia/Kolkata',
     });
   };
 
