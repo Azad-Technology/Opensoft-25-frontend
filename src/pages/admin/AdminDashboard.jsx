@@ -229,11 +229,11 @@ const AdminDashboard = () => {
 
           <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-10">
             <div className="bg-white dark:bg-gray-800 shadow-md p-6 rounded-xl border border-gray-100 dark:border-gray-700">
-              <h2 className="text-lg font-semibold text-gray-600 dark:text-gray-300 mb-4">Weekly Wellness Trend</h2>
+              <h2 className="text-lg font-semibold text-gray-600 dark:text-gray-300 mb-4">Weekly Mood Trend</h2>
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={weeklyData}>
                   <XAxis dataKey="day" stroke="#03C03C" />
-                  <YAxis domain={[0, 10]} stroke="#03C03C" />
+                  <YAxis domain={[0, 5]} stroke="#03C03C" />
                   <Tooltip contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color: '#fff', border: 'none' }} />
                   <Line type="monotone" dataKey="score" stroke="#03C03C" strokeWidth={3} dot={{ r: 5 }} />
                 </LineChart>
