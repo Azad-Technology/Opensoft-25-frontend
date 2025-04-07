@@ -10,20 +10,29 @@ const Layout = ({ children }) => {
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const [sidebarExpanded, setSidebarExpanded] = useState(true);
+  const [sidebarExpanded, setSidebarExpanded] = useState(false); // Default to collapsed for mobile
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const { theme, toggleTheme } = useTheme();
 
+  // Set sidebar state based on screen size when component mounts
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-      if (window.innerWidth < 768) {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      
+      // On desktop, expand by default. On mobile, collapse by default
+      if (!mobile) {
+        setSidebarExpanded(true);
+      } else {
         setSidebarExpanded(false);
       }
     };
 
+    // Run once on mount
+    handleResize();
+    
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -31,7 +40,12 @@ const Layout = ({ children }) => {
   useEffect(() => {
     setShowUserDropdown(false);
     setShowNotifications(false);
-  }, [location]);
+    
+    // Close sidebar on navigation if on mobile
+    if (isMobile) {
+      setSidebarExpanded(false);
+    }
+  }, [location, isMobile]);
 
   const handleLogout = () => {
     logout();
@@ -40,6 +54,13 @@ const Layout = ({ children }) => {
 
   const toggleSidebar = () => {
     setSidebarExpanded(!sidebarExpanded);
+  };
+
+  // Function to close sidebar (for sidebar element clicks)
+  const closeSidebar = () => {
+    if (isMobile) {
+      setSidebarExpanded(false);
+    }
   };
 
   const toggleUserDropdown = () => {
@@ -71,7 +92,8 @@ const Layout = ({ children }) => {
     >
       {isAuthenticated && (
         <>
-          <Sidebar expanded={sidebarExpanded} onToggle={toggleSidebar} />
+          {/* Pass closeSidebar function to Sidebar component */}
+          <Sidebar expanded={sidebarExpanded} onToggle={toggleSidebar} onNavItemClick={closeSidebar} />
 
           <header
             className={`sticky top-0 z-10 glass border-b border-green-100 dark:border-green-900/40 shadow-sm transition-all duration-300 ease-in-out ${
