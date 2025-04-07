@@ -21,10 +21,13 @@ const BlogPage = () => {
         <Navbar />
         <main className="mt-16 flex-grow mb-4">
           <hr className="mb-6 mt-[60px]" />
-          <div className="flex items-center justify-between">
-            <div className="text-5xl font-bold text-gray-900 text-center mb-10">
+          
+          {/* Improved responsive header section */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-10">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-0">
               Blog Series
-            </div>
+            </h1>
+            
             {user !== null && (
               <Link
                 to={
@@ -32,26 +35,16 @@ const BlogPage = () => {
                     ? "/admin/dashboard"
                     : "/employee/dashboard"
                 }
-                className="text-xl flex items-center mb-12"
+                className="flex items-center text-base sm:text-lg hover:text-primary transition-colors"
               >
-                <svg
-                  className="h-4 w-4 mr-1"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <line x1="19" y1="12" x2="5" y2="12"></line>
-                  <polyline points="12 19 5 12 12 5"></polyline>
-                </svg>
+                <ArrowBigLeft className="h-4 w-4 mr-1" />
                 return to dashboard
               </Link>
             )}
           </div>
+          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {content.map((blog, index) => (
+            {content.map((blog) => (
               <Link
                 to={`/blog/${blog.id}`}
                 key={blog.id}
@@ -78,7 +71,6 @@ const BlogPage = () => {
                     </svg>
                   </div>
                 </div>
-                {/* </div> */}
               </Link>
             ))}
           </div>
