@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUp, ArrowDown } from 'lucide-react';
-import { StarBadge } from './starBadge.jsx';
 import { Info } from 'lucide-react';
 import Tooltips from './Tooltip.jsx';
 
@@ -27,7 +26,6 @@ export const MetricCard = ({ title, value, icon, rating, tooltip }) => {
         <p className="text-2xl font-bold text-gray-900 dark:text-white">
           {(value == null) ? '--' : value}
         </p>
-        {rating && <StarBadge rating={rating} />}
       </div>
     </motion.div>
   );

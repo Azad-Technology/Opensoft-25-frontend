@@ -12,8 +12,6 @@ import { Info } from 'lucide-react';
 import Tooltips from "../../components/employeeCompo/Tooltip";
 
 import {
-  AreaChart,
-  Area,
   BarChart,
   Bar,
   XAxis,
@@ -117,8 +115,6 @@ const EmployeeReports = () => {
   const activityData = Object.values(stats.activity_level);
   const awards = Object.values(stats.awards);
   const performance = stats.performance_rating;
-
-  // const projectData = Object.values(stats.projects);
 
 
   return (

@@ -100,7 +100,7 @@ const BotReports = ({ result }) => {
                 
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: 'gray-50', 
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
                     border: '1px solid hsl(var(--border))',
                     borderRadius: '8px',
                     boxShadow: '0 2px 4px rgba(0,0,0,0.1)',

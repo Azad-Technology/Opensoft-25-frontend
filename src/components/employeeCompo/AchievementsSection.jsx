@@ -5,8 +5,6 @@ import { Info } from 'lucide-react';
 import Tooltips from './Tooltip';
 
 
-
-
 export const AchievementsSection = ({ awards }) => {
   const scrollContainerRef = useRef(null);
 

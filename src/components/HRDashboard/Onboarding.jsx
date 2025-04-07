@@ -573,7 +573,7 @@ function EmployeeOnboarding() {
                       className="hover:bg-gray-50 dark:hover:bg-gray-700"
                       onClick={handleCancel}
                     >
-                      Cancel
+                      Clear
                     </Button>
                     <motion.div 
                       whileHover={{ scale: 1.02 }} 

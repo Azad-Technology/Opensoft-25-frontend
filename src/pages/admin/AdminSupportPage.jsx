@@ -168,7 +168,7 @@ const AdminSupportPage = () => {
 
           <div className="p-6 dark:bg-gray-800">
             <div className="bg-white rounded-lg shadow dark:bg-gray-700">
-              {/* Tabs */}
+           
               <div className="flex border-b dark:border-gray-700">
                 <button
                   className={`py-3 px-3 sm:px-6 text-sm sm:text-base font-medium ${activeTab === "recent" ? "text-green-600 border-b-2 border-green-600" : "text-gray-600 dark:text-white"}`}
@@ -224,7 +224,7 @@ const AdminSupportPage = () => {
                 </div>
               )}
 
-              {/* Table */}
+            
               {!loading && !error && (
                 <div className="overflow-x-auto">
                   <table className="w-full">
@@ -304,7 +304,7 @@ const AdminSupportPage = () => {
                 </div>
               )}
 
-              {/* Pagination */}
+            
               {totalPages > 1 && !loading && !error && (
                 <div className="flex items-center justify-between px-4 py-3 border-t">
                   <div>
@@ -375,7 +375,7 @@ const AdminSupportPage = () => {
             </div>
           </div>
 
-          {/* Modal */}
+        
           {isModalOpen && selectedInquiry && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 dark:bg-opacity-50 dark:bg-gray-900">
               <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl dark:bg-gray-800">
