@@ -10,8 +10,8 @@ export const styles = StyleSheet.create({
   header: {
     marginBottom: 20,
     padding: 10,
-    backgroundColor: '#86BC25', // Deloitte green
-    //borderRadius: 0, // Deloitte uses more rectangular designs
+    backgroundColor: '#86BC25', // MINDFLIX green
+    //borderRadius: 0, // MINDFLIX uses more rectangular designs
   },
   title: {
     fontSize: 18,
@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     marginBottom: 8,
-    borderBottom: '1px solid #86BC25', // Deloitte green border
+    borderBottom: '1px solid #86BC25', // MINDFLIX green border
     paddingBottom: 3,
     color: '#000000', // Black text
   },
@@ -63,13 +63,13 @@ export const styles = StyleSheet.create({
     //borderRadius: 0, // Square corners
   },
   lowRisk: {
-    backgroundColor: '#d6e9c6', // Deloitte-style muted green
+    backgroundColor: '#d6e9c6', // MINDFLIX-style muted green
   },
   mediumRisk: {
-    backgroundColor: '#faebcc', // Deloitte-style muted yellow
+    backgroundColor: '#faebcc', // MINDFLIX-style muted yellow
   },
   highRisk: {
-    backgroundColor: '#ebccd1', // Deloitte-style muted red
+    backgroundColor: '#ebccd1', // MINDFLIX-style muted red
   },
   chart: {
     flexDirection: 'row',
@@ -101,7 +101,7 @@ export const styles = StyleSheet.create({
   },
   tableHeader: {
     flexDirection: 'row',
-    backgroundColor: '#86BC25', // Deloitte green
+    backgroundColor: '#86BC25', // MINDFLIX green
     padding: 5,
     borderBottomWidth: 1,
     borderBottomColor: '#000000', // Black border
@@ -134,7 +134,7 @@ export const styles = StyleSheet.create({
     borderBottomColor: '#dddddd', // Light gray border
   },
   leaveHeader: {
-    backgroundColor: '#86BC25', // Deloitte green
+    backgroundColor: '#86BC25', // MINDFLIX green
     fontWeight: 'bold',
     color: '#FFFFFF', // White text
   },
@@ -177,7 +177,7 @@ export const styles = StyleSheet.create({
   metricTitle: {
     fontSize: 9,
     fontWeight: 'bold',
-    color: '#86BC25', // Deloitte green for metric titles
+    color: '#86BC25', // MINDFLIX green for metric titles
     marginBottom: 3,
   },
   metricValue: {

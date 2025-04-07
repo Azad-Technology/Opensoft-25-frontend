@@ -17,8 +17,7 @@ const Footer = () => {
         <div className="footer-grid">
           <div>
             <Link to="/" className="footer-brand">
-              <span className="footer-brand-text">Deloitte</span>
-              <span className="footer-brand-dot">.</span>
+              <span className="footer-brand-text">MINDFLIX</span>
             </Link>
             <p className="footer-description">
               We're committed to enhancing employee wellness through innovative, data-driven solutions that respect privacy and deliver actionable insights.
@@ -57,14 +56,14 @@ const Footer = () => {
               <li><Link to="https://www2.deloitte.com/us/en/footerlinks1/terms-of-use.html?icid=bottom_terms-of-use" className="footer-link">Terms of Use</Link></li>
               <li><Link to="https://cookienotice.deloitte.com/" className="footer-link">Cookies</Link></li>
               <li><Link to="https://www2.deloitte.com/us/en/footerlinks1/data-privacy-framework.html?icid=bottom_data-privacy-framework" className="footer-link">Data Privacy Framework</Link></li>
-              <li><Link to="https://www2.deloitte.com/us/en/careers/life-at-deloitte.html?icid=bottom_life-at-deloitte" className="footer-link">Life at Deloitte</Link></li>
+              <li><Link to="https://www2.deloitte.com/us/en/careers/life-at-deloitte.html?icid=bottom_life-at-deloitte" className="footer-link">Life at Mindflix</Link></li>
             </ul>
           </div>
         </div>
         
         <div className="footer-copyright">
           <p className="footer-copyright-text">
-            © {new Date().getFullYear()} Deloitte. All rights reserved.
+            © {new Date().getFullYear()} MINDFLIX. All rights reserved.
           </p>
         </div>
       </div>

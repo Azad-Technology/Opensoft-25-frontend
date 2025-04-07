@@ -120,15 +120,15 @@ const Sidebar = ({ expanded, onToggle }) => {
           {/* Logo + Toggle */}
           <div className="flex items-center justify-between p-5 border-b border-green-100/50 dark:border-green-800/30">
             {expanded ? (
-              <Link to="/" className="flex items-center">
-                <div className="text-xl font-semibold text-gradient">
-                  Vibe<span className="font-bold">Catcher</span>
-                </div>
+              <Link to="/" className="flex items-center justify-center">
+                <span className="text-xl text-none font-sans font-bold text-[#2ECC71]">
+                  MINDFLIX
+                </span>
               </Link>
             ) : (
               <div className="w-full flex justify-center">
                 <div className="h-8 w-8 rounded-full bg-green-100 dark:bg-green-900/60 flex items-center justify-center text-green-600 dark:text-green-300 font-bold">
-                  V
+                  M
                 </div>
               </div>
             )}

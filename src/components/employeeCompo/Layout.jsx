@@ -208,7 +208,7 @@ const Layout = ({ children }) => {
           <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
             <div className="text-sm text-gray-500 dark:text-gray-400">
               <p>
-                © {new Date().getFullYear()} VibeCatcher. All rights reserved.
+                © {new Date().getFullYear()} MINDFLIX. All rights reserved.
               </p>
             </div>
             <div className="mt-4 md:mt-0 flex space-x-6">

@@ -8,8 +8,7 @@ const HRNavbar = () => {
     <div className='absolute top-0 w-full h-16 bg-black
      flex items-center px-6 text-bold shadow-lg'>
       <div className='mr-auto pb-3'>
-        <span className='text-2xl text-white font-extrabold hover:cursor-pointer'>Deloitte</span>
-        <span className='ml-0.5 text-5xl text-green-400 hover:cursor-pointer'>.</span>
+        <span className='text-2xl text-white font-extrabold hover:cursor-pointer'>MINDFLIX</span>
       </div>
 
       <nav className='hidden md:flex space-x-8 text-white font-semibold'>
