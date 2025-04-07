@@ -6,21 +6,20 @@ VibeCatcher's frontend provides an intuitive interface for employee well-being m
 
 <!-- First row of images -->
 <p align="center">
-  <img src="assets/dashboard-overview.png" width="48%" />
+  <img src="assets/image (3).png" width="48%" />
   &nbsp; &nbsp;
-  <img src="assets/chat-interface.png" width="48%" />
+  <img src="assets/image (4).png" width="48%" />
 </p>
 
-<!-- Adding vertical space -->
+<!-- Adding some vertical space between rows -->
 <br>
 
 <!-- Second row of images -->
 <p align="center">
-  <img src="assets/analytics-dashboard.png" width="48%" />
+  <img src="assets/image (1).png" width="48%" />
   &nbsp; &nbsp;
-  <img src="assets/mentor-portal.png" width="48%" />
+  <img src="assets/image (2).png" width="48%" />
 </p>
-
 ## 🚀 Quick Setup
 
 ### Prerequisites
@@ -34,8 +33,6 @@ Create `.env` file:
 
 ```env
 VITE_API_URL=your_backend_url
-VITE_WEBSOCKET_URL=your_websocket_url
-VITE_AUTH_KEY=your_auth_key
 ```
 
 ### Installation
