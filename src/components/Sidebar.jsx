@@ -118,7 +118,7 @@ const Sidebar = ({ expanded, onToggle }) => {
       <aside className={`sidebar ${!expanded ? "sidebar-collapsed" : ""} z-30`}>
         <div className="flex flex-col h-full">
           {/* Logo + Toggle */}
-          <div className="flex items-center justify-between p-4 border-b border-green-100/50 dark:border-green-800/30">
+          <div className="flex items-center justify-between p-5 border-b border-green-100/50 dark:border-green-800/30">
             {expanded ? (
               <Link to="/" className="flex items-center">
                 <div className="text-xl font-semibold text-gradient">
