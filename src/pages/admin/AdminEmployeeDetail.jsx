@@ -145,10 +145,10 @@ const AdminEmployeeDetail = () => {
         <div className="flex flex-col items-center justify-center h-screen w-full">
           <div className="flex flex-col items-center justify-center">
             <div className="relative h-20 w-20">
-              {/* Pulse animation around the spinner */}
+          
               <span className="absolute inset-0 rounded-full animate-ping opacity-20 bg-emerald-500"></span>
 
-              {/* Main spinner with nice transition effect */}
+              
               <svg className="absolute inset-0 animate-spin" viewBox="0 0 50 50">
                 <circle
                   cx="25"
@@ -165,7 +165,7 @@ const AdminEmployeeDetail = () => {
               </svg>
             </div>
 
-            {/* Text with subtle fade-in animation */}
+           
             <div className="mt-6 text-xl font-medium text-gray-800 dark:text-gray-100 animate-fadeIn">
               Loading
             </div>

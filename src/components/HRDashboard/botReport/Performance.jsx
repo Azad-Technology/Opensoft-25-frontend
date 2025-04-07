@@ -17,9 +17,9 @@ const PerformanceReports = ({ result }) => {
   return (
     <>
     <div className="p-4 mt-10">
-      {/* Main Content */}
+    
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Performance Metrics Chart */}
+       
         <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-5 border border-gray-100 dark:border-gray-700">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Vibe Trend</h2>
@@ -28,7 +28,7 @@ const PerformanceReports = ({ result }) => {
             </div>
           </div>
 
-              {/* Chart */}
+             
               < VibeChart
                 vibes={result?.vibe_trend}
                 height={180}
@@ -59,20 +59,19 @@ const PerformanceReports = ({ result }) => {
           </div>
         </div>
 
-        {/* Recognition & Feedback */}
+      
         <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-5 border border-gray-100 dark:border-gray-700">
         <div className="flex justify-between">
             <h3 className="text-md font-semibold mb-2 text-gray-700 dark:text-gray-200">Awards & Recognition</h3>
             </div>
 
-          {/* Performance Rating */}
+         
           <div className="mb-4">
             <div className="flex justify-between items-center mb-2">
               <div className="flex items-center space-x-2">
                 <div className="w-5 h-5 bg-green-500 rounded-full"></div>
                 <span className="text-gray-700 dark:text-gray-300">Performance Rating</span>
               </div>
-              {/* <span className="font-bold text-green-600 dark:text-green-400">{result.performance.Performance_Rating}/5</span> */}
               {result?.performance?.current?.rating ? (
              <span className="font-bold text-green-600 dark:text-green-400">
             {result.performance?.current?.rating}/5
@@ -89,7 +88,7 @@ const PerformanceReports = ({ result }) => {
             </div>
           </div>
 
-          {/* Working Hours */}
+          
           <div className="mb-4">
             <div className="flex justify-between items-center mb-2">
               <div className="flex items-center space-x-2">
@@ -110,7 +109,7 @@ const PerformanceReports = ({ result }) => {
             </div>
           </div>
 
-          {/* Awards & Recognition */}
+         
           <div className="mb-4">
             <h3 className="text-md font-semibold mb-2 text-gray-700 dark:text-gray-200">Awards & Recognition</h3>
             {result?.awards_and_recognition?.award_types?.length ? (
@@ -131,7 +130,7 @@ const PerformanceReports = ({ result }) => {
   )}
           </div>
 
-          {/* Manager Feedback */}
+         
           <div className="bg-gray-50 dark:bg-gray-800/50 border-l-4 border-gray-500 p-3 mt-4">
             <h3 className="text-md font-semibold mb-2 text-gray-700 dark:text-gray-200">Manager Feedback</h3>
             <p className="text-sm text-gray-700 dark:text-gray-300">

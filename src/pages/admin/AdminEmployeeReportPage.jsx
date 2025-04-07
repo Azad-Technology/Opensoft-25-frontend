@@ -6,7 +6,7 @@ import Layout from '../../components/employeeCompo/Layout';
 const AdminEmployeeReportPage = () => {
     const { month, year } = useParams();
 
-    // Sample data - in a real application, this would come from your API
+ 
     const sampleData = {
         leave: {
             score: 4.2,

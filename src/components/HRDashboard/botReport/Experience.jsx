@@ -55,7 +55,7 @@ const EmployeeExperience = ({ result }) => {
               pointer={{ type: "needle", color: "#464A4F" }}
             />
             <div className="text-lg font-bold text-gray-800 dark:text-gray-100">
-              {feedback}
+              {(feedback) ? feedback : 'Not Available'}
             </div>
           </div>
         </div>
@@ -125,7 +125,7 @@ const EmployeeExperience = ({ result }) => {
          
           <div className="bg-blue-50 dark:bg-blue-900/30 border-l-4 border-blue-500 p-3 mt-4">
             <p className="text-sm text-gray-700 dark:text-gray-300">
-              {(result?.onboarding_experience?.training_completed) ? 'Employee has successfully transitioned into their role with good feedback on the onboarding process. All required training has been completed.':
+              {(result?.onboarding_experience?.training_completed) ? `Employee has successfully transitioned into their role with "${feedback}" feedback on the onboarding process. All required training has been completed.`:
               'Employee has not yet completed all required training. Onboarding is still in progress.'}
             </p>
           </div>

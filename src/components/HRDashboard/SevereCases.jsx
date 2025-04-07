@@ -17,7 +17,7 @@ const SevereCases = ({ criticalCases }) => {
   const [selectedRisk, setSelectedRisk] = useState("");
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage, setPostsPerPage] = useState(10);
+  const [postsPerPage, setPostsPerPage] = useState(5);
 
   useEffect(() => {
     setLoading(true);
