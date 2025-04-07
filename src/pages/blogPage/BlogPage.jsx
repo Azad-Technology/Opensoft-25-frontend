@@ -25,28 +25,30 @@ const BlogPage = () => {
             <div className="text-5xl font-bold text-gray-900 text-center mb-10">
               Blog Series
             </div>
-            <Link
-              to={
-                user?.role_type === "hr"
-                  ? "/admin/dashboard"
-                  : "/employee/dashboard"
-              }
-              className="text-xl flex items-center mb-12"
-            >
-              <svg
-                className="h-4 w-4 mr-1"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+            {user !== null && (
+              <Link
+                to={
+                  user?.role_type === "hr"
+                    ? "/admin/dashboard"
+                    : "/employee/dashboard"
+                }
+                className="text-xl flex items-center mb-12"
               >
-                <line x1="19" y1="12" x2="5" y2="12"></line>
-                <polyline points="12 19 5 12 12 5"></polyline>
-              </svg>
-              return to dashboard
-            </Link>
+                <svg
+                  className="h-4 w-4 mr-1"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="19" y1="12" x2="5" y2="12"></line>
+                  <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                return to dashboard
+              </Link>
+            )}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {content.map((blog, index) => (
