@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -19,20 +19,22 @@ const SliderContent = [
   {
     icon: Activity,
     title: "Welcome to MINDFLIX",
-    description: "Gain meaningful insights into employee sentiment to foster a healthier, more engaged workplace.",
+    description:
+      "Gain meaningful insights into employee sentiment to foster a healthier, more engaged workplace.",
   },
   {
     icon: BarChart,
     title: "Real-Time Mood Analytics",
-    description: "Track organizational mood trends with intuitive dashboards that help identify challenges and opportunities early.",
+    description:
+      "Track organizational mood trends with intuitive dashboards that help identify challenges and opportunities early.",
   },
   {
     icon: HeartHandshake,
     title: "Empowering Employee Wellbeing",
-    description: "Promote a culture of care by listening proactively and taking action to support mental and emotional health.",
+    description:
+      "Promote a culture of care by listening proactively and taking action to support mental and emotional health.",
   },
 ];
-
 
 const AuthPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -164,7 +166,10 @@ const AuthPage = () => {
         className="w-full max-w-4xl flex shadow-2xl rounded-2xl overflow-hidden bg-black/20 backdrop-blur-sm border border-[#00a85a]/20"
       >
         <div className="hidden sm:flex w-1/2 bg-black/30 backdrop-blur-lg p-8 flex-col justify-center items-center relative border-r border-[#00a85a]/30 sm: display-none">
-          <span className="text-white absolute left-0 top-0 text-4xl mx-2 my-2 px-2 py-2 cursor-pointer hover:bg-[#00a85a]/30 rounded-full transition-colors duration-300" onClick={() => navigate('/')}>
+          <span
+            className="text-white absolute left-0 top-0 text-4xl mx-2 my-2 px-2 py-2 cursor-pointer hover:bg-[#00a85a]/30 rounded-full transition-colors duration-300"
+            onClick={() => navigate("/")}
+          >
             <ArrowLeft />
           </span>
           <AnimatePresence mode="wait">
@@ -204,7 +209,10 @@ const AuthPage = () => {
         </div>
 
         <div className="flex-1 sm:flex-none w-1/2 bg-black/10 backdrop-blur-lg p-12 relative text-white ">
-        <span className="sm:hidden text-white absolute left-0 top-0 text-4xl mx-2 my-2 px-2 py-2 cursor-pointer hover:bg-[#00a85a]/30 rounded-full transition-colors duration-300" onClick={() => navigate('/')}>
+          <span
+            className="sm:hidden text-white absolute left-0 top-0 text-4xl mx-2 my-2 px-2 py-2 cursor-pointer hover:bg-[#00a85a]/30 rounded-full transition-colors duration-300"
+            onClick={() => navigate("/")}
+          >
             <ArrowLeft />
           </span>
           <div className="absolute top-0 right-0 w-20 h-20">

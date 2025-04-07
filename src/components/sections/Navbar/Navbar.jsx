@@ -1,5 +1,5 @@
 import React from "react";
-import { useAuth } from "./../../../contexts/AuthContext"
+import { useAuth } from "./../../../contexts/AuthContext";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { User, Menu, X } from "lucide-react";

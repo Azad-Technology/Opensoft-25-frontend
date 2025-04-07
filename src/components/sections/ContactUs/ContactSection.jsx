@@ -9,12 +9,12 @@ const ContactSection = () => {
     name: "",
     email: "",
     subject: "",
-    message: ""
+    message: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
@@ -26,22 +26,22 @@ const ContactSection = () => {
   return (
     <section className="contact-section" id="contact">
       <div className="contact-overlay"></div>
-      
+
       <div className="container contact-container">
         <div className="section-header animate-fade-up">
           <h2>Contact & Support</h2>
           <div className="underline"></div>
           <p>
-            Have questions or need assistance? Our support team is here to help you navigate 
-            our platform and address any concerns you may have.
+            Have questions or need assistance? Our support team is here to help
+            you navigate our platform and address any concerns you may have.
           </p>
         </div>
-        
+
         <div className="contact-grid">
           <div className="animate-fade-right">
             <div className="contact-info-card glass-card h-[100%]">
               <h3 className="form-heading">Get in Touch</h3>
-              
+
               <div className="contact-methods">
                 <div className="contact-method">
                   <div className="contact-method-inner">
@@ -50,14 +50,19 @@ const ContactSection = () => {
                     </div>
                     <div className="contact-method-content">
                       <h4>Email</h4>
-                      <p className="contact-method-description">For detailed inquiries or feedback</p>
-                      <a href="mailto:support@deloitte-wellness.com" className="contact-method-action">
+                      <p className="contact-method-description">
+                        For detailed inquiries or feedback
+                      </p>
+                      <a
+                        href="mailto:support@deloitte-wellness.com"
+                        className="contact-method-action"
+                      >
                         support@Mindflix-wellness.com
                       </a>
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="contact-method">
                   <div className="contact-method-inner">
                     <div className="contact-method-icon-container">
@@ -65,14 +70,19 @@ const ContactSection = () => {
                     </div>
                     <div className="contact-method-content">
                       <h4>Phone</h4>
-                      <p className="contact-method-description">Available Monday-Friday, 9am-5pm</p>
-                      <a href="tel:+18005551234" className="contact-method-action">
+                      <p className="contact-method-description">
+                        Available Monday-Friday, 9am-5pm
+                      </p>
+                      <a
+                        href="tel:+18005551234"
+                        className="contact-method-action"
+                      >
                         +1 (800) 555-1234
                       </a>
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="contact-method">
                   <div className="contact-method-inner">
                     <div className="contact-method-icon-container">
@@ -81,8 +91,10 @@ const ContactSection = () => {
                     <div className="contact-method-content mb-6">
                       <h4>Visit Us</h4>
                       <p className="contact-method-description">
-                        Mindflix Wellness Hub<br />
-                        30 Rockefeller Plaza<br />
+                        Mindflix Wellness Hub
+                        <br />
+                        30 Rockefeller Plaza
+                        <br />
                         New York, NY 10112
                       </p>
                     </div>
@@ -91,11 +103,11 @@ const ContactSection = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="animate-fade-left">
             <div className="contact-form-card glass-card p-[1px]">
               <h3 className="form-heading">Send a Message</h3>
-              
+
               <form onSubmit={handleSubmit} className="contact-form">
                 <div className="form-row form-row-split">
                   <div className="form-group">
@@ -110,10 +122,9 @@ const ContactSection = () => {
                       onChange={handleChange}
                       className="form-input h-10"
                       required
-    
                     />
                   </div>
-                  
+
                   <div className="form-group">
                     <label htmlFor="email" className="form-label">
                       Your Email
@@ -129,7 +140,7 @@ const ContactSection = () => {
                     />
                   </div>
                 </div>
-                
+
                 <div className="form-group">
                   <label htmlFor="subject" className="form-label">
                     Subject
@@ -144,7 +155,7 @@ const ContactSection = () => {
                     required
                   />
                 </div>
-                
+
                 <div className="form-group">
                   <label htmlFor="message" className="form-label">
                     Message
@@ -159,7 +170,7 @@ const ContactSection = () => {
                     required
                   ></textarea>
                 </div>
-                
+
                 <button type="submit" className="btn-primary form-submit">
                   <Send size={16} />
                   <span>Send Message</span>

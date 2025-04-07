@@ -65,7 +65,6 @@ const VibeChart = ({
     return null;
   };
 
-
   const vibeColors = {
     frustrated: "var(--color-vibe-frustrated, #F87171)",
     sad: "var(--color-vibe-sad, #93C5FD)",

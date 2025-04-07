@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   BarChart,
@@ -8,7 +7,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   Cell,
-  Legend
+  Legend,
 } from "recharts";
 import { Info } from "lucide-react";
 import { a } from "framer-motion/client";
@@ -69,7 +68,9 @@ const IntentReport = ({ result }) => {
       const data = payload[0].payload;
       return (
         <div className="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-100 p-2 rounded shadow">
-          <p><strong>{data.tag}</strong></p>
+          <p>
+            <strong>{data.tag}</strong>
+          </p>
           <p>Priority: {data.priority}</p>
         </div>
       );
@@ -101,21 +102,30 @@ const IntentReport = ({ result }) => {
             <div className="min-w-[350px] h-64">
               {graphData.length > 0 ? (
                 <ResponsiveContainer width="100%" height={250}>
-                  <BarChart data={graphData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                  <BarChart
+                    data={graphData}
+                    margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                  >
                     <YAxis
                       allowDecimals={false}
                       ticks={[1, 2, 3]}
                       domain={[0, 3]}
                       tick={{ fontSize: 12 }}
                     />
-                    <XAxis dataKey="tag" fontSize={12}/>
+                    <XAxis dataKey="tag" fontSize={12} />
                     <Tooltip content={<CustomTooltip />} />
                     <Bar dataKey="value">
                       {graphData.map((entry, index) => (
                         <Cell key={index} fill={getColor(entry.priority)} />
                       ))}
                     </Bar>
-                    <Legend payload={[{value: 'High', type: 'square', color:'#EF4444'},{value: 'Medium', type: 'square', color:'#F59E0B'},{value: 'Low', type: 'square', color:'#10B981'}]} />
+                    <Legend
+                      payload={[
+                        { value: "High", type: "square", color: "#EF4444" },
+                        { value: "Medium", type: "square", color: "#F59E0B" },
+                        { value: "Low", type: "square", color: "#10B981" },
+                      ]}
+                    />
                   </BarChart>
                 </ResponsiveContainer>
               ) : (
@@ -146,7 +156,10 @@ const IntentReport = ({ result }) => {
                 const weight = typeof tag.weight === "number" ? tag.weight : 0;
                 const tagInfo = getTagInfo(weight);
                 return (
-                  <div key={index} className="flex flex-col items-start text-sm w-full">
+                  <div
+                    key={index}
+                    className="flex flex-col items-start text-sm w-full"
+                  >
                     <p className="text-gray-700 dark:text-gray-300">
                       {formatTag(tagText)}
                     </p>
@@ -158,15 +171,15 @@ const IntentReport = ({ result }) => {
                             weight > 0.6
                               ? "text-red-500"
                               : weight >= 0.4
-                              ? "text-yellow-500"
-                              : "text-green-500"
+                                ? "text-yellow-500"
+                                : "text-green-500"
                           }
                         >
                           {weight > 0.6
                             ? "High"
                             : weight >= 0.4
-                            ? "Medium"
-                            : "Low"}
+                              ? "Medium"
+                              : "Low"}
                         </span>
                       </div>
                       <div className="h-2 w-full bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">

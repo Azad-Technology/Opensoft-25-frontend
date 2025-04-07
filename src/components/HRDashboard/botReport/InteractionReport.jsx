@@ -12,11 +12,9 @@ import {
 } from "recharts";
 
 const InteractionReports = ({ result }) => {
-  
   const communicationActivity =
     result?.communication_activity?.weekly_averages || {};
   const activityLevel = result?.communication_activity?.activity_level || [];
-
 
   const communicationData = (communicationActivity) => {
     const daysOrder = [
@@ -39,7 +37,6 @@ const InteractionReports = ({ result }) => {
     });
   };
 
-
   const activityLevelData = Object.values(activityLevel)
     .map((item) => ({
       ...item,
@@ -55,7 +52,6 @@ const InteractionReports = ({ result }) => {
   return (
     <div className="p-4 mt-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-       
         <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-5 border border-gray-100 dark:border-gray-700">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
@@ -106,7 +102,7 @@ const InteractionReports = ({ result }) => {
               />
             </BarChart>
           </ResponsiveContainer>
-          
+
           <div className="flex justify-center space-x-4 mt-2">
             <div className="flex items-center space-x-1">
               <div className="w-3 h-3 bg-lime-500 rounded-full"></div>
@@ -129,13 +125,11 @@ const InteractionReports = ({ result }) => {
           </div>
         </div>
 
-       
         <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-5 border border-gray-100 dark:border-gray-700">
           <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">
             Inactivity Analysis
           </h2>
 
-         
           <div className="mb-4">
             <div className="flex justify-between text-sm mb-2">
               <div className="flex items-center space-x-2">
@@ -163,7 +157,6 @@ const InteractionReports = ({ result }) => {
             </div>
           </div>
 
-         
           <div className="mb-4">
             <div className="flex justify-between text-sm mb-2">
               <div className="flex items-center space-x-2">
@@ -189,12 +182,13 @@ const InteractionReports = ({ result }) => {
             </div>
           </div>
 
-        
           <div className="mb-4">
             <div className="flex justify-between text-sm mb-2">
               <div className="flex items-center space-x-2">
                 <div className="w-5 h-5 bg-gray-500 rounded-full"></div>
-                <span className="text-gray-700 dark:text-gray-300">Meetings</span>
+                <span className="text-gray-700 dark:text-gray-300">
+                  Meetings
+                </span>
               </div>
               <span className="text-gray-700 dark:text-gray-300">
                 {communicationActivity?.meetings || "N/A"} / week

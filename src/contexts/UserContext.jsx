@@ -6,19 +6,20 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [profileData, setProfileData] = useState(null);
-  const {token}=useAuth();
-
-  
+  const { token } = useAuth();
 
   const fetchProfileData = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_URL}/common/profile`, {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        }
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_APP_URL}/common/profile`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -32,7 +33,7 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-//   fetchProfileData
+  //   fetchProfileData
 
   return (
     <UserContext.Provider value={{ profileData, fetchProfileData }}>

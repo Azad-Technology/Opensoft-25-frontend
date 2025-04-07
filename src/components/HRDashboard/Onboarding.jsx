@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import {
-  UserPlus, CheckCircle, Sparkles,
-  Users, UserCog, Briefcase, RefreshCw, Lock
+  UserPlus,
+  CheckCircle,
+  Sparkles,
+  Users,
+  UserCog,
+  Briefcase,
+  RefreshCw,
+  Lock,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Layout from "../employeeCompo/Layout";
@@ -9,7 +15,15 @@ import { useTheme } from "../../contexts/ThemeContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { toast } from "sonner";
 
-const Button = ({ children, variant, size, type, onClick, className, disabled }) => {
+const Button = ({
+  children,
+  variant,
+  size,
+  type,
+  onClick,
+  className,
+  disabled,
+}) => {
   const getVariantClass = () => {
     switch (variant) {
       case "outline":
@@ -42,18 +56,16 @@ const Button = ({ children, variant, size, type, onClick, className, disabled })
 
 const Card = ({ children, className }) => {
   return (
-    <div className={`rounded-xl border shadow-lg backdrop-blur-sm dark:bg-gray-800/90 dark:border-green-500/30 ${className || ""}`}>
+    <div
+      className={`rounded-xl border shadow-lg backdrop-blur-sm dark:bg-gray-800/90 dark:border-green-500/30 ${className || ""}`}
+    >
       {children}
     </div>
   );
 };
 
 const CardHeader = ({ children, className }) => {
-  return (
-    <div className={`px-6 py-5 ${className || ""}`}>
-      {children}
-    </div>
-  );
+  return <div className={`px-6 py-5 ${className || ""}`}>{children}</div>;
 };
 
 const CardTitle = ({ children, className }) => {
@@ -66,29 +78,35 @@ const CardTitle = ({ children, className }) => {
 
 const CardDescription = ({ children }) => {
   return (
-    <p className="text-sm text-gray-500 dark:text-gray-300 mt-1">
-      {children}
-    </p>
+    <p className="text-sm text-gray-500 dark:text-gray-300 mt-1">{children}</p>
   );
 };
 
 const CardContent = ({ children, className }) => {
-  return (
-    <div className={`px-6 py-5 ${className || ""}`}>
-      {children}
-    </div>
-  );
+  return <div className={`px-6 py-5 ${className || ""}`}>{children}</div>;
 };
 
 const CardFooter = ({ children, className }) => {
   return (
-    <div className={`flex items-center justify-between px-6 py-4 ${className || ""}`}>
+    <div
+      className={`flex items-center justify-between px-6 py-4 ${className || ""}`}
+    >
       {children}
     </div>
   );
 };
 
-const Input = ({ id, type, placeholder, required, value, onChange, className, disabled, icon }) => {
+const Input = ({
+  id,
+  type,
+  placeholder,
+  required,
+  value,
+  onChange,
+  className,
+  disabled,
+  icon,
+}) => {
   return (
     <div className="relative">
       {icon && (
@@ -112,7 +130,10 @@ const Input = ({ id, type, placeholder, required, value, onChange, className, di
 
 const Label = ({ htmlFor, children, className }) => {
   return (
-    <label htmlFor={htmlFor} className={`text-sm font-medium text-gray-700 dark:text-gray-200 mb-1.5 block ${className || ""}`}>
+    <label
+      htmlFor={htmlFor}
+      className={`text-sm font-medium text-gray-700 dark:text-gray-200 mb-1.5 block ${className || ""}`}
+    >
       {children}
     </label>
   );
@@ -167,31 +188,37 @@ function EmployeeOnboarding() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_URL}/admin/add_onboarding`, {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_APP_URL}/admin/add_onboarding`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            role_type: userType,
+            name: formData.name,
+            role: formData.role,
+            employee_id: formData.employeeId,
+            email: formData.email,
+            password: formData.password,
+          }),
         },
-        body: JSON.stringify({
-          "role_type": userType,
-          "name": formData.name,
-          "role": formData.role,
-          "employee_id": formData.employeeId,
-          "email": formData.email,
-          "password": formData.password
-        })
-      });
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      toast.success(`${userType === "hr" ? "HR Personnel" : "Employee"} added successfully!`, {
-        description: `${formData.name} has been added to the system.`,
-        duration: 5000,
-      });
-      
+      toast.success(
+        `${userType === "hr" ? "HR Personnel" : "Employee"} added successfully!`,
+        {
+          description: `${formData.name} has been added to the system.`,
+          duration: 5000,
+        },
+      );
+
       // Reset form
       setFormData({
         name: "",
@@ -200,12 +227,11 @@ function EmployeeOnboarding() {
         email: "",
         password: "",
       });
-      
+
       setTimeout(() => {
         generateEmployeeId();
         generatePassword();
       }, 100);
-      
     } catch (error) {
       console.error("Error adding new team member:", error);
       toast.error("Failed to add team member", {
@@ -260,7 +286,8 @@ function EmployeeOnboarding() {
   };
 
   const generatePassword = () => {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
     let password = "";
     for (let i = 0; i < 12; i++) {
       password += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -280,9 +307,9 @@ function EmployeeOnboarding() {
       email: "",
       password: "",
     });
-    setUserType("employee"); 
+    setUserType("employee");
     setIsSubmitting(false);
-  }
+  };
   return (
     <Layout>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
@@ -310,10 +337,10 @@ function EmployeeOnboarding() {
               <div className="absolute -left-10 -top-10 h-32 w-32 rounded-full bg-green-300/30 blur-xl dark:bg-green-700/30" />
               <div className="absolute -right-5 top-1/4 h-24 w-24 rounded-full bg-green-300/20 blur-lg dark:bg-green-700/20" />
               <div className="absolute right-1/4 bottom-1/4 h-16 w-16 rounded-full bg-blue-300/20 blur-md dark:bg-blue-700/20" />
-              
+
               <Card className="border border-gray-200/80 glass-effect relative overflow-hidden bg-white/90 dark:bg-gray-800/90 shadow-xl hover:shadow-2xl transition-all duration-300">
                 <div className="absolute inset-0 bg-gradient-to-br from-green-50/50 via-white/30 to-green-50/50 dark:from-green-900/20 dark:via-gray-800/20 dark:to-green-900/20" />
-                
+
                 <CardHeader className="relative border-b border-gray-100 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50">
                   <div className="flex items-center gap-2">
                     <div className="bg-gradient-to-r from-green-600 to-green-600 p-3 rounded-lg text-white">
@@ -324,7 +351,8 @@ function EmployeeOnboarding() {
                         New Team Member Registration
                       </CardTitle>
                       <CardDescription>
-                        Enter the details to add a new member to your organization
+                        Enter the details to add a new member to your
+                        organization
                       </CardDescription>
                     </div>
                   </div>
@@ -343,23 +371,28 @@ function EmployeeOnboarding() {
                       </Label>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div 
+                        <div
                           className={`flex items-center gap-3 p-4 rounded-lg cursor-pointer transition-all ${
-                            userType === "employee" 
-                              ? "bg-green-100 dark:bg-green-900/40 border-2 border-green-400 dark:border-green-500" 
+                            userType === "employee"
+                              ? "bg-green-100 dark:bg-green-900/40 border-2 border-green-400 dark:border-green-500"
                               : "bg-white/70 dark:bg-gray-700/50 border-2 border-transparent hover:bg-green-50 dark:hover:bg-green-900/20"
                           }`}
                           onClick={() => handleUserTypeChange("employee")}
                         >
-                          <div className={`p-2 rounded-lg ${
-                            userType === "employee" 
-                              ? "bg-green-500 text-white" 
-                              : "bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-300"
-                          }`}>
+                          <div
+                            className={`p-2 rounded-lg ${
+                              userType === "employee"
+                                ? "bg-green-500 text-white"
+                                : "bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-300"
+                            }`}
+                          >
                             <Briefcase className="h-5 w-5" />
                           </div>
                           <div>
-                            <Label htmlFor="employee" className="cursor-pointer text-base font-medium">
+                            <Label
+                              htmlFor="employee"
+                              className="cursor-pointer text-base font-medium"
+                            >
                               Regular Employee
                             </Label>
                             <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -376,24 +409,29 @@ function EmployeeOnboarding() {
                             className="sr-only"
                           />
                         </div>
-                        
-                        <div 
+
+                        <div
                           className={`flex items-center gap-3 p-4 rounded-lg cursor-pointer transition-all ${
-                            userType === "hr" 
-                              ? "bg-green-100 dark:bg-green-900/40 border-2 border-green-400 dark:border-green-500" 
+                            userType === "hr"
+                              ? "bg-green-100 dark:bg-green-900/40 border-2 border-green-400 dark:border-green-500"
                               : "bg-white/70 dark:bg-gray-700/50 border-2 border-transparent hover:bg-green-50 dark:hover:bg-green-900/20"
                           }`}
                           onClick={() => handleUserTypeChange("hr")}
                         >
-                          <div className={`p-2 rounded-lg ${
-                            userType === "hr" 
-                              ? "bg-green-500 text-white" 
-                              : "bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-300"
-                          }`}>
+                          <div
+                            className={`p-2 rounded-lg ${
+                              userType === "hr"
+                                ? "bg-green-500 text-white"
+                                : "bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-300"
+                            }`}
+                          >
                             <UserCog className="h-5 w-5" />
                           </div>
                           <div>
-                            <Label htmlFor="hr" className="cursor-pointer text-base font-medium">
+                            <Label
+                              htmlFor="hr"
+                              className="cursor-pointer text-base font-medium"
+                            >
                               HR Personnel
                             </Label>
                             <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -426,7 +464,7 @@ function EmployeeOnboarding() {
                             <Sparkles className="h-4 w-4 text-green-500" />
                             Personal Information
                           </h3>
-                          
+
                           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                             <motion.div
                               className="space-y-2"
@@ -435,7 +473,8 @@ function EmployeeOnboarding() {
                               transition={{ delay: 0.1 }}
                             >
                               <Label htmlFor="name">
-                              Full Name <span className="text-red-500">*</span>
+                                Full Name{" "}
+                                <span className="text-red-500">*</span>
                               </Label>
                               <Input
                                 id="name"
@@ -453,10 +492,16 @@ function EmployeeOnboarding() {
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: 0.2 }}
                             >
-                              <Label htmlFor="role">Role <span className="text-red-500">*</span></Label>
+                              <Label htmlFor="role">
+                                Role <span className="text-red-500">*</span>
+                              </Label>
                               <Input
                                 id="role"
-                                placeholder={userType === "hr" ? "HR Manager" : "Software Engineer"}
+                                placeholder={
+                                  userType === "hr"
+                                    ? "HR Manager"
+                                    : "Software Engineer"
+                                }
                                 required
                                 value={formData.role}
                                 onChange={handleInputChange}
@@ -474,7 +519,7 @@ function EmployeeOnboarding() {
                         <Sparkles className="h-4 w-4 text-green-500" />
                         System Credentials
                       </h3>
-                      
+
                       <div className="space-y-6">
                         <motion.div
                           className="space-y-2"
@@ -483,13 +528,20 @@ function EmployeeOnboarding() {
                           transition={{ delay: 0.3 }}
                         >
                           <div className="flex justify-between">
-                            <Label htmlFor="employeeId">{userType === "hr" ? "HR ID" : "Employee ID"} Role <span className="text-red-500">*</span></Label>
-                            <span className="text-xs text-green-600 dark:text-green-400">Auto-generated</span>
+                            <Label htmlFor="employeeId">
+                              {userType === "hr" ? "HR ID" : "Employee ID"} Role{" "}
+                              <span className="text-red-500">*</span>
+                            </Label>
+                            <span className="text-xs text-green-600 dark:text-green-400">
+                              Auto-generated
+                            </span>
                           </div>
                           <div className="flex gap-2">
                             <Input
                               id="employeeId"
-                              placeholder={userType === "hr" ? "HR1234" : "EMP1234"}
+                              placeholder={
+                                userType === "hr" ? "HR1234" : "EMP1234"
+                              }
                               required
                               value={formData.employeeId}
                               onChange={handleInputChange}
@@ -502,7 +554,9 @@ function EmployeeOnboarding() {
                               className="flex-shrink-0 flex items-center gap-1"
                             >
                               <RefreshCw className="h-4 w-4" />
-                              <span className="hidden sm:inline">Regenerate</span>
+                              <span className="hidden sm:inline">
+                                Regenerate
+                              </span>
                             </Button>
                           </div>
                         </motion.div>
@@ -514,13 +568,22 @@ function EmployeeOnboarding() {
                           transition={{ delay: 0.4 }}
                         >
                           <div className="flex justify-between">
-                            <Label htmlFor="email">Email Address Role <span className="text-red-500">*</span></Label>
-                            <span className="text-xs text-green-600 dark:text-green-400">Based on name</span>
+                            <Label htmlFor="email">
+                              Email Address Role{" "}
+                              <span className="text-red-500">*</span>
+                            </Label>
+                            <span className="text-xs text-green-600 dark:text-green-400">
+                              Based on name
+                            </span>
                           </div>
                           <Input
                             id="email"
                             type="email"
-                            placeholder={userType === "hr" ? "hr.john.doe@deloitte.com" : "john.doe@deloitte.com"}
+                            placeholder={
+                              userType === "hr"
+                                ? "hr.john.doe@deloitte.com"
+                                : "john.doe@deloitte.com"
+                            }
                             required
                             value={formData.email}
                             onChange={handleInputChange}
@@ -535,8 +598,13 @@ function EmployeeOnboarding() {
                           transition={{ delay: 0.5 }}
                         >
                           <div className="flex justify-between">
-                            <Label htmlFor="password">Initial Password Role <span className="text-red-500">*</span></Label>
-                            <span className="text-xs text-green-600 dark:text-green-400">Auto-generated</span>
+                            <Label htmlFor="password">
+                              Initial Password Role{" "}
+                              <span className="text-red-500">*</span>
+                            </Label>
+                            <span className="text-xs text-green-600 dark:text-green-400">
+                              Auto-generated
+                            </span>
                           </div>
                           <div className="flex gap-2">
                             <Input
@@ -555,11 +623,14 @@ function EmployeeOnboarding() {
                               className="flex-shrink-0 flex items-center gap-1"
                             >
                               <RefreshCw className="h-4 w-4" />
-                              <span className="hidden sm:inline">Regenerate</span>
+                              <span className="hidden sm:inline">
+                                Regenerate
+                              </span>
                             </Button>
                           </div>
                           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                            The user will be prompted to change this password on first login
+                            The user will be prompted to change this password on
+                            first login
                           </p>
                         </motion.div>
                       </div>
@@ -575,9 +646,9 @@ function EmployeeOnboarding() {
                     >
                       Clear
                     </Button>
-                    <motion.div 
-                      whileHover={{ scale: 1.02 }} 
-                      whileTap={{ scale: 0.98 }} 
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                       className="flex-1"
                     >
                       <Button
@@ -594,7 +665,8 @@ function EmployeeOnboarding() {
                           ) : (
                             <>
                               <CheckCircle className="h-4 w-4" />
-                              Add {userType === "hr" ? "HR Personnel" : "Employee"}
+                              Add{" "}
+                              {userType === "hr" ? "HR Personnel" : "Employee"}
                             </>
                           )}
                         </span>

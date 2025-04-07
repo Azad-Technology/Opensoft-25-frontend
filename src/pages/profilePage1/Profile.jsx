@@ -31,16 +31,16 @@ import {
   Moon,
   Sun,
 } from "lucide-react";
-import {useUserData } from "../../contexts/UserContext";
+import { useUserData } from "../../contexts/UserContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 function Profile() {
   const [activeTab, setActiveTab] = useState("basic");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { profileData,fetchProfileData }=useUserData();
+  const { profileData, fetchProfileData } = useUserData();
   const navigate = useNavigate();
-  const {token}=useAuth()
+  const { token } = useAuth();
 
   useEffect(() => {
     fetchProfileData();
@@ -52,7 +52,6 @@ function Profile() {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
   };
-
 
   const handleLeaveRequest = () => {
     alert("Opening leave request form...");
@@ -266,10 +265,11 @@ function Profile() {
                       </div>
                     </div>
                     <span
-                      className={`px-2 py-1 rounded-full text-sm ${doc.status === "Completed"
+                      className={`px-2 py-1 rounded-full text-sm ${
+                        doc.status === "Completed"
                           ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
                           : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-                        }`}
+                      }`}
                     >
                       {doc.status}
                     </span>
@@ -299,8 +299,8 @@ function Profile() {
                       </div>
                     </div>
                     <a
-                       href={`${doc.url}`}
-                       target="_blank"
+                      href={`${doc.url}`}
+                      target="_blank"
                       className=" text-none px-3 py-1 text-sm border border-deloitte-green text-deloitte-green dark:text-green-300 rounded-lg hover:bg-deloitte-green/10 dark:hover:bg-deloitte-green/20 transition-colors"
                     >
                       Download
@@ -351,7 +351,9 @@ function Profile() {
                     transition={{ delay: 0.1 }}
                     className="text-deloitte-darkGray dark:text-gray-300 transition-colors "
                   >
-                    {profileData?.jobTitle==="hr"?"Hiring Manager":"Employee"}
+                    {profileData?.jobTitle === "hr"
+                      ? "Hiring Manager"
+                      : "Employee"}
                   </motion.p>
                   <motion.p
                     initial={{ y: -10, opacity: 0 }}
@@ -363,7 +365,6 @@ function Profile() {
                   </motion.p>
                 </div>
                 <div className="flex gap-2">
-
                   <button
                     onClick={() => setIsModalOpen(true)}
                     className="flex items-center gap-2 px-4 py-2 border border-green-600 text-green-600 dark:text-green-300 rounded-lg hover:bg-green-600/10 transition-colors"
@@ -372,7 +373,10 @@ function Profile() {
                     Change Password
                   </button>
 
-                  <ChangePasswordModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+                  <ChangePasswordModal
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                  />
                 </div>
               </div>
             </div>
@@ -380,20 +384,19 @@ function Profile() {
             {/* Navigation Tabs */}
             <div className="border-b dark:border-gray-700 transition-colors ">
               <nav className="flex gap-4 px-6">
-                {["basic", "background", "documents"].map(
-                  (tab) => (
-                    <button
-                      key={tab}
-                      onClick={() => setActiveTab(tab)}
-                      className={`py-4 px-2 border-b-2 transition-colors  ${activeTab === tab
-                          ? "border-deloitte-green text-deloitte-green dark:text-green-300"
-                          : "border-transparent text-gray-500 dark:text-gray-400 hover:text-deloitte-green dark:hover:text-green-300"
-                        }`}
-                    >
-                      {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                    </button>
-                  ),
-                )}
+                {["basic", "background", "documents"].map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`py-4 px-2 border-b-2 transition-colors  ${
+                      activeTab === tab
+                        ? "border-deloitte-green text-deloitte-green dark:text-green-300"
+                        : "border-transparent text-gray-500 dark:text-gray-400 hover:text-deloitte-green dark:hover:text-green-300"
+                    }`}
+                  >
+                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  </button>
+                ))}
               </nav>
             </div>
 

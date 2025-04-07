@@ -2,32 +2,27 @@ import React from "react";
 import { GaugeComponent } from "react-gauge-component";
 
 const EmployeeExperience = ({ result }) => {
-  
   const feedback = result?.onboarding_experience?.feedback;
   let emotionalStateValue = -1;
 
- 
-  if (feedback && feedback === 'Poor') {
+  if (feedback && feedback === "Poor") {
     emotionalStateValue = 0;
-  }
-  else if (feedback && feedback === 'Average') {
+  } else if (feedback && feedback === "Average") {
     emotionalStateValue = 33;
-  }
-  else if (feedback && feedback === 'Good') {
+  } else if (feedback && feedback === "Good") {
     emotionalStateValue = 66;
-  }
-  else if (feedback && feedback === 'Excellent') {
+  } else if (feedback && feedback === "Excellent") {
     emotionalStateValue = 100;
   }
 
   return (
     <div className="p-4 mt-10">
-     
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-       
         <div className="rounded-xl p-4 bg-white dark:bg-gray-800 shadow-xl border border-gray-100 dark:border-gray-700">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Onboarding Experience</h2>
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
+              Onboarding Experience
+            </h2>
           </div>
 
           <div className="flex flex-col items-center">
@@ -55,19 +50,21 @@ const EmployeeExperience = ({ result }) => {
               pointer={{ type: "needle", color: "#464A4F" }}
             />
             <div className="text-lg font-bold text-gray-800 dark:text-gray-100">
-              {(feedback) ? feedback : 'Not Available'}
+              {feedback ? feedback : "Not Available"}
             </div>
           </div>
         </div>
 
-       
         <div className="bg-white dark:bg-gray-800 shadow-xl rounded p-4 border border-gray-100 dark:border-gray-700">
-          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Transition Details</h2>
+          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">
+            Transition Details
+          </h2>
 
-         
           <div className="mb-4">
             <div className="flex justify-between items-center mb-2">
-              <span className="font-medium text-gray-700 dark:text-gray-200">Onboarding Feedback</span>
+              <span className="font-medium text-gray-700 dark:text-gray-200">
+                Onboarding Feedback
+              </span>
               <span className="text-sm text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded">
                 {feedback}
               </span>
@@ -78,13 +75,15 @@ const EmployeeExperience = ({ result }) => {
             </p>
           </div>
 
-         
           <div className="flex justify-between items-center mb-4">
             <div>
-              <span className="font-medium text-gray-700 dark:text-gray-200">Initial Training</span>
+              <span className="font-medium text-gray-700 dark:text-gray-200">
+                Initial Training
+              </span>
               <p className="text-xs text-gray-600 dark:text-gray-400">
-                {(result?.onboarding_experience?.training_completed) ? "completed all required training modules" :
-                "training in progress"}
+                {result?.onboarding_experience?.training_completed
+                  ? "completed all required training modules"
+                  : "training in progress"}
               </p>
             </div>
             <svg
@@ -100,13 +99,15 @@ const EmployeeExperience = ({ result }) => {
             </svg>
           </div>
 
-          
           <div className="flex justify-between items-center mb-4">
             <div>
-              <span className="font-medium text-gray-700 dark:text-gray-200">Mentor Assigned</span>
+              <span className="font-medium text-gray-700 dark:text-gray-200">
+                Mentor Assigned
+              </span>
               <p className="text-xs text-gray-600 dark:text-gray-400">
-                {(result?.onboarding_experience?.mentor_assigned) ? `A mentor has been successfully assigned.` : 
-                `No mentor has been assigned yet.`}
+                {result?.onboarding_experience?.mentor_assigned
+                  ? `A mentor has been successfully assigned.`
+                  : `No mentor has been assigned yet.`}
               </p>
             </div>
             <svg
@@ -122,11 +123,11 @@ const EmployeeExperience = ({ result }) => {
             </svg>
           </div>
 
-         
           <div className="bg-blue-50 dark:bg-blue-900/30 border-l-4 border-blue-500 p-3 mt-4">
             <p className="text-sm text-gray-700 dark:text-gray-300">
-              {(result?.onboarding_experience?.training_completed) ? `Employee has successfully transitioned into their role with "${feedback}" feedback on the onboarding process. All required training has been completed.`:
-              'Employee has not yet completed all required training. Onboarding is still in progress.'}
+              {result?.onboarding_experience?.training_completed
+                ? `Employee has successfully transitioned into their role with "${feedback}" feedback on the onboarding process. All required training has been completed.`
+                : "Employee has not yet completed all required training. Onboarding is still in progress."}
             </p>
           </div>
         </div>

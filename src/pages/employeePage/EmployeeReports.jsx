@@ -4,11 +4,11 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useData } from "../../contexts/DataContext";
 import VibeChart from "../../components/employeeCompo/VibeChart";
 import VibeStatusBadge from "../../components/employeeCompo/VibeStatusBadge";
-import { AchievementsSection } from '../../components/employeeCompo/AchievementsSection';
+import { AchievementsSection } from "../../components/employeeCompo/AchievementsSection";
 import ProjectCard from "../../components/employeeCompo/ProjectCard";
 import ChatAlert from "../../components/employeeCompo/ChatAlert";
 import PerformanceCard from "../../components/employeeCompo/PerformanceCard";
-import { Info } from 'lucide-react';
+import { Info } from "lucide-react";
 import Tooltips from "../../components/employeeCompo/Tooltip";
 
 import {
@@ -61,7 +61,10 @@ const EmployeeReports = () => {
               <span className="absolute inset-0 rounded-full animate-ping opacity-20 bg-emerald-500"></span>
 
               {/* Main spinner with nice transition effect */}
-              <svg className="absolute inset-0 animate-spin" viewBox="0 0 50 50">
+              <svg
+                className="absolute inset-0 animate-spin"
+                viewBox="0 0 50 50"
+              >
                 <circle
                   cx="25"
                   cy="25"
@@ -115,11 +118,9 @@ const EmployeeReports = () => {
   const awards = Object.values(stats.awards);
   const performance = stats.performance_rating;
 
-
   return (
     <Layout>
       <div className="page-container py-8">
-
         <div className="mb-8 animate-fade-in flex items-center justify-between">
           <div>
             <h1 className="page-header mb-2">My Reports</h1>
@@ -127,7 +128,6 @@ const EmployeeReports = () => {
               View detailed information about your well-being and performance
             </p>
           </div>
-
         </div>
         {stats.is_chat_required && <ChatAlert />}
 
@@ -139,7 +139,12 @@ const EmployeeReports = () => {
           >
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-medium">Vibe Trend</h2>
-              <Tooltips text={"Vibe trend shows the distribution of your vibes over 14 Days. It shows emotional well-being and identifies patterns."} placement="left">
+              <Tooltips
+                text={
+                  "Vibe trend shows the distribution of your vibes over 14 Days. It shows emotional well-being and identifies patterns."
+                }
+                placement="left"
+              >
                 <Info className="text-muted-foreground" size={20} />
               </Tooltips>
             </div>
@@ -190,7 +195,6 @@ const EmployeeReports = () => {
             )}
           </div>
 
-
           {/* Achievements and Rewards */}
           <div className="bg-white/80 backdrop-blur-sm dark:bg-gray-900/80 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 mb-8">
             <AchievementsSection awards={awards} />
@@ -203,28 +207,35 @@ const EmployeeReports = () => {
           >
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-medium">Activity Levels</h2>
-              <Tooltips text={"This section displays your activity levels over the last 30 days, including Team Messages, Emails, and Meetings taken during this period."} placement="left">
+              <Tooltips
+                text={
+                  "This section displays your activity levels over the last 30 days, including Team Messages, Emails, and Meetings taken during this period."
+                }
+                placement="left"
+              >
                 <Info className="text-muted-foreground" size={20} />
               </Tooltips>
             </div>
-            {(activityData.length > 0) ? (
+            {activityData.length > 0 ? (
               <div className="h-72">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
                     data={activityData
-                      .map(item => ({
+                      .map((item) => ({
                         ...item,
-                        formattedDate: new Date(item.date).toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                          year: 'numeric'
-                        }),
+                        formattedDate: new Date(item.date).toLocaleDateString(
+                          "en-US",
+                          {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          },
+                        ),
                         // Keep original date for sorting
-                        dateObj: new Date(item.date)
+                        dateObj: new Date(item.date),
                       }))
                       // Sort in reverse chronological order (newest first)
-                      .sort((a, b) => a.dateObj - b.dateObj)
-                    }
+                      .sort((a, b) => a.dateObj - b.dateObj)}
                     margin={{ top: 20, right: 30, left: 20, bottom: 40 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -265,7 +276,9 @@ const EmployeeReports = () => {
                 </ResponsiveContainer>
               </div>
             ) : (
-              <div className="flex items-center justify-center h-32 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">No Activity Data</div>
+              <div className="flex items-center justify-center h-32 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">
+                No Activity Data
+              </div>
             )}
           </div>
 
@@ -278,15 +291,23 @@ const EmployeeReports = () => {
             >
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-medium">Performance</h2>
-                <Tooltips text={"This section displays the performance rating, review period and Manager Feedback"} placement="left">
+                <Tooltips
+                  text={
+                    "This section displays the performance rating, review period and Manager Feedback"
+                  }
+                  placement="left"
+                >
                   <Info className="text-muted-foreground" size={20} />
                 </Tooltips>
               </div>
 
-              {performance.length > 0 ? (<div className="min-h-40 max-h-80 overflow-auto p-3"> {
-                performance.map((review, index) => (
-                  <PerformanceCard review={review} key={index} />
-                ))}</div>
+              {performance.length > 0 ? (
+                <div className="min-h-40 max-h-80 overflow-auto p-3">
+                  {" "}
+                  {performance.map((review, index) => (
+                    <PerformanceCard review={review} key={index} />
+                  ))}
+                </div>
               ) : (
                 <div className="flex items-center justify-center h-[70%] bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">
                   No performance data available yet
@@ -301,7 +322,12 @@ const EmployeeReports = () => {
             >
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-medium">Leave History</h2>
-                <Tooltips text={"This section displays the leaves taken in the past year"} placement="left">
+                <Tooltips
+                  text={
+                    "This section displays the leaves taken in the past year"
+                  }
+                  placement="left"
+                >
                   <Info className="text-muted-foreground" size={20} />
                 </Tooltips>
               </div>
@@ -320,22 +346,28 @@ const EmployeeReports = () => {
                       {userLeaves.map((leave, index) => (
                         <tr key={index} className="border-b border-border">
                           <td className="py-3 px-4">
-                            {new Date(leave.leave_start_date).toLocaleDateString()} -{" "}
-                            {new Date(leave.leave_end_date).toLocaleDateString()}
+                            {new Date(
+                              leave.leave_start_date,
+                            ).toLocaleDateString()}{" "}
+                            -{" "}
+                            {new Date(
+                              leave.leave_end_date,
+                            ).toLocaleDateString()}
                           </td>
                           <td className="py-3 px-4">{leave.leave_days}</td>
                           <td className="py-3 px-4">
                             <span
-                              className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${leave.leave_type === "Casual Leave"
-                                ? "bg-blue-100 text-blue-800"
-                                : leave.leave_type === "Sick Leave"
-                                  ? "bg-red-100 text-gray-800"
-                                  : leave.leave_type === "Unpaid Leave"
-                                    ? "bg-gray-100  text-red-800"
-                                    : leave.leave_type === "Annual Leave"
-                                      ? "bg-green-100 text-green-800"
-                                      : "bg-purple-100 text-purple-800"
-                                }`}
+                              className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
+                                leave.leave_type === "Casual Leave"
+                                  ? "bg-blue-100 text-blue-800"
+                                  : leave.leave_type === "Sick Leave"
+                                    ? "bg-red-100 text-gray-800"
+                                    : leave.leave_type === "Unpaid Leave"
+                                      ? "bg-gray-100  text-red-800"
+                                      : leave.leave_type === "Annual Leave"
+                                        ? "bg-green-100 text-green-800"
+                                        : "bg-purple-100 text-purple-800"
+                              }`}
                             >
                               {leave.leave_type.charAt(0).toUpperCase() +
                                 leave.leave_type.slice(1)}
@@ -347,36 +379,44 @@ const EmployeeReports = () => {
                   </table>
                 </div>
               ) : (
-                <div className="flex items-center justify-center h-[85%] bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">No Leave Data</div>
+                <div className="flex items-center justify-center h-[85%] bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">
+                  No Leave Data
+                </div>
               )}
             </div>
-
           </div>
 
-          <div className="neo-glass rounded-xl p-6 animate-fade-in" style={{ animationDelay: "0.6s" }}>
+          <div
+            className="neo-glass rounded-xl p-6 animate-fade-in"
+            style={{ animationDelay: "0.6s" }}
+          >
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-medium">Assigned Projects</h2>
-              <Tooltips text={"This section displays the active projects of the employee"} placement="left">
+              <Tooltips
+                text={
+                  "This section displays the active projects of the employee"
+                }
+                placement="left"
+              >
                 <Info className="text-muted-foreground" size={20} />
               </Tooltips>
             </div>
 
-            {(stats.projects) ?
-              (<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">{Object.values(stats.projects).map((project) => (
-                <ProjectCard key={project.id} project={project} />
-              ))}
-              </div>) :
-              (<div className="flex items-center justify-center h-32 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">
+            {stats.projects ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                {Object.values(stats.projects).map((project) => (
+                  <ProjectCard key={project.id} project={project} />
+                ))}
+              </div>
+            ) : (
+              <div className="flex items-center justify-center h-32 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">
                 No Leave Data
-              </div>)
-
-            }
-
+              </div>
+            )}
           </div>
-
         </div>
       </div>
-    </Layout >
+    </Layout>
   );
 };
 

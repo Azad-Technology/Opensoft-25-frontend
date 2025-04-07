@@ -48,7 +48,6 @@ const ChatUI = ({ className = "" }) => {
     onSessionCreated: (newId) => setSessionId(newId),
   });
 
-
   const handleSessionSelect = (session) => {
     setSessionId(session.session_id);
     setShowSidebar(true);
@@ -121,12 +120,11 @@ const ChatUI = ({ className = "" }) => {
   };
 
   const formatTime = (ts) => {
-
-    return new Date(ts).toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
+    return new Date(ts).toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
       hour12: true,
-      timeZone: 'Asia/Kolkata',
+      timeZone: "Asia/Kolkata",
     });
   };
 

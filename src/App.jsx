@@ -10,7 +10,7 @@ import { queryClient } from "./services/react-query-client";
 // Pages
 import Login from "./pages/Auth/Login";
 import BlogPage from "./pages/blogPage/BlogPage";
-import BlogDetail from "./pages/blogPage/BlogDetail"
+import BlogDetail from "./pages/blogPage/BlogDetail";
 import EmployeeDashboard from "./pages/employeePage/EmployeeDashboard";
 import EmployeeChat from "./pages/employeePage/EmployeeChat";
 import EmployeeReports from "./pages/employeePage/EmployeeReports";
@@ -77,144 +77,144 @@ const App = () => (
           <DataProvider>
             <UserProvider>
               <ReportProvider>
-              <Sonner />
-              <Routes>
-                {/* Public routes */}
-                <Route path="/login" element={<Login />} />
-                <Route path="/blog" element={<BlogPage />} />
-                <Route path="/blog/:blogId" element={<BlogDetail />} />
-                <Route path="/" element={<Home />} />
+                <Sonner />
+                <Routes>
+                  {/* Public routes */}
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/blog" element={<BlogPage />} />
+                  <Route path="/blog/:blogId" element={<BlogDetail />} />
+                  <Route path="/" element={<Home />} />
 
-                {/* Protected Employee routes */}
-                <Route
-                  path="/profile"
-                  element={
-                    <ProtectedRoute allowedRoles={["employee", "hr"]}>
-                      <Profile />
-                    </ProtectedRoute>
-                  }
-                />
+                  {/* Protected Employee routes */}
+                  <Route
+                    path="/profile"
+                    element={
+                      <ProtectedRoute allowedRoles={["employee", "hr"]}>
+                        <Profile />
+                      </ProtectedRoute>
+                    }
+                  />
 
-              <Route
-                path="/employee/dashboard"
-                element={
-                  <ProtectedRoute allowedRoles={["employee"]}>
-                    <EmployeeDashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/employee/chat"
-                element={
-                  <ProtectedRoute allowedRoles={["employee"]}>
-                    <EmployeeChat />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/employee/reports"
-                element={
-                  <ProtectedRoute allowedRoles={["employee"]}>
-                    <EmployeeReports />
-                  </ProtectedRoute>
-                }
-              />
+                  <Route
+                    path="/employee/dashboard"
+                    element={
+                      <ProtectedRoute allowedRoles={["employee"]}>
+                        <EmployeeDashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/employee/chat"
+                    element={
+                      <ProtectedRoute allowedRoles={["employee"]}>
+                        <EmployeeChat />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/employee/reports"
+                    element={
+                      <ProtectedRoute allowedRoles={["employee"]}>
+                        <EmployeeReports />
+                      </ProtectedRoute>
+                    }
+                  />
 
-              <Route
-                path="/employee/schedule" // New route for Schedule
-                element={
-                  <ProtectedRoute allowedRoles={["employee"]}>
-                    <Schedule />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/employee/help"
-                element={
-                  <ProtectedRoute allowedRoles={["employee"]}>
-                    <HelpAndSupportPage/>
-                  </ProtectedRoute>
-                }
-              />
+                  <Route
+                    path="/employee/schedule" // New route for Schedule
+                    element={
+                      <ProtectedRoute allowedRoles={["employee"]}>
+                        <Schedule />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/employee/help"
+                    element={
+                      <ProtectedRoute allowedRoles={["employee"]}>
+                        <HelpAndSupportPage />
+                      </ProtectedRoute>
+                    }
+                  />
 
-                <Route
-                  path="/admin/exportReport/:employeeId"
-                  element={
-                    <ProtectedRoute allowedRoles={["hr"]}>
-                      <EmployeeReportPage />
-                    </ProtectedRoute>
-                  }
-                />
+                  <Route
+                    path="/admin/exportReport/:employeeId"
+                    element={
+                      <ProtectedRoute allowedRoles={["hr"]}>
+                        <EmployeeReportPage />
+                      </ProtectedRoute>
+                    }
+                  />
 
-                {/* Protected Admin routes */}
-                <Route
-                  path="/admin/dashboard"
-                  element={
-                    <ProtectedRoute allowedRoles={["hr"]}>
-                      <AdminDashboard />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/admin/reports"
-                  element={
-                    <ProtectedRoute allowedRoles={["hr"]}>
-                      <AdminReports />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/admin/inquiries"
-                  element={
-                    <ProtectedRoute allowedRoles={["hr"]}>
-                      <AdminSupportPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/admin/onboarding"
-                  element={
-                    <ProtectedRoute allowedRoles={["hr"]}>
-                      <Onboarding />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/admin/schedule"
-                  element={
-                    <ProtectedRoute allowedRoles={["hr"]}>
-                      <Schedule />
-                    </ProtectedRoute>
-                  }
-                />
+                  {/* Protected Admin routes */}
+                  <Route
+                    path="/admin/dashboard"
+                    element={
+                      <ProtectedRoute allowedRoles={["hr"]}>
+                        <AdminDashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/reports"
+                    element={
+                      <ProtectedRoute allowedRoles={["hr"]}>
+                        <AdminReports />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/inquiries"
+                    element={
+                      <ProtectedRoute allowedRoles={["hr"]}>
+                        <AdminSupportPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/onboarding"
+                    element={
+                      <ProtectedRoute allowedRoles={["hr"]}>
+                        <Onboarding />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/schedule"
+                    element={
+                      <ProtectedRoute allowedRoles={["hr"]}>
+                        <Schedule />
+                      </ProtectedRoute>
+                    }
+                  />
 
-                <Route
-                  path="/admin/reports/:employeeId"
-                  element={
-                    <ProtectedRoute allowedRoles={["hr"]}>
-                      <AdminEmployeeDetail />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/admin/employees"
-                  element={
-                    <ProtectedRoute allowedRoles={["hr"]}>
-                      <EmployeesPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/admin/employee-report/:month/:year"
-                  element={
-                    <ProtectedRoute allowedRoles={["hr"]}>
-                      <AdminEmployeeReportPage />
-                    </ProtectedRoute>
-                  }
-                />
+                  <Route
+                    path="/admin/reports/:employeeId"
+                    element={
+                      <ProtectedRoute allowedRoles={["hr"]}>
+                        <AdminEmployeeDetail />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/employees"
+                    element={
+                      <ProtectedRoute allowedRoles={["hr"]}>
+                        <EmployeesPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/employee-report/:month/:year"
+                    element={
+                      <ProtectedRoute allowedRoles={["hr"]}>
+                        <AdminEmployeeReportPage />
+                      </ProtectedRoute>
+                    }
+                  />
 
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
               </ReportProvider>
             </UserProvider>
           </DataProvider>
