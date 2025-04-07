@@ -47,11 +47,6 @@ const Layout = ({ children }) => {
     if (showNotifications) setShowNotifications(false);
   };
 
-  const toggleNotifications = () => {
-    setShowNotifications(!showNotifications);
-    if (showUserDropdown) setShowUserDropdown(false);
-  };
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (showUserDropdown || showNotifications) {
@@ -103,102 +98,6 @@ const Layout = ({ children }) => {
               </button>
 
               <div className="flex items-center space-x-4 ml-auto">
-                {/* Notifications */}
-                {/* <div className="relative notifications-container">
-                  <button
-                    className="rounded-full p-2 text-gray-500 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-500 hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors"
-                    onClick={toggleNotifications}
-                    aria-label="Notifications"
-                  >
-                    <Bell size={20} />
-                    <span className="absolute top-0 right-0 h-4 w-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
-                      2
-                    </span>
-                  </button>
-
-                  {showNotifications && (
-                    <div className="absolute right-0 mt-2 w-80 max-h-96 overflow-y-auto neo-glass rounded-lg shadow-xl z-20 animate-fade-in">
-                      <div className="flex items-center justify-between p-3 border-b border-green-100/50 dark:border-green-900/50">
-                        <h3 className="font-medium text-gray-700 dark:text-gray-200">
-                          Notifications
-                        </h3>
-                        <button
-                          className="text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400"
-                          onClick={() => setShowNotifications(false)}
-                        >
-                          <X size={18} />
-                        </button>
-                      </div>
-                      <div className="p-2">
-                        <a
-                          href="#"
-                          className="block px-3 py-2 hover:bg-green-50 dark:hover:bg-green-900/30 rounded-md transition-colors"
-                        >
-                          <div className="flex items-start">
-                            <div className="flex-shrink-0 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 p-2 rounded-lg">
-                              <Bell size={16} />
-                            </div>
-                            <div className="ml-3">
-                              <p className="text-sm font-medium text-gray-700 dark:text-gray-200">
-                                Monthly check-in reminder
-                              </p>
-                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                Don&apos;t forget to complete your monthly
-                                feedback session
-                              </p>
-                              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-                                10 minutes ago
-                              </p>
-                            </div>
-                          </div>
-                        </a>
-                        <a
-                          href="#"
-                          className="block px-3 py-2 hover:bg-green-50 dark:hover:bg-green-900/30 rounded-md transition-colors"
-                        >
-                          <div className="flex items-start">
-                            <div className="flex-shrink-0 bg-green-100 text-green-600 p-2 rounded-lg">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-4 w-4"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                />
-                              </svg>
-                            </div>
-                            <div className="ml-3">
-                              <p className="text-sm font-medium text-gray-700">
-                                Recognition received
-                              </p>
-                              <p className="text-xs text-gray-500 mt-1">
-                                Jane Smith has recognized your work on the
-                                project
-                              </p>
-                              <p className="text-xs text-gray-400 mt-1">
-                                2 hours ago
-                              </p>
-                            </div>
-                          </div>
-                        </a>
-                      </div>
-                      <div className="p-2 border-t border-green-100/50">
-                        <a
-                          href="#"
-                          className="block text-center text-xs text-green-600 hover:underline py-1"
-                        >
-                          View all notifications
-                        </a>
-                      </div>
-                    </div>
-                  )}
-                </div> */}
 
                 <ThemeSwitch />
 

@@ -45,10 +45,6 @@ export const AchievementCard = ({ achievement }) => {
         {achievement.type}
       </h3>
       
-      {/* <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-        {achievement.criterion}
-      </p> */}
-      
       <div className="text-xs text-gray-500 dark:text-gray-500">
         Accomplished on {achievement.date}
       </div>
