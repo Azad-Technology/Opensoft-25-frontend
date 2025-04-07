@@ -2,330 +2,239 @@ import { StyleSheet } from "@react-pdf/renderer";
 
 export const styles = StyleSheet.create({
   page: {
-    padding: 40,
-    fontFamily: "Helvetica",
-    backgroundColor: "#FFFFFF",
+    padding: 30,
+    fontFamily: 'Helvetica',
+    fontSize: 10,
+    backgroundColor: '#f9fdf9', // Very light green background for the entire page
   },
   header: {
-    marginBottom: 30,
-    borderBottom: "2px solid #86BC25",  // Deloitte green
-    paddingBottom: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    marginBottom: 20,
+    padding: 10,
+    backgroundColor: '#86BC25', // Deloitte green
+    //borderRadius: 0, // Deloitte uses more rectangular designs
   },
   title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#0E0E0E",  // Deloitte uses black for headings
-    letterSpacing: 0.5,
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    textAlign: 'center',
+    color: '#000000', // Black text
   },
   subtitle: {
-    fontSize: 14,
-    color: "#555555",  // Deloitte gray
-    marginTop: 6,
-    letterSpacing: 0.3,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 12,
-    color: "#0E0E0E",
-    backgroundColor: "#F2F7ED",  // Light green background
-    padding: 10,
-    borderRadius: 4,
-    borderLeft: "4px solid #86BC25",  // Deloitte green
+    fontSize: 12,
+    textAlign: 'center',
+    color: '#333333', // Darker gray for better readability
   },
   section: {
-    marginBottom: 25,
-    paddingBottom: 20,
-    borderBottom: "1px solid #E5E7EB",
+    marginBottom: 15,
+    padding: 10,
+    // Gradient-like effect from white to very light green
+    backgroundColor: '#f0f8f0',
+    //borderRadius: 0, // Square corners instead of rounded
+    border: '1px solid #dddddd', // Lighter border
   },
-  text: {
-    fontSize: 12,
-    marginBottom: 6,
-    color: "#333333",
-    lineHeight: 1.5,
-  },
-  bold: {
-    fontWeight: "bold",
-    color: "#0E0E0E",
+  sectionTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    borderBottom: '1px solid #86BC25', // Deloitte green border
+    paddingBottom: 3,
+    color: '#000000', // Black text
   },
   row: {
-    flexDirection: "row",
-    marginBottom: 10,
-    alignItems: "center",
+    flexDirection: 'row',
+    marginVertical: 5,
   },
   col: {
     flex: 1,
     paddingHorizontal: 5,
   },
-  flexRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginTop: 8,
-    gap: 6,
-  },
-  tag: {
+  text: {
     fontSize: 10,
-    backgroundColor: "#E9F2DF",  // Light Deloitte green
-    color: "#4B7B0B",  // Darker green
-    padding: "4 10",
-    borderRadius: 12,
-    marginRight: 6,
-    marginBottom: 6,
-    fontWeight: "bold",
+    marginBottom: 3,
+    color: '#333333', // Darker gray for better readability
   },
-  improvementTag: {
-    backgroundColor: "#F7F7F7",  // Light gray
-    color: "#555555",  // Deloitte gray
+  bold: {
+    fontWeight: 'bold',
+  },
+  riskBox: {
+    padding: 8,
+    marginVertical: 8,
+    //borderRadius: 0, // Square corners
+  },
+  lowRisk: {
+    backgroundColor: '#d6e9c6', // Deloitte-style muted green
+  },
+  mediumRisk: {
+    backgroundColor: '#faebcc', // Deloitte-style muted yellow
+  },
+  highRisk: {
+    backgroundColor: '#ebccd1', // Deloitte-style muted red
+  },
+  chart: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    height: 80,
+    marginVertical: 10,
+  },
+  bar: {
+    width: 15,
+    //borderRadius: 0, // Square corners
+    marginHorizontal: 2,
+  },
+  chartLabel: {
+    fontSize: 8,
+    marginTop: 3,
+    color: '#333333', // Darker gray
+  },
+  vibeSection: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  vibeStat: {
+    alignItems: 'center',
+  },
+  tableContainer: {
+    marginTop: 5,
+  },
+  tableHeader: {
+    flexDirection: 'row',
+    backgroundColor: '#86BC25', // Deloitte green
+    padding: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#000000', // Black border
+  },
+  tableHeaderCell: {
+    flex: 1,
+    fontWeight: 'bold',
+    fontSize: 9,
+    color: '#FFFFFF', // White text on green background
+  },
+  tableRow: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: '#dddddd', // Light gray border
+    padding: 5,
+  },
+  tableCell: {
+    flex: 1,
+    fontSize: 9,
+    color: '#333333', // Darker gray
+  },
+  noDataText: {
+    fontStyle: 'italic',
+    color: '#666666', // Medium gray
+    fontSize: 9,
   },
   leaveRow: {
-    flexDirection: "row",
-    borderBottom: "1px solid #F3F4F6",
-    paddingVertical: 8,
-    alignItems: "center",
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: '#dddddd', // Light gray border
+  },
+  leaveHeader: {
+    backgroundColor: '#86BC25', // Deloitte green
+    fontWeight: 'bold',
+    color: '#FFFFFF', // White text
   },
   leaveCol: {
     flex: 1,
-    fontSize: 11,
-    padding: "5 8",
+    padding: 3,
+    fontSize: 8,
+    textAlign: 'center',
   },
-  leaveHeader: {
-    backgroundColor: "#F5F5F5",  // Deloitte light gray
-    fontSize: 11,
-    fontWeight: "bold",
-    color: "#4B5563",
-    borderBottom: "2px solid #E5E7EB",
+  listContainer: {
+    marginLeft: 10,
   },
-  statusBadge: {
-    fontSize: 10,
-    padding: "3 8",
-    borderRadius: 12,
-    textAlign: "center",
-    maxWidth: 80,
-    fontWeight: "bold",
-  },
-  approved: {
-    backgroundColor: "#E9F2DF",  // Light Deloitte green
-    color: "#4B7B0B",  // Darker green
-  },
-  pending: {
-    backgroundColor: "#F7F7F7",  // Light gray
-    color: "#555555",  // Deloitte gray
-  },
-  rejected: {
-    backgroundColor: "#FBEAEA",  // Light red
-    color: "#991B1B",
-  },
-  projectCard: {
-    marginVertical: 10,
-    padding: 12,
-    borderRadius: 4,
-    backgroundColor: "#F9FAFB",
-    borderLeft: "3px solid #86BC25",  // Deloitte green
-  },
-  progressBar: {
-    height: 8,
-    backgroundColor: "#E5E7EB",
-    borderRadius: 4,
-    marginTop: 8,
-  },
-  progressFill: {
-    height: "100%",
-    borderRadius: 4,
-    backgroundColor: "#86BC25",  // Deloitte green
-  },
-  vibeSection: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    marginTop: 15,
-    gap: 10,
-  },
-  vibeStat: {
-    width: "30%",
-    marginBottom: 12,
-    padding: 10,
-    borderRadius: 4,
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#E5E7EB",
-    backgroundColor: "#F9FAFB",
-  },
-  vibeStatHigh: {
-    borderTopWidth: 3,
-    borderTopColor: "#86BC25",  // Deloitte green
-  },
-  statValue: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#0E0E0E",  // Deloitte black
-    marginVertical: 5,
-  },
-  statLabel: {
-    fontSize: 10,
-    color: "#555555",  // Deloitte gray
-    textAlign: "center",
-  },
-  statPercentage: {
-    fontSize: 12,
-    color: "#4B5563",
-    fontWeight: "medium",
-  },
-  infoCard: {
-    backgroundColor: "#F9FAFB",
-    borderRadius: 4,
-    padding: 12,
-    marginVertical: 8,
-    borderWidth: 1,
-    borderColor: "#E5E7EB",
-  },
-  recognitionCard: {
-    backgroundColor: "#F2F7ED",  // Light green background
-    borderRadius: 4,
-    padding: 12,
-    marginBottom: 12,
-    borderLeft: "3px solid #86BC25",  // Deloitte green
-  },
-  badge: {
-    fontSize: 10,
-    fontWeight: "bold",
-    color: "#FFFFFF",
-    backgroundColor: "#86BC25",  // Deloitte green
-    padding: "3 8",
-    borderRadius: 12,
-    alignSelf: "flex-start",
-    marginBottom: 5,
+  listItem: {
+    marginBottom: 2,
   },
   footer: {
-    position: "absolute",
-    bottom: 40,
-    left: 40,
-    right: 40,
-    borderTop: "1px solid #E5E7EB",
-    paddingTop: 10,
-    fontSize: 10,
-    color: "#555555",  // Deloitte gray
-    textAlign: "center",
+    position: 'absolute',
+    bottom: 30,
+    left: 30,
+    right: 30,
+    textAlign: 'center',
+    fontSize: 8,
+    color: '#666666', // Medium gray
   },
-  logo: {
-    width: 50,
-    height: 50,
-  },
-  separator: {
-    width: "100%",
-    height: 1,
-    backgroundColor: "#E5E7EB",
-    marginVertical: 8,
-  },
-  colorBar: {
-    height: 4,
-    width: "25%",
-    backgroundColor: "#86BC25",  // Deloitte green
-    borderRadius: 2,
-    marginBottom: 15,
-  },
-  grid: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginTop: 10,
-  },
-  gridItem: {
-    width: "48%",
-    margin: "1%",
+  // New styles for improved chat analysis section
+  chatAnalysisBox: {
+    marginTop: 8,
     padding: 10,
-    backgroundColor: "#F9FAFB",
-    borderRadius: 4,
+    backgroundColor: '#effaef', // Very light green background
+    borderLeft: '3px solid #86BC25', // Green accent border
+  },
+  metricBox: {
+    flex: 1,
+    padding: 8,
+    margin: 4,
+    backgroundColor: '#fcfcfc',
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: '#e0e0e0',
   },
   metricTitle: {
-    fontSize: 10,
-    color: "#555555",  // Deloitte gray
-    marginBottom: 5,
+    fontSize: 9,
+    fontWeight: 'bold',
+    color: '#86BC25', // Deloitte green for metric titles
+    marginBottom: 3,
   },
   metricValue: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#0E0E0E",  // Deloitte black
-  },
-  highlightBox: {
-    backgroundColor: "#F2F7ED",  // Light green background
-    borderRadius: 4,
-    padding: 12,
-    marginTop: 10,
-    borderLeft: "4px solid #86BC25",  // Deloitte green
-  },
-  highlightText: {
     fontSize: 12,
-    color: "#0E0E0E",  // Deloitte black
-    fontStyle: "italic",
+    fontWeight: 'bold',
+    marginBottom: 2,
   },
-  avatarCircle: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#E9F2DF",  // Light Deloitte green
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 10,
+  tagBox: {
+    padding: 6,
+    marginVertical: 3,
+    backgroundColor: '#f7fdf5', // Very light green
+    borderLeft: '2px solid #aed581', // Light green accent
   },
-  avatarText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#4B7B0B",  // Darker green
-  },
-  dateRange: {
-    fontSize: 11,
-    color: "#555555",  // Deloitte gray
-    backgroundColor: "#F5F5F5",  // Deloitte light gray
-    padding: "3 8",
-    borderRadius: 4,
-    alignSelf: "flex-start",
-  },
-  table: {
-    display: "table",
-    width: "100%",
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderColor: "#E5E7EB",
-    borderRadius: 4,
-    marginTop: 10,
-  },
-  tableRow: {
-    flexDirection: "row",
+  horizontalDivider: {
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
+    borderBottomColor: '#dddddd',
+    marginVertical: 8,
   },
-  tableHeader: {
-    backgroundColor: "#F5F5F5", // Deloitte light gray
-  },
-  tableCell: {
+  insightBox: {
+    marginTop: 5,
     padding: 8,
-    fontSize: 11,
-    textAlign: "left",
-    flex: 1,
-  },
-  tableHeaderCell: {
-    fontWeight: "bold",
-    color: "#4B5563",
-  },
-  graphPlaceholder: {
-    height: 120,
-    backgroundColor: "#F9FAFB",
-    borderRadius: 4,
-    marginVertical: 10,
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fdfdfd',
     borderWidth: 1,
-    borderColor: "#E5E7EB",
-    borderStyle: "dashed",
+    borderColor: '#e6e6e6',
   },
-  graphText: {
-    fontSize: 12,
-    color: "#555555", // Deloitte gray
-    fontStyle: "italic",
-  }
+  insightTitle: {
+    fontSize: 9,
+    fontWeight: 'bold',
+    color: '#333333',
+  },
+  riskIndicator: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    marginRight: 5,
+  },
+  riskRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 4,
+  },
+  // Sentiment box styles
+  sentimentBox: {
+    padding: 5, 
+    marginVertical: 2,
+    borderLeftWidth: 3,
+  },
+  positive: {
+    borderLeftColor: '#4caf50',
+    backgroundColor: '#f1f8e9',
+  },
+  neutral: {
+    borderLeftColor: '#9e9e9e',
+    backgroundColor: '#f5f5f5',
+  },
+  negative: {
+    borderLeftColor: '#f44336',
+    backgroundColor: '#ffebee',
+  },
 });
