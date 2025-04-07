@@ -52,7 +52,7 @@ const ContactSection = () => {
                       <h4>Email</h4>
                       <p className="contact-method-description">For detailed inquiries or feedback</p>
                       <a href="mailto:support@deloitte-wellness.com" className="contact-method-action">
-                        support@deloitte-wellness.com
+                        support@Mindflix-wellness.com
                       </a>
                     </div>
                   </div>
@@ -81,7 +81,7 @@ const ContactSection = () => {
                     <div className="contact-method-content mb-6">
                       <h4>Visit Us</h4>
                       <p className="contact-method-description">
-                        Deloitte Wellness Hub<br />
+                        Mindflix Wellness Hub<br />
                         30 Rockefeller Plaza<br />
                         New York, NY 10112
                       </p>

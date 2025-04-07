@@ -1,3 +1,4 @@
+import { RefreshCcw, RefreshCw } from "lucide-react";
 import React from "react";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -7,7 +8,8 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  
+  const [Loading, setLoading] = useState(false);
+
   // Reset form when modal opens/closes
   useEffect(() => {
     if (isOpen) {
@@ -17,35 +19,36 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
       setError("");
     }
   }, [isOpen]);
-  
+
   const validateForm = () => {
     if (!oldPassword || !newPassword || !confirmPassword) {
       setError("All fields are required");
       return false;
     }
-    
+
     if (newPassword !== confirmPassword) {
       setError("New password and confirmation don't match");
       return false;
     }
-    
+
     return true;
   };
 
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     setError("");
-    
+
     if (!validateForm()) return;
-    
+
     const token = JSON.parse(localStorage.getItem("auth"))?.access_token;
     const BASE_URL = import.meta.env.VITE_REACT_APP_URL;
-    
-    if(!token) {
+
+    if (!token) {
       toast.error("Authentication required");
       return;
     }
-    
+
     try {
+      setLoading(true);
       const response = await fetch(`${BASE_URL}/common/reset_password`, {
         method: "POST",
         headers: {
@@ -58,7 +61,7 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
           confirm_password: confirmPassword
         }),
       });
-      
+
       const res = await response.json();
       if (response.ok) {
         toast.success(res.message || "Password changed successfully");
@@ -72,6 +75,8 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
     } catch (error) {
       console.error("Error changing password:", error);
       setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -84,13 +89,13 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Update Password</h2>
           <p className="text-sm text-gray-500 dark:text-gray-400">Please enter your current password and a new secure password</p>
         </div>
-        
+
         {error && (
           <div className="mb-4 rounded-md bg-red-50 p-3 dark:bg-red-900/30">
             <p className="text-sm text-red-700 dark:text-red-200">{error}</p>
           </div>
         )}
-        
+
         <div className="space-y-4">
           <div>
             <label htmlFor="oldPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -105,7 +110,7 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
               onChange={(e) => setOldPassword(e.target.value)}
             />
           </div>
-          
+
           <div>
             <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               New Password
@@ -119,7 +124,7 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
               onChange={(e) => setNewPassword(e.target.value)}
             />
           </div>
-          
+
           <div>
             <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Confirm Password
@@ -134,7 +139,7 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
             />
           </div>
         </div>
-        
+
         <div className="mt-6 flex justify-end gap-3">
           <button
             onClick={onClose}
@@ -146,7 +151,16 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
             onClick={handleSubmit}
             className="rounded-lg bg-green-600 px-4 py-2 text-white transition-colors hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:bg-green-500 dark:hover:bg-green-600"
           >
-            Update Password
+            {
+              Loading ? (
+                <div className="flex items-center gap-2">
+                  <RefreshCw className="h-4 w-4 animate-spin" />
+                  <span>Updating</span>
+                </div>
+              ): (
+                "Change Password"
+              )
+            }
           </button>
         </div>
       </div>

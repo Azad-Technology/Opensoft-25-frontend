@@ -129,11 +129,9 @@ const AdminEmployeeDetail = () => {
         }
       }
     } catch (error) {
-      console.log("unable to fetch user data", error);
+      console.error("unable to fetch user data", error);
     }
   };
-
-  console.log("Result Summary", resultSummary)
 
   useEffect(() => {
     employeeData()

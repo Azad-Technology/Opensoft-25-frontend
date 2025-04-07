@@ -154,7 +154,7 @@ const Layout = ({ children }) => {
                       <div className="p-2">
                         <Link
                           to="/profile"
-                          className="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-green-50 dark:hover:bg-green-900/30 hover:text-green-700 dark:hover:text-green-400 rounded-md transition-colors"
+                          className="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-green-50 dark:hover:bg-green-900/30 hover:text-green-700 dark:hover:text-green-400 rounded-md transition-colors hover:no-underline"
                         >
                           <User size={16} className="mr-2" />
                           View Profile
@@ -208,7 +208,7 @@ const Layout = ({ children }) => {
           <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
             <div className="text-sm text-gray-500 dark:text-gray-400">
               <p>
-                © {new Date().getFullYear()} VibeCatcher. All rights reserved.
+                © {new Date().getFullYear()} MINDFLIX. All rights reserved.
               </p>
             </div>
             <div className="mt-4 md:mt-0 flex space-x-6">

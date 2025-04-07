@@ -96,7 +96,6 @@ const AdminSupportPage = () => {
       }
 
       const result = await response.json();
-      console.log("Status update result:", result);
 
     
       const updatedInquiries = inquiries.map((inquiry) =>

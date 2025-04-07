@@ -87,7 +87,7 @@ const BlogPage = () => {
       <footer className="bg-black pb-8 border-t border-white/10">
           <div className="border-t border-white/10 pt-8 text-center">
             <p className="text-white/50 text-sm">
-              © {new Date().getFullYear()} Deloitte. All rights reserved.
+              © {new Date().getFullYear()} MINDFLIX. All rights reserved.
             </p>
           </div>
       </footer>

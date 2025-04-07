@@ -27,7 +27,7 @@ const AboutSection = () => {
             <div className="about-underline"></div>
             
             <p className="about-paragraph">
-              At Deloitte, we believe that employee wellness is fundamental to organizational success. 
+              At Mindflix, we believe that employee wellness is fundamental to organizational success. 
               Our platform represents our commitment to fostering a workplace where every individual can thrive 
               both personally and professionally.
             </p>
@@ -63,7 +63,7 @@ const AboutSection = () => {
                 
                 <div className="quote-box">
                   <blockquote className="quote-text">
-                    "At Deloitte, we understand that our greatest asset is our people. 
+                    "At Mindflix, we understand that our greatest asset is our people. 
                     This platform represents our investment in their wellbeing and our commitment 
                     to creating a workplace where everyone can thrive."
                   </blockquote>

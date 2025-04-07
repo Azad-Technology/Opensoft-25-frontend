@@ -18,7 +18,7 @@ import { ArrowLeft } from "lucide-react";
 const SliderContent = [
   {
     icon: Activity,
-    title: "Welcome to Vibe Catcher",
+    title: "Welcome to MINDFLIX",
     description: "Gain meaningful insights into employee sentiment to foster a healthier, more engaged workplace.",
   },
   {

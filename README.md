@@ -1,8 +1,8 @@
-# VibeCatcher: AI-Powered Employee Well-being Platform
+# MINDFLIX: AI-Powered Employee Well-being Platform
 
 ## 🎯 Overview
 
-VibeCatcher's frontend provides an intuitive interface for employee well-being monitoring and support. Built with React + Vite, it offers real-time mood tracking, AI-powered chat support, and comprehensive analytics dashboards.
+Mindflix's frontend provides an intuitive interface for employee well-being monitoring and support. Built with React + Vite, it offers real-time mood tracking, AI-powered chat support, and comprehensive analytics dashboards.
 
 <!-- First row of images -->
 <p align="center">

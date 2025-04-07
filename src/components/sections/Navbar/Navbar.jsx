@@ -30,22 +30,21 @@ const Navbar = () => {
     >
       <div className="navbar-container">
         <div className="navbar-logo">
-          <Link to="/" className="navbar-brand">
-            <span className="navbar-brand-text">Deloitte</span>
-            <span className="navbar-dot">.</span>
+          <Link to="/" className="navbar-brand hover:no-underline">
+            <span className="navbar-brand-text">MINDFLIX</span>
           </Link>
         </div>
 
         {/* Profile/Login Button */}
         <div className="navbar-actions">
           {user ? (
-            <Link to="/profile">
+            <Link to="/profile" className="hover:no-underline">
               <div className="navbar-profile">
                 <User size={18} className="navbar-profile-icon" />
               </div>
             </Link>
           ) : (
-            <Link to="/login">
+            <Link to="/login" className="hover:no-underline">
               <button className="navbar-login-button">Login</button>
             </Link>
           )}

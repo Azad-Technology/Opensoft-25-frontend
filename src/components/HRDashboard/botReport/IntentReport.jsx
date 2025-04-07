@@ -108,7 +108,6 @@ const IntentReport = ({ result }) => {
                       domain={[0, 3]}
                       tick={{ fontSize: 12 }}
                     />
-                    console.log(graphData)
                     <XAxis dataKey="tag" fontSize={12}/>
                     <Tooltip content={<CustomTooltip />} />
                     <Bar dataKey="value">
