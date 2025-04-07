@@ -62,19 +62,29 @@ docker compose logs -f
 ## 📁 Project Structure
 
 ```
-src/
-├── assets/              # Static files
-├── components/          # Reusable components
-│   ├── common/         # Shared components
-│   ├── dashboard/      # Dashboard components
-│   └── chat/          # Chat interface components
-├── pages/              # Page components
-├── context/            # React context
-├── hooks/              # Custom hooks
-├── services/           # API services
-├── store/              # State management
-├── styles/             # Global styles
-└── utils/              # Helper functions
+📁 src/
+├── 📁 apis/
+├── 📁 components/
+│   ├── 📁 Charts/
+│   ├── 📁 Chatbot/
+│   ├── 📁 employeeCompo/
+│   ├── 📁 EmployeeReportPdf/
+│   ├── 📁 HRDashboard/
+│   └── 📁 sections/
+├── 📁 contexts/
+├── 📁 _data/
+├── 📁 _hooks/
+├── 📁 _lib/
+├── 📁 _pages/
+├── 📁 _services/
+└── 📁 _styles/
+📄 .env
+📄 .gitignore
+📄 .prettierignore
+📄 docker-compose.yml
+📄 Dockerfile
+📄 package.json
+📄 README.md
 ```
 
 ## 🎨 Features
