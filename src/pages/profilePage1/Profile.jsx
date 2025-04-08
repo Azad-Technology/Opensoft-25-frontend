@@ -324,7 +324,7 @@ function Profile() {
         {/* Header */}
 
         {/* Profile Content */}
-        <div className="container py-8">
+        <div className="container py-8 overflow-x-auto">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-colors">
             {/* Profile Header */}
             <div className="bg-deloitte-green/10 dark:bg-deloitte-green/5 p-6 transition-colors ">
@@ -382,7 +382,7 @@ function Profile() {
             </div>
 
             {/* Navigation Tabs */}
-            <div className="border-b dark:border-gray-700 transition-colors ">
+            <div className="border-b dark:border-gray-700 transition-colors overflow-x-auto">
               <nav className="flex gap-4 px-6">
                 {["basic", "background", "documents"].map((tab) => (
                   <button
