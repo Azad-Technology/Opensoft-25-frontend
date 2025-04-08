@@ -27,6 +27,12 @@ Mindflix's frontend provides an intuitive interface for employee well-being moni
 - Node.js 18+
 - npm/yarn/pnpm
 
+### Cloning Steps
+```bash
+git clone <url>
+cd Frontend
+```
+
 ### Environment Setup
 
 Create `.env` file:
@@ -34,6 +40,7 @@ Create `.env` file:
 ```env
 VITE_API_URL=your_backend_url
 ```
+
 
 ### Installation
 
