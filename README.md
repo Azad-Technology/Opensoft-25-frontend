@@ -4,6 +4,8 @@
 
 Mindflix's frontend provides an intuitive interface for employee well-being monitoring and support. Built with React + Vite, it offers real-time mood tracking, AI-powered chat support, and comprehensive analytics dashboards.
 
+Opensoft Backend - https://github.com/dudegladiator/Opensoft-25-backend
+
 <!-- First row of images -->
 <p align="center">
   <img src="assets/image (3).png" width="48%" />
